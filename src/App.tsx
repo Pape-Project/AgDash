@@ -1,23 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.tsx
+import "./App.css";
+import { CountyMap } from "./components/CountyMap";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div style={{ display: "flex", height: "100vh" }}>
+      {/* Left: Map */}
+      <div style={{ flex: 2 }}>
+        <CountyMap />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
+
+      {/* Right: Sidebar */}
+      <div
+        style={{
+          flex: 1,
+          padding: "1rem",
+          borderLeft: "1px solid #ddd",
+          overflowY: "auto",
+        }}
+      >
+        <h1>Ag Dashboard (MVP)</h1>
+        <p>Click on the map to explore. Data + search will go here.</p>
+      </div>
+    </div>
+  );
+}
+
+export default App;
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
