@@ -1,0 +1,90 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "NAME": "Oregon",
+        "STATEFP": "41"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-124.6, 42.0],
+          [-124.6, 46.3],
+          [-116.5, 46.3],
+          [-116.5, 42.0],
+          [-124.6, 42.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NAME": "Washington",
+        "STATEFP": "53"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-124.8, 45.5],
+          [-124.8, 49.0],
+          [-116.9, 49.0],
+          [-116.9, 45.5],
+          [-124.8, 45.5]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NAME": "California",
+        "STATEFP": "06"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-124.5, 32.5],
+          [-124.5, 42.0],
+          [-114.1, 42.0],
+          [-114.1, 32.5],
+          [-124.5, 32.5]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NAME": "Idaho",
+        "STATEFP": "16"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-117.3, 42.0],
+          [-117.3, 49.0],
+          [-111.0, 49.0],
+          [-111.0, 42.0],
+          [-117.3, 42.0]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "NAME": "Nevada",
+        "STATEFP": "32"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [-120.0, 35.0],
+          [-120.0, 42.0],
+          [-114.0, 42.0],
+          [-114.0, 35.0],
+          [-120.0, 35.0]
+        ]]
+      }
+    }
+  ]
+}
