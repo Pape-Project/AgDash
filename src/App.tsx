@@ -1,44 +1,176 @@
-// src/App.tsx
-import "./App.css";
-import { CountyMap } from "./components/CountyMap";
+import { useMemo } from 'react';
+import { useAgData } from './hooks/useAgData';
+import { useStore } from './store/useStore';
+import { MapView } from './components/modern/MapView';
+import { KPICards } from './components/modern/KPICards';
+import { FilterPanel } from './components/modern/FilterPanel';
+import { CountyList } from './components/modern/CountyList';
+import { ComparisonDrawer } from './components/modern/ComparisonDrawer';
+import { filterCounties, sortCounties, getUniqueStates } from './utils/dataUtils';
+import { parseQuery } from './utils/queryParser';
+import { BarChart3 } from 'lucide-react';
 
-function App() {
-  return (
-    <div style={{ display: "flex", height: "100vh" }}>
-      {/* Left: Map */}
-      <div style={{ flex: 2 }}>
-        <CountyMap />
+export default function App() {
+  // Load data
+  const { data: allCounties, loading, error } = useAgData();
+
+  // Get state from Zustand store
+  const {
+    selectedCounty,
+    comparisonCounties,
+    selectedStates,
+    croplandRange,
+    farmsRange,
+    sortField,
+    sortDirection,
+    searchQuery,
+    setSelectedCounty,
+    removeFromComparison,
+  } = useStore();
+
+  // Get available states
+  const availableStates = useMemo(() => getUniqueStates(allCounties), [allCounties]);
+
+  // Check if search query is a natural language query
+  const isNaturalLanguageQuery = useMemo(() => {
+    if (!searchQuery) return false;
+    const query = searchQuery.toLowerCase();
+    return (
+      query.includes('highest') ||
+      query.includes('lowest') ||
+      query.includes('most') ||
+      query.includes('fewest') ||
+      query.includes('compare') ||
+      query.includes('over') ||
+      query.includes('more than')
+    );
+  }, [searchQuery]);
+
+  // Apply filters and sorting
+  const filteredAndSortedCounties = useMemo(() => {
+    // If it's a natural language query, use the query parser
+    if (isNaturalLanguageQuery && searchQuery) {
+      const queryResult = parseQuery(searchQuery, allCounties);
+      return queryResult.counties;
+    }
+
+    // Otherwise, use standard filtering
+    const filters = {
+      states: selectedStates,
+      minCroplandAcres: croplandRange[0] ?? undefined,
+      maxCroplandAcres: croplandRange[1] ?? undefined,
+      minFarms: farmsRange[0] ?? undefined,
+      maxFarms: farmsRange[1] ?? undefined,
+      searchQuery,
+    };
+
+    const filtered = filterCounties(allCounties, filters);
+    return sortCounties(filtered, { field: sortField, direction: sortDirection });
+  }, [allCounties, selectedStates, croplandRange, farmsRange, searchQuery, sortField, sortDirection, isNaturalLanguageQuery]);
+
+  // Calculate KPIs
+  const kpis = useMemo(() => {
+    const counties = filteredAndSortedCounties.length > 0 ? filteredAndSortedCounties : allCounties;
+
+    return {
+      totalCounties: counties.length,
+      totalFarms: counties.reduce((sum, c) => sum + c.farms, 0),
+      totalCropland: counties.reduce((sum, c) => sum + c.croplandAcres, 0),
+      totalIrrigated: counties.reduce((sum, c) => sum + c.irrigatedAcres, 0),
+    };
+  }, [filteredAndSortedCounties, allCounties]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin h-12 w-12 border-4 border-primary border-t-transparent rounded-full mx-auto" />
+          <h2 className="text-2xl font-semibold text-foreground">Loading agricultural data...</h2>
+          <p className="text-muted-foreground">Parsing county-level USDA metrics</p>
+        </div>
       </div>
+    );
+  }
 
-      {/* Right: Sidebar */}
-      <div
-        style={{
-          flex: 1,
-          padding: "1rem",
-          borderLeft: "1px solid #ddd",
-          overflowY: "auto",
-        }}
-      >
-        <h1>Ag Dashboard (MVP)</h1>
-        <p>Click on the map to explore. Data + search will go here.</p>
+  // Error state
+  if (error) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-background">
+        <div className="text-center space-y-4 max-w-md">
+          <div className="text-destructive text-5xl">⚠️</div>
+          <h2 className="text-2xl font-semibold text-foreground">Error Loading Data</h2>
+          <p className="text-muted-foreground">{error}</p>
+          <p className="text-sm text-muted-foreground">
+            Please ensure the CSV file is available at /data/ag_data.csv
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="h-screen w-screen flex flex-col bg-background text-foreground overflow-hidden">
+      {/* Header */}
+      <header className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <BarChart3 className="h-8 w-8 text-primary" />
+          <div>
+            <h1 className="text-2xl font-bold">Agricultural Analytics</h1>
+            <p className="text-sm text-muted-foreground">
+              Pacific Northwest, California & Nevada - USDA County Data 2022
+            </p>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left Sidebar - Filters */}
+        <aside className="w-80 border-r border-border bg-card overflow-y-auto">
+          <FilterPanel availableStates={availableStates} />
+        </aside>
+
+        {/* Center - Map & KPIs */}
+        <main className="flex-1 flex flex-col overflow-hidden">
+          {/* KPI Cards */}
+          <div className="p-6 border-b border-border">
+            <KPICards
+              totalCounties={kpis.totalCounties}
+              totalFarms={kpis.totalFarms}
+              totalCropland={kpis.totalCropland}
+              totalIrrigated={kpis.totalIrrigated}
+            />
+          </div>
+
+          {/* Map */}
+          <div className="flex-1 relative">
+            <MapView selectedCounty={selectedCounty} />
+          </div>
+        </main>
+
+        {/* Right Sidebar - County List / Comparison */}
+        <aside className="w-96 border-l border-border bg-card flex flex-col overflow-hidden">
+          {comparisonCounties.length > 0 ? (
+            <ComparisonDrawer
+              counties={comparisonCounties}
+              onRemove={removeFromComparison}
+              onClear={() => {
+                // Clear all comparison counties
+                comparisonCounties.forEach(c => removeFromComparison(c.id));
+              }}
+            />
+          ) : (
+            <div className="flex-1 overflow-y-auto p-6">
+              <CountyList
+                counties={filteredAndSortedCounties}
+                selectedCounty={selectedCounty}
+                onCountySelect={setSelectedCounty}
+              />
+            </div>
+          )}
+        </aside>
       </div>
     </div>
   );
 }
-
-export default App;
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
-
-export default App
