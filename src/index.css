@@ -4,6 +4,7 @@
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
+/* Tailwind directives - base includes Preflight for cross-browser normalization */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -37,9 +38,30 @@
   * {
     @apply border-border;
   }
+  html {
+    /* Set explicit base font size for consistency */
+    font-size: 16px;
+    /* Prevent browser text size adjustments */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Normalize box-sizing */
+    box-sizing: border-box;
+    /* Better font rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    /* Ensure body fills viewport */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
   }
 }
 
@@ -68,9 +90,16 @@
   letter-spacing: 0.05em;
 }
 
-/* Desktop scaling to 80% */
+/* Desktop scaling - browser-specific zoom */
 @media (min-width: 768px) {
-  html {
-    zoom: 0.87;
+  /* Chromium-based browsers */
+  html.browser-chromium {
+    font-size: 11.5px; 
+  }
+
+  /* Safari */
+  html.browser-safari {
+    font-size: 14.3px; 
   }
 }
+

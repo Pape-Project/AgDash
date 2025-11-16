@@ -4,6 +4,11 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  corePlugins: {
+    // Preflight is enabled by default - provides cross-browser normalization
+    // Built on modern-normalize for consistent base styles across browsers
+    preflight: true,
+  },
   theme: {
     extend: {
       colors: {
