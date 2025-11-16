@@ -8,6 +8,7 @@ import { CountyList } from './components/modern/CountyList';
 import { ComparisonDrawer } from './components/modern/ComparisonDrawer';
 import { filterCounties, sortCounties, getUniqueStates } from './utils/dataUtils';
 import { parseQuery } from './utils/queryParser';
+import papeLogo from './assets/pape-logo.svg';
 // import { BarChart3 } from 'lucide-react';
 
 export default function App() {
@@ -116,7 +117,7 @@ export default function App() {
       {/* Header */}
       <header className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src="src/assets/pape-logo.svg" alt="Company Logo" className="h-17 w-auto" />
+          <img src={papeLogo} alt="Company Logo" className="h-17 w-auto" />
           <div>
             <h1 className="text-2xl font-bold">Agriculture & Turf</h1>
             <p className="text-sm text-muted-foreground">

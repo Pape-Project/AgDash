@@ -598,7 +598,7 @@ export function MapView({ selectedCounty, counties = [], filteredCounties }: Map
         initialViewState={{
           latitude: 43.5,
           longitude: -120.5,
-          zoom: 5.5,
+          zoom: 4.5,
         }}
         style={{ width: '100%', height: '100%' }}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
