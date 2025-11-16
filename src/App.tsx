@@ -114,11 +114,11 @@ export default function App() {
       {/* Header */}
       <header className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <BarChart3 className="h-8 w-8 text-primary" />
+          <img src="src/assets/pape-logo.svg" alt="Company Logo" className="h-17 w-auto" />
           <div>
-            <h1 className="text-2xl font-bold">Agricultural Analytics</h1>
+            <h1 className="text-2xl font-bold">Agriculture & Turf</h1>
             <p className="text-sm text-muted-foreground">
-              Pacific Northwest, California & Nevada - USDA County Data 2022
+              {/* Pacific Northwest, California & Nevada - USDA County Data 2022 */}
             </p>
           </div>
         </div>

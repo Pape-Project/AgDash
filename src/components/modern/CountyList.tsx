@@ -29,7 +29,7 @@ export function CountyList({
           {counties.length} Counties
         </h3>
       </div>
-      <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
+      <div className="space-y-2 overflow-y-auto pr-2">
         {counties.slice(0, 50).map((county) => (
           <Card
             key={county.id}

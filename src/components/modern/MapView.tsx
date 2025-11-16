@@ -16,6 +16,163 @@ interface HoverInfo {
   y: number;
 }
 
+// County color mapping by region
+const COUNTY_COLORS: Record<string, { color: string; opacity: number }> = {
+  // Purple
+  'Whatcom': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Skagit': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'San Juan': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Clallam': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Island': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Jefferson': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Snohomish': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Kitsap': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Skamania': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Lewis': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Pacific': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Grays Harbor': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Mason': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'King': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Thurston': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  'Pierce': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  '': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  '': { color: 'hsl(270, 70%, 50%)', opacity: 0.4 },
+  
+  // Blue
+  'Okanogan': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Chelan': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Douglas': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 }, // WA - may need state check
+  'Grant': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Kittitas': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Yakima': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Ferry': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Stevens': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Lincoln': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Spokane': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Pend Oreille': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Whitman': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Garfield': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Asotin': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Columbia': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Walla Walla': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Umatilla': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  
+  // Yellow
+  'Clatsop': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Tillamook': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Multnomah': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Wahkiakum': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Cowlitz': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Clark': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Yamhill': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Washington': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Hood River': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Clackamas': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Marion': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  'Polk': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+  '': { color: 'hsl(48, 96%, 53%)', opacity: 0.4 },
+
+
+
+  // Green
+  'Lane': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Klamath': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Wasco': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Wheeler': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Crook': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Linn': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Deschutes': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Benton': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Lake': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Harney': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Jackson': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Josephine': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Curry': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Coos': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Siskiyou': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+  'Modoc': { color: 'hsl(142, 76%, 36%)', opacity: 0.4 },
+
+
+  
+  // Orange
+  'Del Norte': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Humboldt': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 }, // CA - may need state check
+  'Trinity': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Shasta': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Lassen': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Tehama': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Plumas': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Glenn': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Colusa': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Butte': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Sierra': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Nevada': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+  'Yuba': { color: 'hsl(25, 95%, 53%)', opacity: 0.4 },
+
+  
+
+
+
+
+
+  
+  // Light Blue
+  'Washoe': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Pershing': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Churchill': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Lander': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Eureka': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Storey': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Lyon': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Carson City': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Douglas': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Humboldt': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Nye': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Mineral': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Esmeralda': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Mono': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Alpine': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Tuolumne': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'El Dorado': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Placer': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Sutter': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Yolo': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Sacramento': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Solano': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  'Contra Costa': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  '': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+
+
+
+
+
+
+  // Note: Humboldt (NV) would conflict with Humboldt (CA) - add state check if needed
+};
+
+
+
+
+// Build MapLibre expression for fill-color
+function buildColorExpression() {
+  const cases: any[] = [];
+  Object.entries(COUNTY_COLORS).forEach(([county, { color }]) => {
+    cases.push(['==', ['get', 'NAME'], county], color);
+  });
+  cases.push('rgba(0, 0, 0, 0)'); // Default transparent
+  return ['case', ...cases];
+}
+
+// Build MapLibre expression for fill-opacity
+function buildOpacityExpression() {
+  const cases: any[] = [];
+  Object.entries(COUNTY_COLORS).forEach(([county, { opacity }]) => {
+    cases.push(['==', ['get', 'NAME'], county], opacity);
+  });
+  cases.push(0); // Default transparent
+  return ['case', ...cases];
+}
+
 export function MapView({ selectedCounty }: MapViewProps) {
   const mapRef = useRef<MapRef>(null);
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
@@ -106,14 +263,14 @@ export function MapView({ selectedCounty }: MapViewProps) {
       'fill-color': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        'hsl(217.2, 91.2%, 59.8%)', // Primary color on hover
-        'rgba(0, 0, 0, 0)', // Transparent by default
+        'hsl(48, 100%, 50%)', // Yellow on hover
+        buildColorExpression(),
       ] as any,
       'fill-opacity': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        0.5,
-        0,
+        0.7, // More opaque on hover
+        buildOpacityExpression(),
       ] as any,
     },
   };
