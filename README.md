@@ -197,4 +197,4 @@ For questions or issues, please open a GitHub issue or contact the development t
 
 ---
 
-**Built with ❤️ for agricultural data visualization**
+**Built with ❤️ by the UO A I Student Association :)**
