@@ -18,7 +18,7 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
         const sorted = [...stateCounties].sort((a, b) => (b[key] as number) - (a[key] as number));
         return sorted.findIndex(c => c.id === county.id) + 1;
     };
-
+    //test
     const rankings = {
         farms: getRank('farms'),
         marketValue: getRank('marketValueTotalDollars'),
