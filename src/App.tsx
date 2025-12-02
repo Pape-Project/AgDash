@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useAgData } from './hooks/useAgData';
 import { useMobileDetection } from './hooks/useMobileDetection';
 import type { EnhancedCountyData } from './types/ag';
@@ -36,6 +36,9 @@ export default function App() {
     searchQuery,
     setSelectedCounty,
     removeFromComparison,
+    resetFilters,
+    setSortField,
+    setSortDirection,
   } = useStore();
 
   // Get available states
@@ -98,6 +101,16 @@ export default function App() {
 
   const [detailCounty, setDetailCounty] = useState<EnhancedCountyData | null>(null);
   const [isRankingModalOpen, setIsRankingModalOpen] = useState(false);
+
+  // Reset state when switching to mobile
+  useEffect(() => {
+    if (isMobile) {
+      setIsRankingModalOpen(false);
+      resetFilters();
+      setSortField('croplandAcres');
+      setSortDirection('desc');
+    }
+  }, [isMobile, resetFilters, setSortField, setSortDirection]);
 
   // Loading state
   if (loading) {
