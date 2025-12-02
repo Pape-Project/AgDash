@@ -1,7 +1,7 @@
 import { Card } from '../ui/Card';
 import type { EnhancedCountyData } from '../../types/ag';
 import { formatNumber, formatAcres, formatCurrency } from '../../lib/format';
-import { MapPin, Settings2 } from 'lucide-react';
+import { MapPin, Filter } from 'lucide-react';
 import type { SortField } from '../../types/ag';
 
 interface CountyListProps {
@@ -36,10 +36,11 @@ export function CountyList({
         </div>
         <button
           onClick={onConfigure}
-          className="p-2 hover:bg-secondary rounded-full transition-colors text-muted-foreground hover:text-foreground"
+          className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-secondary/50 hover:bg-secondary transition-colors text-sm font-medium text-foreground"
           title="Configure Rankings"
         >
-          <Settings2 className="h-4 w-4" />
+          <Filter className="h-4 w-4" />
+          Filter
         </button>
       </div>
       <div className="space-y-2 overflow-y-auto pr-2">
