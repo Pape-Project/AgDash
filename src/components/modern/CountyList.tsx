@@ -83,7 +83,7 @@ export function CountyList({
           Filter
         </button>
       </div>
-      <div className="space-y-2 overflow-y-auto pr-2">
+      <div className="space-y-2 overflow-y-auto">
         {counties.slice(0, 50).map((county) => (
           <Card
             key={county.id}
