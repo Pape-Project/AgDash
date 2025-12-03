@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useAgData } from './hooks/useAgData';
 import { useMobileDetection } from './hooks/useMobileDetection';
 import type { EnhancedCountyData } from './types/ag';
@@ -10,6 +10,7 @@ import { CountyList } from './components/modern/CountyList';
 import { ComparisonDrawer } from './components/modern/ComparisonDrawer';
 import { MobileWarning } from './components/modern/MobileWarning';
 import { CountyDetailModal } from './components/modern/CountyDetailModal';
+import { RankingConfigurationModal } from './components/modern/RankingConfigurationModal';
 import { filterCounties, sortCounties, getUniqueStates } from './utils/dataUtils';
 import { parseQuery } from './utils/queryParser';
 import papeLogo from './assets/pape-logo.svg';
@@ -35,6 +36,9 @@ export default function App() {
     searchQuery,
     setSelectedCounty,
     removeFromComparison,
+    resetFilters,
+    setSortField,
+    setSortDirection,
   } = useStore();
 
   // Get available states
@@ -96,6 +100,17 @@ export default function App() {
   }, [filteredAndSortedCounties, allCounties]);
 
   const [detailCounty, setDetailCounty] = useState<EnhancedCountyData | null>(null);
+  const [isRankingModalOpen, setIsRankingModalOpen] = useState(false);
+
+  // Reset state when switching to mobile
+  useEffect(() => {
+    if (isMobile) {
+      setIsRankingModalOpen(false);
+      resetFilters();
+      setSortField('croplandAcres');
+      setSortDirection('desc');
+    }
+  }, [isMobile, resetFilters, setSortField, setSortDirection]);
 
   // Loading state
   if (loading) {
@@ -138,6 +153,13 @@ export default function App() {
         onClose={() => setDetailCounty(null)}
       />
 
+      {/* Ranking Configuration Modal */}
+      <RankingConfigurationModal
+        isOpen={isRankingModalOpen}
+        onClose={() => setIsRankingModalOpen(false)}
+        availableStates={availableStates}
+      />
+
       <div className="h-screen w-screen flex flex-col bg-background text-foreground overflow-hidden">
         {/* Header */}
         <header className="border-b border-border bg-card px-6 py-4 flex items-center justify-between">
@@ -156,7 +178,7 @@ export default function App() {
         <div className="flex-1 flex overflow-hidden">
           {/* Left Sidebar - Filters */}
           <aside className="w-80 border-r border-border bg-card overflow-y-auto">
-            <FilterPanel availableStates={availableStates} />
+            <FilterPanel />
           </aside>
 
           {/* Center - Map & KPIs */}
@@ -204,6 +226,8 @@ export default function App() {
                     setSelectedCounty(county);
                     setDetailCounty(county);
                   }}
+                  onConfigure={() => setIsRankingModalOpen(true)}
+                  sortField={sortField}
                 />
               </div>
             )}
