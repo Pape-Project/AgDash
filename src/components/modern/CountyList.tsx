@@ -32,7 +32,7 @@ export function CountyList({
   onConfigure,
   sortField,
 }: CountyListProps) {
-  const { sortDirection, selectedStates, selectedLocations, croplandRange, farmsRange, setSortDirection } = useStore();
+  const { sortDirection, selectedStates, selectedLocations, metricRanges, setSortDirection } = useStore();
 
   if (counties.length === 0) {
     return (
@@ -53,8 +53,9 @@ export function CountyList({
       parts.push(`${selectedLocations.length} Regions`);
     }
 
-    if (croplandRange[0] !== null || croplandRange[1] !== null) parts.push('Cropland Filter');
-    if (farmsRange[0] !== null || farmsRange[1] !== null) parts.push('Farms Filter');
+    if (Object.keys(metricRanges).length > 0) {
+      parts.push(`${Object.keys(metricRanges).length} Metric Filters`);
+    }
 
     if (parts.length === 0) return 'All Locations';
     return parts.join(' • ');

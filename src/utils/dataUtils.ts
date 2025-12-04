@@ -55,25 +55,14 @@ export function filterCounties(
     }
 
     // Cropland acres filter
-    if (
-      filters.minCroplandAcres !== undefined &&
-      county.croplandAcres < filters.minCroplandAcres
-    ) {
-      return false;
-    }
-    if (
-      filters.maxCroplandAcres !== undefined &&
-      county.croplandAcres > filters.maxCroplandAcres
-    ) {
-      return false;
-    }
+    // Metric filters
+    for (const [metric, range] of Object.entries(filters.metricRanges)) {
+      const value = county[metric as keyof EnhancedCountyData];
+      if (typeof value !== 'number') continue;
 
-    // Farms filter
-    if (filters.minFarms !== undefined && county.farms < filters.minFarms) {
-      return false;
-    }
-    if (filters.maxFarms !== undefined && county.farms > filters.maxFarms) {
-      return false;
+      const [min, max] = range;
+      if (min !== null && value < min) return false;
+      if (max !== null && value > max) return false;
     }
 
     return true;
