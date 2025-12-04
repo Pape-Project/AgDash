@@ -1,7 +1,7 @@
 import { Card } from '../ui/Card';
 import type { EnhancedCountyData } from '../../types/ag';
 import { formatNumber, formatAcres, formatCurrency } from '../../lib/format';
-import { MapPin, Filter } from 'lucide-react';
+import { MapPin, Filter, ArrowUp, ArrowDown } from 'lucide-react';
 import type { SortField } from '../../types/ag';
 import { useStore } from '../../store/useStore';
 
@@ -32,7 +32,7 @@ export function CountyList({
   onConfigure,
   sortField,
 }: CountyListProps) {
-  const { sortDirection, selectedStates, selectedLocations, croplandRange, farmsRange } = useStore();
+  const { sortDirection, selectedStates, selectedLocations, croplandRange, farmsRange, setSortDirection } = useStore();
 
   if (counties.length === 0) {
     return (
@@ -66,22 +66,32 @@ export function CountyList({
         <div>
           <h3 className="text-sm font-semibold text-foreground">
             {METRIC_LABELS[sortField] || 'County Rankings'}
-            <span className="text-muted-foreground font-normal ml-1">
-              ({sortDirection === 'desc' ? 'High to Low' : 'Low to High'})
-            </span>
           </h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             {getFilterSummary()} • {counties.length} results
           </p>
         </div>
-        <button
-          onClick={onConfigure}
-          className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-secondary/50 hover:bg-secondary transition-colors text-sm font-medium text-foreground"
-          title="Configure Rankings"
-        >
-          <Filter className="h-4 w-4" />
-          Filter
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+            className="p-1.5 rounded-md hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
+            title={sortDirection === 'asc' ? "Switch to High to Low" : "Switch to Low to High"}
+          >
+            {sortDirection === 'asc' ? (
+              <ArrowUp className="h-4 w-4" />
+            ) : (
+              <ArrowDown className="h-4 w-4" />
+            )}
+          </button>
+          <button
+            onClick={onConfigure}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-secondary/50 hover:bg-secondary transition-colors text-sm font-medium text-foreground"
+            title="Configure Rankings"
+          >
+            <Filter className="h-4 w-4" />
+            Filter
+          </button>
+        </div>
       </div>
       <div className="space-y-2 overflow-y-auto">
         {counties.slice(0, 50).map((county) => (

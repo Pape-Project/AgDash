@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Check, ArrowUpAZ, ArrowDownAZ, RotateCcw } from 'lucide-react';
+import { X, Check, RotateCcw } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { Button } from '../ui/Button';
 import type { SortField } from '../../types/ag';
@@ -31,18 +31,15 @@ export function RankingConfigurationModal({
 }: RankingConfigurationModalProps) {
     const {
         sortField,
-        sortDirection,
         selectedStates,
         selectedLocations,
         setSortField,
-        setSortDirection,
         setSelectedStates,
         setSelectedLocations,
     } = useStore();
 
     // Local state for the modal
     const [localSortField, setLocalSortField] = useState<SortField>(sortField);
-    const [localSortDirection, setLocalSortDirection] = useState<'asc' | 'desc'>(sortDirection);
     const [localSelectedStates, setLocalSelectedStates] = useState<string[]>(selectedStates);
     const [localSelectedLocations, setLocalSelectedLocations] = useState<string[]>(selectedLocations);
 
@@ -59,17 +56,15 @@ export function RankingConfigurationModal({
     useEffect(() => {
         if (isOpen) {
             setLocalSortField(sortField);
-            setLocalSortDirection(sortDirection);
             setLocalSelectedStates(selectedStates);
             setLocalSelectedLocations(selectedLocations);
         }
-    }, [isOpen, sortField, sortDirection, selectedStates, selectedLocations]);
+    }, [isOpen, sortField, selectedStates, selectedLocations]);
 
     if (!isOpen) return null;
 
     const handleApply = () => {
         setSortField(localSortField);
-        setSortDirection(localSortDirection);
         setSelectedStates(localSelectedStates);
         setSelectedLocations(localSelectedLocations);
         onClose();
@@ -79,13 +74,11 @@ export function RankingConfigurationModal({
         setLocalSelectedStates([]);
         setLocalSelectedLocations([]);
         setLocalSortField('croplandAcres');
-        setLocalSortDirection('desc');
 
         // Apply to store immediately
         setSelectedStates([]);
         setSelectedLocations([]);
         setSortField('croplandAcres');
-        setSortDirection('desc');
     };
 
     const toggleState = (state: string) => {
@@ -152,34 +145,7 @@ export function RankingConfigurationModal({
                             </div>
                         </div>
 
-                        {/* Sort Direction */}
-                        <div className="space-y-3">
-                            <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                                Sort Order
-                            </label>
-                            <div className="flex bg-secondary/30 p-1 rounded-lg">
-                                <button
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all ${localSortDirection === 'desc'
-                                        ? 'bg-background shadow-sm text-foreground'
-                                        : 'text-muted-foreground hover:text-foreground'
-                                        }`}
-                                    onClick={() => setLocalSortDirection('desc')}
-                                >
-                                    <ArrowDownAZ className="h-4 w-4" />
-                                    Highest First
-                                </button>
-                                <button
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all ${localSortDirection === 'asc'
-                                        ? 'bg-background shadow-sm text-foreground'
-                                        : 'text-muted-foreground hover:text-foreground'
-                                        }`}
-                                    onClick={() => setLocalSortDirection('asc')}
-                                >
-                                    <ArrowUpAZ className="h-4 w-4" />
-                                    Lowest First
-                                </button>
-                            </div>
-                        </div>
+
                     </div>
 
                     {/* Right Column: Filters */}
