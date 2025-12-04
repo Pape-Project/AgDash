@@ -31,7 +31,7 @@ const FIPS_TO_STATE: Record<string, string> = {
 
 export const MAP_BOUNDS = {
   SOUTHWEST: [-130.0, 32.4] as [number, number],
-  NORTHEAST: [-94.8, 49.4] as [number, number],
+  NORTHEAST: [-93.6, 49.9] as [number, number],
 };
 
 // Region definitions
