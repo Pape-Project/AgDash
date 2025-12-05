@@ -33,6 +33,13 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
         livestockSales: getRank('livestockSalesDollars'),
         cattle: getRank('beefCattleHead'),
         milkCows: getRank('dairyCattleHead'),
+        // Crop-specific rankings
+        wheat: getRank('wheatAcres'),
+        hay: getRank('hayAcres'),
+        grassSeed: getRank('grassSeedAcres'),
+        corn: getRank('cornAcres'),
+        hazelnuts: getRank('hazelnutsAcres'),
+        apples: getRank('applesAcres'),
     };
 
 
@@ -163,37 +170,55 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                     {county.wheatAcres !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Wheat</span>
-                                            <span className="font-medium">{formatAcres(county.wheatAcres)}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatAcres(county.wheatAcres)}</span>
+                                                {displayRank(rankings.wheat)}
+                                            </div>
                                         </div>
                                     )}
                                     {county.hayAcres !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Hay</span>
-                                            <span className="font-medium">{formatAcres(county.hayAcres)}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatAcres(county.hayAcres)}</span>
+                                                {displayRank(rankings.hay)}
+                                            </div>
                                         </div>
                                     )}
                                     {county.grassSeedAcres !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Grass Seed</span>
-                                            <span className="font-medium">{formatAcres(county.grassSeedAcres)}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatAcres(county.grassSeedAcres)}</span>
+                                                {displayRank(rankings.grassSeed)}
+                                            </div>
                                         </div>
                                     )}
                                     {county.cornAcres !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Corn</span>
-                                            <span className="font-medium">{formatAcres(county.cornAcres)}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatAcres(county.cornAcres)}</span>
+                                                {displayRank(rankings.corn)}
+                                            </div>
                                         </div>
                                     )}
                                     {county.hazelnutsAcres !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Hazelnuts</span>
-                                            <span className="font-medium">{formatAcres(county.hazelnutsAcres)}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatAcres(county.hazelnutsAcres)}</span>
+                                                {displayRank(rankings.hazelnuts)}
+                                            </div>
                                         </div>
                                     )}
                                     {county.applesAcres !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Apples</span>
-                                            <span className="font-medium">{formatAcres(county.applesAcres)}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatAcres(county.applesAcres)}</span>
+                                                {displayRank(rankings.apples)}
+                                            </div>
                                         </div>
                                     )}
                                 </div>
@@ -211,13 +236,19 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                     {county.beefCattleHead !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Beef Cattle</span>
-                                            <span className="font-medium">{formatNumber(county.beefCattleHead)} heads</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatNumber(county.beefCattleHead)} heads</span>
+                                                {displayRank(rankings.cattle)}
+                                            </div>
                                         </div>
                                     )}
                                     {county.dairyCattleHead !== null && (
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Dairy Cattle</span>
-                                            <span className="font-medium">{formatNumber(county.dairyCattleHead)} heads</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="font-medium">{formatNumber(county.dairyCattleHead)} heads</span>
+                                                {displayRank(rankings.milkCows)}
+                                            </div>
                                         </div>
                                     )}
                                 </div>
