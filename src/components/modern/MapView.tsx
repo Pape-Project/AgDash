@@ -700,18 +700,18 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
             <div className="space-y-1 border-t border-border pt-2">
               <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground">Farms:</span>
-                <span className="font-medium">{hoverInfo.countyData.farms.toLocaleString()}</span>
+                <span className="font-medium">{(hoverInfo.countyData.farms || 0).toLocaleString()}</span>
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground">Cropland:</span>
                 <span className="font-medium">
-                  {(hoverInfo.countyData.croplandAcres / 1000).toFixed(1)}K ac
+                  {((hoverInfo.countyData.croplandAcres || 0) / 1000).toFixed(1)}K ac
                 </span>
               </div>
               <div className="flex justify-between text-xs">
                 <span className="text-muted-foreground">Market Val:</span>
                 <span className="font-medium">
-                  ${(hoverInfo.countyData.marketValueTotalDollars / 1000000).toFixed(1)}M
+                  ${((hoverInfo.countyData.marketValueTotalDollars || 0) / 1000000).toFixed(1)}M
                 </span>
               </div>
             </div>

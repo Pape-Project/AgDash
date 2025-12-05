@@ -116,7 +116,7 @@ export function CountyList({
             <div className="grid grid-cols-2 gap-2 text-sm">
               <div>
                 <div className="text-xs text-muted-foreground">Farms</div>
-                <div className="font-medium">{formatNumber(county.farms)}</div>
+                <div className="font-medium">{formatNumber(county.farms || 0)}</div>
               </div>
               <div className="text-right">
                 <div className="text-xs text-muted-foreground">
@@ -127,11 +127,11 @@ export function CountyList({
                           'Value'}
                 </div>
                 <div className="font-bold text-primary">
-                  {sortField === 'croplandAcres' || sortField === 'irrigatedAcres' || sortField === 'landInFarmsAcres' || sortField === 'harvestedCroplandAcres'
-                    ? formatAcres(county[sortField] as number)
+                  {sortField === 'croplandAcres' || sortField === 'irrigatedAcres' || sortField === 'harvestedCroplandAcres'
+                    ? formatAcres((county[sortField] as number) || 0)
                     : sortField === 'marketValueTotalDollars' || sortField === 'cropsSalesDollars' || sortField === 'livestockSalesDollars'
-                      ? formatCurrency(county[sortField] as number)
-                      : formatNumber(county[sortField] as number)}
+                      ? formatCurrency((county[sortField] as number) || 0)
+                      : formatNumber((county[sortField] as number) || 0)}
                 </div>
               </div>
             </div>
