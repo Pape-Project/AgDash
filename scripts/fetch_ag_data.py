@@ -18,7 +18,7 @@ COMMON_PARAMS = {
     "format": "JSON",
 }
 
-TARGET_STATES = ["OR", "WA", "CA", "NV"]
+TARGET_STATES = ["OR", "WA", "CA", "NV", "ID", "MT"]
 
 # --- Metrics Dictionary ------------------------------------------------------
 # --- Metrics Dictionary ------------------------------------------------------
@@ -91,7 +91,8 @@ def fetch_metric_multistate(short_desc: str, extra_params: dict = None) -> pd.Da
             print(f"Error: {e}")
             
         # Be polite to the API to avoid rate limiting
-        time.sleep(0.5)
+        # time.sleep(0.5)
+        # We're going to be mean to the api for now, otherwise this takes forever. 
 
     if not all_states_data:
         return pd.DataFrame()

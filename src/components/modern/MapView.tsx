@@ -25,6 +25,13 @@ const FIPS_TO_STATE: Record<string, string> = {
   '32': 'NEVADA',
   '41': 'OREGON',
   '53': 'WASHINGTON',
+  '16': 'IDAHO',
+  '30': 'MONTANA',
+};
+
+export const MAP_BOUNDS = {
+  SOUTHWEST: [-130.0, 32.4] as [number, number],
+  NORTHEAST: [-93.6, 49.9] as [number, number],
 };
 
 // Region definitions
@@ -179,6 +186,17 @@ const COUNTY_COLORS: Record<string, { color: string; opacity: number }> = {
   'Sacramento|06': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
   'Solano|06': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
   'Contra Costa|06': { color: 'hsl(195, 70%, 60%)', opacity: 0.4 },
+  // ID and MT Counties
+  'Boundary|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Bonner|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Kootenai|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Shoshone|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Benewah|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Latah|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Nez Perce|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Lewis|16': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Lincoln|30': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
+  'Sanders|30': { color: 'hsl(217, 91%, 60%)', opacity: 0.4 },
 };
 
 // Helper function to get region for a county (case-insensitive)
@@ -235,6 +253,11 @@ const COUNTY_TO_REGION_INTERNAL: Record<string, keyof typeof REGIONS> = {
   'Columbia|53': 'INLAND_NW',
   'Walla Walla|53': 'INLAND_NW',
   'Umatilla|41': 'INLAND_NW',
+  // 'Boundary|16': 'INLAND_NW',
+
+  // ID - 16
+  // MT - 30
+
   // Northern Oregon
   'Clatsop|41': 'NORTHERN_OREGON',
   'Tillamook|41': 'NORTHERN_OREGON',
@@ -307,6 +330,17 @@ const COUNTY_TO_REGION_INTERNAL: Record<string, keyof typeof REGIONS> = {
   'Sacramento|06': 'SACRAMENTO',
   'Solano|06': 'SACRAMENTO',
   'Contra Costa|06': 'SACRAMENTO',
+  // ID and MT Counties
+  'Boundary|16': 'INLAND_NW',
+  'Bonner|16': 'INLAND_NW',
+  'Kootenai|16': 'INLAND_NW',
+  'Shoshone|16': 'INLAND_NW',
+  'Benewah|16': 'INLAND_NW',
+  'Latah|16': 'INLAND_NW',
+  'Nez Perce|16': 'INLAND_NW',
+  'Lewis|16': 'INLAND_NW',
+  'Lincoln|30': 'INLAND_NW',
+  'Sanders|30': 'INLAND_NW',
 };
 
 // Export the mapping for backward compatibility
@@ -467,7 +501,7 @@ export function MapView({ selectedCounty, counties = [], filteredCounties, onCou
 
   // Load GeoJSON data
   useEffect(() => {
-    fetch('/data/tl_2023_us_county.json')
+    fetch('/data/counties_expanded.json')
       .then((response) => response.json())
       .then((data) => {
         console.log('Counties GeoJSON loaded:', data);
@@ -606,10 +640,14 @@ export function MapView({ selectedCounty, counties = [], filteredCounties, onCou
       <Map
         ref={mapRef}
         initialViewState={{
-          latitude: 43.5,
-          longitude: -120.5,
-          zoom: 4.5,
+          latitude: 41.0,
+          longitude: -113.5,
+          zoom: 4,
         }}
+        maxBounds={[
+          MAP_BOUNDS.SOUTHWEST,
+          MAP_BOUNDS.NORTHEAST
+        ]}
         style={{ width: '100%', height: '100%' }}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
         interactiveLayerIds={['counties-fill', 'counties-outline']}

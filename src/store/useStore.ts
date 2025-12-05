@@ -9,8 +9,7 @@ interface DashboardState {
   // Filters
   selectedStates: string[];
   selectedLocations: string[];
-  croplandRange: [number | null, number | null];
-  farmsRange: [number | null, number | null];
+  metricRanges: Record<string, [number | null, number | null]>;
 
   // Sort
   sortField: SortField;
@@ -27,8 +26,8 @@ interface DashboardState {
 
   setSelectedStates: (states: string[]) => void;
   setSelectedLocations: (locations: string[]) => void;
-  setCroplandRange: (range: [number | null, number | null]) => void;
-  setFarmsRange: (range: [number | null, number | null]) => void;
+  setMetricRange: (metric: string, range: [number | null, number | null]) => void;
+  removeMetricRange: (metric: string) => void;
 
   setSortField: (field: DashboardState['sortField']) => void;
   setSortDirection: (direction: 'asc' | 'desc') => void;
@@ -44,8 +43,7 @@ export const useStore = create<DashboardState>((set) => ({
   comparisonCounties: [],
   selectedStates: [],
   selectedLocations: [],
-  croplandRange: [null, null],
-  farmsRange: [null, null],
+  metricRanges: {},
   sortField: 'croplandAcres',
   sortDirection: 'desc',
   searchQuery: '',
@@ -69,8 +67,17 @@ export const useStore = create<DashboardState>((set) => ({
 
   setSelectedStates: (states) => set({ selectedStates: states }),
   setSelectedLocations: (locations) => set({ selectedLocations: locations }),
-  setCroplandRange: (range) => set({ croplandRange: range }),
-  setFarmsRange: (range) => set({ farmsRange: range }),
+  setMetricRange: (metric, range) =>
+    set((state) => ({
+      metricRanges: { ...state.metricRanges, [metric]: range },
+    })),
+
+  removeMetricRange: (metric) =>
+    set((state) => {
+      const newRanges = { ...state.metricRanges };
+      delete newRanges[metric];
+      return { metricRanges: newRanges };
+    }),
 
   setSortField: (field) => set({ sortField: field }),
   setSortDirection: (direction) => set({ sortDirection: direction }),
@@ -81,8 +88,7 @@ export const useStore = create<DashboardState>((set) => ({
     set({
       selectedStates: [],
       selectedLocations: [],
-      croplandRange: [null, null],
-      farmsRange: [null, null],
+      metricRanges: {},
       searchQuery: '',
     }),
 }));

@@ -9,12 +9,7 @@ export function FilterPanel() {
   const {
     selectedStates,
     selectedLocations,
-    croplandRange,
-    farmsRange,
     searchQuery,
-
-    setCroplandRange,
-    setFarmsRange,
     setSearchQuery,
     resetFilters,
   } = useStore();
@@ -46,11 +41,7 @@ export function FilterPanel() {
 
   const hasActiveFilters =
     selectedStates.length > 0 ||
-    selectedLocations.length > 0 ||
-    croplandRange[0] !== null ||
-    croplandRange[1] !== null ||
-    farmsRange[0] !== null ||
-    farmsRange[1] !== null;
+    selectedLocations.length > 0;
 
   return (
     <div className="space-y-4 p-6">
@@ -147,73 +138,7 @@ export function FilterPanel() {
 
 
 
-      {/* Cropland Acres */}
-      <Card className="p-4">
-        <div className="space-y-3">
-          <h4 className="text-sm font-medium">Cropland Acres</h4>
-          <div className="flex gap-2 items-center">
-            <Input
-              type="number"
-              placeholder="Min"
-              value={croplandRange[0] || ''}
-              onChange={(e) =>
-                setCroplandRange([
-                  e.target.value ? Number(e.target.value) : null,
-                  croplandRange[1],
-                ])
-              }
-              className="w-full"
-            />
-            <span className="text-muted-foreground">to</span>
-            <Input
-              type="number"
-              placeholder="Max"
-              value={croplandRange[1] || ''}
-              onChange={(e) =>
-                setCroplandRange([
-                  croplandRange[0],
-                  e.target.value ? Number(e.target.value) : null,
-                ])
-              }
-              className="w-full"
-            />
-          </div>
-        </div>
-      </Card>
 
-      {/* Farms */}
-      <Card className="p-4">
-        <div className="space-y-3">
-          <h4 className="text-sm font-medium">Number of Farms</h4>
-          <div className="flex gap-2 items-center">
-            <Input
-              type="number"
-              placeholder="Min"
-              value={farmsRange[0] || ''}
-              onChange={(e) =>
-                setFarmsRange([
-                  e.target.value ? Number(e.target.value) : null,
-                  farmsRange[1],
-                ])
-              }
-              className="w-full"
-            />
-            <span className="text-muted-foreground">to</span>
-            <Input
-              type="number"
-              placeholder="Max"
-              value={farmsRange[1] || ''}
-              onChange={(e) =>
-                setFarmsRange([
-                  farmsRange[0],
-                  e.target.value ? Number(e.target.value) : null,
-                ])
-              }
-              className="w-full"
-            />
-          </div>
-        </div>
-      </Card>
     </div>
   );
 }

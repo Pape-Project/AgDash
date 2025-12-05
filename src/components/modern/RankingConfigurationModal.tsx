@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { X, Check, ArrowUpAZ, ArrowDownAZ, RotateCcw } from 'lucide-react';
+import { X, Check, RotateCcw, ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react';
 import { useStore } from '../../store/useStore';
 import { Button } from '../ui/Button';
 import type { SortField } from '../../types/ag';
@@ -31,20 +31,23 @@ export function RankingConfigurationModal({
 }: RankingConfigurationModalProps) {
     const {
         sortField,
-        sortDirection,
         selectedStates,
         selectedLocations,
+        metricRanges,
         setSortField,
-        setSortDirection,
         setSelectedStates,
         setSelectedLocations,
+        setMetricRange,
+        removeMetricRange,
     } = useStore();
 
     // Local state for the modal
     const [localSortField, setLocalSortField] = useState<SortField>(sortField);
-    const [localSortDirection, setLocalSortDirection] = useState<'asc' | 'desc'>(sortDirection);
     const [localSelectedStates, setLocalSelectedStates] = useState<string[]>(selectedStates);
     const [localSelectedLocations, setLocalSelectedLocations] = useState<string[]>(selectedLocations);
+    const [localMetricRanges, setLocalMetricRanges] = useState<Record<string, [number | null, number | null]>>(metricRanges);
+    const [isAdvancedOpen, setIsAdvancedOpen] = useState(false);
+    const [selectedMetricToAdd, setSelectedMetricToAdd] = useState<string>('');
 
     const availableLocations = [
         { key: 'PUGET_SOUND', name: 'Puget Sound', color: 'hsl(270, 70%, 50%)' },
@@ -59,19 +62,31 @@ export function RankingConfigurationModal({
     useEffect(() => {
         if (isOpen) {
             setLocalSortField(sortField);
-            setLocalSortDirection(sortDirection);
             setLocalSelectedStates(selectedStates);
             setLocalSelectedLocations(selectedLocations);
+            setLocalMetricRanges(metricRanges);
         }
-    }, [isOpen, sortField, sortDirection, selectedStates, selectedLocations]);
+    }, [isOpen, sortField, selectedStates, selectedLocations, metricRanges]);
 
     if (!isOpen) return null;
 
     const handleApply = () => {
         setSortField(localSortField);
-        setSortDirection(localSortDirection);
         setSelectedStates(localSelectedStates);
         setSelectedLocations(localSelectedLocations);
+
+        // Sync metric ranges
+        // First remove any that are no longer present
+        Object.keys(metricRanges).forEach(metric => {
+            if (!localMetricRanges[metric]) {
+                removeMetricRange(metric);
+            }
+        });
+        // Then set all current ones
+        Object.entries(localMetricRanges).forEach(([metric, range]) => {
+            setMetricRange(metric, range);
+        });
+
         onClose();
     };
 
@@ -79,13 +94,14 @@ export function RankingConfigurationModal({
         setLocalSelectedStates([]);
         setLocalSelectedLocations([]);
         setLocalSortField('croplandAcres');
-        setLocalSortDirection('desc');
+        setLocalMetricRanges({});
 
         // Apply to store immediately
         setSelectedStates([]);
         setSelectedLocations([]);
         setSortField('croplandAcres');
-        setSortDirection('desc');
+        // Clear all metric ranges
+        Object.keys(metricRanges).forEach(metric => removeMetricRange(metric));
     };
 
     const toggleState = (state: string) => {
@@ -102,6 +118,33 @@ export function RankingConfigurationModal({
         } else {
             setLocalSelectedLocations([...localSelectedLocations, location]);
         }
+    };
+
+    const addMetricFilter = () => {
+        if (selectedMetricToAdd && !localMetricRanges[selectedMetricToAdd]) {
+            setLocalMetricRanges({
+                ...localMetricRanges,
+                [selectedMetricToAdd]: [null, null]
+            });
+            setSelectedMetricToAdd('');
+        }
+    };
+
+    const removeMetricFilter = (metric: string) => {
+        const newRanges = { ...localMetricRanges };
+        delete newRanges[metric];
+        setLocalMetricRanges(newRanges);
+    };
+
+    const updateMetricRange = (metric: string, index: 0 | 1, value: string) => {
+        const numValue = value === '' ? null : Number(value);
+        const currentRange = localMetricRanges[metric] || [null, null];
+        const newRange: [number | null, number | null] = [...currentRange];
+        newRange[index] = numValue;
+        setLocalMetricRanges({
+            ...localMetricRanges,
+            [metric]: newRange
+        });
     };
 
     return (
@@ -133,7 +176,7 @@ export function RankingConfigurationModal({
                             <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                                 Rank By Metric
                             </label>
-                            <div className="grid grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                            <div className="grid grid-cols-1 gap-2">
                                 {METRIC_OPTIONS.map((option) => (
                                     <div
                                         key={option.value}
@@ -152,34 +195,7 @@ export function RankingConfigurationModal({
                             </div>
                         </div>
 
-                        {/* Sort Direction */}
-                        <div className="space-y-3">
-                            <label className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
-                                Sort Order
-                            </label>
-                            <div className="flex bg-secondary/30 p-1 rounded-lg">
-                                <button
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all ${localSortDirection === 'desc'
-                                        ? 'bg-background shadow-sm text-foreground'
-                                        : 'text-muted-foreground hover:text-foreground'
-                                        }`}
-                                    onClick={() => setLocalSortDirection('desc')}
-                                >
-                                    <ArrowDownAZ className="h-4 w-4" />
-                                    Highest First
-                                </button>
-                                <button
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm font-medium transition-all ${localSortDirection === 'asc'
-                                        ? 'bg-background shadow-sm text-foreground'
-                                        : 'text-muted-foreground hover:text-foreground'
-                                        }`}
-                                    onClick={() => setLocalSortDirection('asc')}
-                                >
-                                    <ArrowUpAZ className="h-4 w-4" />
-                                    Lowest First
-                                </button>
-                            </div>
-                        </div>
+
                     </div>
 
                     {/* Right Column: Filters */}
@@ -272,6 +288,96 @@ export function RankingConfigurationModal({
                             </p>
                         </div>
                     </div>
+                </div>
+
+                {/* Advanced Filtering Section */}
+                <div className="border-t border-border">
+                    <button
+                        onClick={() => setIsAdvancedOpen(!isAdvancedOpen)}
+                        className="w-full flex items-center justify-between p-4 hover:bg-secondary/20 transition-colors"
+                    >
+                        <div className="flex items-center gap-2">
+                            <span className="font-bold text-sm">Advanced Filtering</span>
+                            {Object.keys(localMetricRanges).length > 0 && (
+                                <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
+                                    {Object.keys(localMetricRanges).length} active
+                                </span>
+                            )}
+                        </div>
+                        {isAdvancedOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    </button>
+
+                    {isAdvancedOpen && (
+                        <div className="p-4 bg-secondary/5 space-y-4 animate-in slide-in-from-top-2 duration-200">
+                            {/* Add new filter */}
+                            <div className="flex gap-2">
+                                <select
+                                    className="flex-1 h-9 rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                    value={selectedMetricToAdd}
+                                    onChange={(e) => setSelectedMetricToAdd(e.target.value)}
+                                >
+                                    <option value="">Select a metric to filter...</option>
+                                    {METRIC_OPTIONS.filter(opt => !localMetricRanges[opt.value]).map((option) => (
+                                        <option key={option.value} value={option.value}>
+                                            {option.label}
+                                        </option>
+                                    ))}
+                                </select>
+                                <Button
+                                    size="sm"
+                                    onClick={addMetricFilter}
+                                    disabled={!selectedMetricToAdd}
+                                >
+                                    <Plus className="h-4 w-4 mr-1" />
+                                    Add
+                                </Button>
+                            </div>
+
+                            {/* Active filters list */}
+                            <div className="space-y-3">
+                                {Object.entries(localMetricRanges).map(([metric, range]) => {
+                                    const label = METRIC_OPTIONS.find(opt => opt.value === metric)?.label || metric;
+                                    return (
+                                        <div key={metric} className="bg-card border border-border rounded-lg p-3 flex items-center gap-3">
+                                            <div className="flex-1">
+                                                <div className="text-sm font-medium mb-2">{label}</div>
+                                                <div className="flex items-center gap-2">
+                                                    <input
+                                                        type="number"
+                                                        placeholder="Min"
+                                                        className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                                        value={range[0] ?? ''}
+                                                        onChange={(e) => updateMetricRange(metric, 0, e.target.value)}
+                                                    />
+                                                    <span className="text-muted-foreground text-xs">to</span>
+                                                    <input
+                                                        type="number"
+                                                        placeholder="Max"
+                                                        className="flex h-8 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                                                        value={range[1] ?? ''}
+                                                        onChange={(e) => updateMetricRange(metric, 1, e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <Button
+                                                variant="ghost"
+                                                size="sm"
+                                                onClick={() => removeMetricFilter(metric)}
+                                                className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
+                                            >
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    );
+                                })}
+                                {Object.keys(localMetricRanges).length === 0 && (
+                                    <p className="text-sm text-muted-foreground text-center py-2">
+                                        No active filters. Add a metric above to start filtering.
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 {/* Footer */}
