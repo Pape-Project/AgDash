@@ -36,17 +36,20 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
         // Crop-specific rankings
         wheat: getRank('wheatAcres'),
         hay: getRank('hayAcres'),
+        haylage: getRank('haylageAcres'),
         grassSeed: getRank('grassSeedAcres'),
         corn: getRank('cornAcres'),
+        cornSilage: getRank('cornSilageAcres'),
         hazelnuts: getRank('hazelnutsAcres'),
         apples: getRank('applesAcres'),
+        rice: getRank('riceAcres'),
     };
 
 
 
     const displayRank = (rank: number | null) => {
         if (rank === null || rank > 10) return null;
-        return <span className="text-xs text-primary font-medium ml-2">#{rank} in {county.stateName}</span>;
+        return <span className="text-xs text-primary font-medium">#{rank} in {county.stateName}</span>;
     };
 
     return (
@@ -158,12 +161,12 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                     )}
 
                     {/* Split Crops and Livestock Sections */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="flex flex-col gap-8">
                         {/* Major Crops Section */}
-                        {(county.wheatAcres !== null || county.hayAcres !== null || county.grassSeedAcres !== null || county.cornAcres !== null || county.hazelnutsAcres !== null || county.applesAcres !== null) && (
+                        {(county.wheatAcres !== null || county.hayAcres !== null || county.haylageAcres !== null || county.grassSeedAcres !== null || county.cornAcres !== null || county.cornSilageAcres !== null || county.hazelnutsAcres !== null || county.applesAcres !== null || county.riceAcres !== null) && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                                    <Sprout className="h-5 w-5 text-green-600" />
+                                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                                    <Sprout className="h-6 w-6 text-green-600" />
                                     Major Crops
                                 </h3>
                                 <div className="space-y-2">
@@ -171,8 +174,8 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Wheat</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatAcres(county.wheatAcres)}</span>
                                                 {displayRank(rankings.wheat)}
+                                                <span className="font-medium">{formatAcres(county.wheatAcres)}</span>
                                             </div>
                                         </div>
                                     )}
@@ -180,8 +183,17 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Hay</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatAcres(county.hayAcres)}</span>
                                                 {displayRank(rankings.hay)}
+                                                <span className="font-medium">{formatAcres(county.hayAcres)}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {county.haylageAcres !== null && (
+                                        <div className="flex justify-between items-center py-1">
+                                            <span className="text-sm text-muted-foreground">Haylage</span>
+                                            <div className="flex items-center gap-2">
+                                                {displayRank(rankings.haylage)}
+                                                <span className="font-medium">{formatAcres(county.haylageAcres)}</span>
                                             </div>
                                         </div>
                                     )}
@@ -189,17 +201,26 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Grass Seed</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatAcres(county.grassSeedAcres)}</span>
                                                 {displayRank(rankings.grassSeed)}
+                                                <span className="font-medium">{formatAcres(county.grassSeedAcres)}</span>
                                             </div>
                                         </div>
                                     )}
                                     {county.cornAcres !== null && (
                                         <div className="flex justify-between items-center py-1">
-                                            <span className="text-sm text-muted-foreground">Corn</span>
+                                            <span className="text-sm text-muted-foreground">Corn (Grain)</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatAcres(county.cornAcres)}</span>
                                                 {displayRank(rankings.corn)}
+                                                <span className="font-medium">{formatAcres(county.cornAcres)}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {county.cornSilageAcres !== null && (
+                                        <div className="flex justify-between items-center py-1">
+                                            <span className="text-sm text-muted-foreground">Corn (Silage)</span>
+                                            <div className="flex items-center gap-2">
+                                                {displayRank(rankings.cornSilage)}
+                                                <span className="font-medium">{formatAcres(county.cornSilageAcres)}</span>
                                             </div>
                                         </div>
                                     )}
@@ -207,8 +228,8 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Hazelnuts</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatAcres(county.hazelnutsAcres)}</span>
                                                 {displayRank(rankings.hazelnuts)}
+                                                <span className="font-medium">{formatAcres(county.hazelnutsAcres)}</span>
                                             </div>
                                         </div>
                                     )}
@@ -216,8 +237,17 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Apples</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatAcres(county.applesAcres)}</span>
                                                 {displayRank(rankings.apples)}
+                                                <span className="font-medium">{formatAcres(county.applesAcres)}</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {county.riceAcres !== null && (
+                                        <div className="flex justify-between items-center py-1">
+                                            <span className="text-sm text-muted-foreground">Rice</span>
+                                            <div className="flex items-center gap-2">
+                                                {displayRank(rankings.rice)}
+                                                <span className="font-medium">{formatAcres(county.riceAcres)}</span>
                                             </div>
                                         </div>
                                     )}
@@ -228,8 +258,8 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                         {/* Livestock Section */}
                         {(county.beefCattleHead !== null || county.dairyCattleHead !== null) && (
                             <div>
-                                <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
-                                    <Beef className="h-5 w-5 text-orange-600" />
+                                <h3 className="text-xl font-semibold mb-3 flex items-center gap-2">
+                                    <Beef className="h-6 w-6 text-orange-600" />
                                     Livestock
                                 </h3>
                                 <div className="space-y-2">
@@ -237,8 +267,8 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Beef Cattle</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatNumber(county.beefCattleHead)} heads</span>
                                                 {displayRank(rankings.cattle)}
+                                                <span className="font-medium">{formatNumber(county.beefCattleHead)} heads</span>
                                             </div>
                                         </div>
                                     )}
@@ -246,8 +276,8 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                                         <div className="flex justify-between items-center py-1">
                                             <span className="text-sm text-muted-foreground">Dairy Cattle</span>
                                             <div className="flex items-center gap-2">
-                                                <span className="font-medium">{formatNumber(county.dairyCattleHead)} heads</span>
                                                 {displayRank(rankings.milkCows)}
+                                                <span className="font-medium">{formatNumber(county.dairyCattleHead)} heads</span>
                                             </div>
                                         </div>
                                     )}
