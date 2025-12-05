@@ -11,6 +11,7 @@ import { ComparisonDrawer } from './components/modern/ComparisonDrawer';
 import { MobileWarning } from './components/modern/MobileWarning';
 import { CountyDetailModal } from './components/modern/CountyDetailModal';
 import { RankingConfigurationModal } from './components/modern/RankingConfigurationModal';
+import { SaveView } from './components/modern/SaveView';
 import { filterCounties, sortCounties, getUniqueStates } from './utils/dataUtils';
 import { parseQuery } from './utils/queryParser';
 import papeLogo from './assets/pape-logo.svg';
@@ -168,6 +169,7 @@ export default function App() {
               </p>
             </div>
           </div>
+          <SaveView />
         </header>
 
         {/* Main Content */}
