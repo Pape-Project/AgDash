@@ -25,8 +25,8 @@ TARGET_STATES = ["OR", "WA", "CA", "NV", "ID", "MT"]
 METRICS = {
     # --- CORE LAND & OPERATIONS ---
     "farms": ("FARM OPERATIONS - NUMBER OF OPERATIONS", None),
-    "land_owned_acres": ("AG LAND, OWNED, IN FARMS - ACRES", None),
-    "land_rented_acres": ("AG LAND, RENTED FROM OTHERS, IN FARMS - ACRES", None),
+    # "land_owned_acres": ("AG LAND, OWNED, IN FARMS - ACRES", None),
+    # "land_rented_acres": ("AG LAND, RENTED FROM OTHERS, IN FARMS - ACRES", None),
     "cropland_acres": ("AG LAND, CROPLAND - ACRES", None),
     "harvested_cropland_acres": ("AG LAND, CROPLAND, HARVESTED - ACRES", None),
     "irrigated_acres": ("AG LAND, IRRIGATED - ACRES", {"prodn_practice_desc": "IRRIGATED"}),
@@ -36,19 +36,9 @@ METRICS = {
     "crops_sales_dollars": ("CROP TOTALS - SALES, MEASURED IN $", None),
     "livestock_sales_dollars": ("ANIMAL TOTALS, INCL PRODUCTS - SALES, MEASURED IN $", None),
     "gov_payments_dollars": ("GOVT PROGRAMS, FEDERAL - RECEIPTS, MEASURED IN $", None),
-    "net_cash_income_dollars": ("INCOME, NET CASH FARM, OF OPERATIONS - NET INCOME, MEASURED IN $", None),
-
-    # --- LIVESTOCK SPECIFICS (Equipment Targeting) ---
-    "cattle_head": ("CATTLE, INCL CALVES - INVENTORY", None),
-    "beef_cattle_head": ("CATTLE, COWS, BEEF - INVENTORY", None),
-    "dairy_cattle_head": ("CATTLE, COWS, MILK - INVENTORY", None),
-    "milk_cows_head": ("CATTLE, COWS, MILK - INVENTORY", None), # Keeping for backward compatibility if needed, or remove if redundant. User asked for separate categories.
+    # "net_cash_income_dollars": ("INCOME, NET CASH FARM, OF OPERATIONS - NET INCOME, MEASURED IN $", None),
 
     # --- CROP SPECIFICS ---
-    # Using 'Operations with Area Harvested' because acreage is often suppressed for veg
-    "veg_harvest_ops": ("VEGETABLE TOTALS, IN THE OPEN - OPERATIONS WITH AREA HARVESTED", None),
-    
-    # --- NEW METRICS ---
     "apples_acres": ("APPLES - ACRES BEARING & NON-BEARING", None),
     "wheat_acres": ("WHEAT - ACRES HARVESTED", None),
     "rice_acres": ("RICE - ACRES HARVESTED", None),
