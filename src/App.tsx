@@ -205,7 +205,7 @@ export default function App() {
 
           {/* Right Sidebar - County List / Comparison */}
           <aside className="w-96 border-l border-border bg-card flex flex-col overflow-hidden">
-            {comparisonCounties.length > 0 ? (
+            {comparisonCounties.length > 1 ? (
               <ComparisonDrawer
                 counties={comparisonCounties}
                 onRemove={removeFromComparison}
