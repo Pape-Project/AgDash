@@ -204,7 +204,7 @@ export default function App() {
           </main>
 
           {/* Right Sidebar - County List / Comparison */}
-          <aside className="w-96 border-l border-border bg-card flex flex-col overflow-hidden">
+          <aside className="w-96 border-l border-border bg-card flex flex-col overflow-y-auto">
             {comparisonCounties.length > 1 ? (
               <ComparisonDrawer
                 counties={comparisonCounties}
