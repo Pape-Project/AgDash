@@ -116,7 +116,7 @@ export function FilterPanel({ allCounties }: FilterPanelProps) {
   };
 
   return (
-    <div className="space-y-4 p-6">
+    <div className="space-y-4 p-4">
       {/* Natural Language Query */}
       <Card className="p-4">
         <div className="space-y-3">

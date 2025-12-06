@@ -24,9 +24,8 @@ export function ComparisonDrawer({
       </Card>
     );
   }
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-3 p-4">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold">
           Comparing {counties.length} {counties.length === 1 ? 'County' : 'Counties'}
