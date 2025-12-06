@@ -485,6 +485,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const [hoveredCountyId, setHoveredCountyId] = useState<string | number | null>(null);
   const [countiesData, setCountiesData] = useState<any>(null);
 
+
   // Create a Set of filtered county names+states for quick lookup
   const filteredCountySet = useMemo(() => {
     if (!filteredCounties || filteredCounties.length === 0) {
@@ -512,6 +513,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       });
 
   }, []);
+
 
   // Handle hover
   const onMouseMove = (event: MapLayerMouseEvent) => {
@@ -664,6 +666,11 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         onClick={onClick}
+        {...({
+          canvasContextAttributes: {
+            preserveDrawingBuffer: true
+          }
+        } as any)}
       >
         {/* Counties source and layers */}
         {countiesData && (
