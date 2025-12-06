@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { X, MapPin, Sprout, DollarSign, Beef, Plus, Check } from 'lucide-react';
+import { X, MapPin, Sprout, DollarSign, Beef, Plus, Minus } from 'lucide-react';
 import type { EnhancedCountyData } from '../../types/ag';
 import { formatNumber, formatAcres, formatCurrency, formatCurrencyMillions } from '../../lib/format';
 import { useStore } from '../../store/useStore';
@@ -12,7 +12,7 @@ interface CountyDetailModalProps {
 }
 
 export function CountyDetailModal({ county, allCounties, onClose }: CountyDetailModalProps) {
-    const { comparisonCounties, addToComparison } = useStore();
+    const { comparisonCounties, addToComparison, removeFromComparison } = useStore();
 
     const isInComparison = county ? comparisonCounties.some(c => c.id === county.id) : false;
     const canAddToComparison = comparisonCounties.length < 5;
@@ -102,17 +102,19 @@ export function CountyDetailModal({ county, allCounties, onClose }: CountyDetail
                             variant={isInComparison ? "secondary" : "outline"}
                             size="sm"
                             onClick={() => {
-                                if (!isInComparison && canAddToComparison) {
+                                if (isInComparison) {
+                                    removeFromComparison(county.id);
+                                } else if (canAddToComparison) {
                                     addToComparison(county);
                                 }
                             }}
-                            disabled={isInComparison || !canAddToComparison}
+                            disabled={!isInComparison && !canAddToComparison}
                             className="flex items-center gap-1.5"
                         >
                             {isInComparison ? (
                                 <>
-                                    <Check className="h-4 w-4" />
-                                    <span>In Comparison</span>
+                                    <Minus className="h-4 w-4" />
+                                    <span>Remove</span>
                                 </>
                             ) : (
                                 <>
