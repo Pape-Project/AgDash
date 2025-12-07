@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
+import { Plus, Minus, RotateCcw } from 'lucide-react';
 import Map, { Source, Layer } from 'react-map-gl/maplibre';
 import type { MapRef, MapLayerMouseEvent } from 'react-map-gl/maplibre';
 import type { EnhancedCountyData } from '../../types/ag';
@@ -541,6 +542,22 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const [countiesData, setCountiesData] = useState<any>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
+  // Map Control Handlers
+  const handleZoomIn = () => {
+    mapRef.current?.zoomIn();
+  };
+
+  const handleZoomOut = () => {
+    mapRef.current?.zoomOut();
+  };
+
+  const handleResetMap = () => {
+    mapRef.current?.fitBounds(
+      [MAP_BOUNDS.SOUTHWEST, MAP_BOUNDS.NORTHEAST],
+      { padding: 20 }
+    );
+  };
+
   // Get comparison counties from store
   const { comparisonCounties, heatmapMode, sortField } = useStore();
 
@@ -858,6 +875,37 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
 
       </Map>
+
+      {/* Map Controls */}
+      <div className="absolute top-4 right-4 flex flex-col gap-2 z-10">
+        <div className="bg-card/95 backdrop-blur-sm border border-border rounded-md shadow-lg flex flex-col overflow-hidden">
+          <button
+            onClick={handleZoomIn}
+            className="p-2 hover:bg-secondary/50 active:bg-secondary transition-colors border-b border-border/50 text-foreground"
+            title="Zoom In"
+            type="button"
+          >
+            <Plus className="h-4 w-4" />
+          </button>
+          <button
+            onClick={handleZoomOut}
+            className="p-2 hover:bg-secondary/50 active:bg-secondary transition-colors text-foreground"
+            title="Zoom Out"
+            type="button"
+          >
+            <Minus className="h-4 w-4" />
+          </button>
+        </div>
+
+        <button
+          onClick={handleResetMap}
+          className="bg-card/95 backdrop-blur-sm border border-border rounded-md shadow-lg p-2 hover:bg-secondary/50 active:bg-secondary transition-colors text-foreground"
+          title="Reset Map View"
+          type="button"
+        >
+          <RotateCcw className="h-4 w-4" />
+        </button>
+      </div>
 
       {/* Map Legend */}
       <MapLegend />
