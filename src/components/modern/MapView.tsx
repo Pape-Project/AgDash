@@ -552,6 +552,9 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const [countiesData, setCountiesData] = useState<any>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
+  // Track hover state for Pape locations (marker + popup)
+  const closePopupTimeoutRef = useRef<number | null>(null);
+
   // Get comparison counties from store
   const { comparisonCounties, heatmapMode, heatmapMetric, heatmapStateFilter, showPapeLocations } = useStore();
 
@@ -561,7 +564,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   // Initialize Supercluster
   const supercluster = useMemo(() => {
     const index = new Supercluster({
-      radius: 35, // Reduced from 100 to show more granularity as requested
+      radius: 5,
       maxZoom: 14,
     });
     index.load(papeLocationsData.features as any);
@@ -802,29 +805,25 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
     return () => document.removeEventListener('click', handleClickOutside, true);
   }, [popupInfo]);
 
-  // Marker Click Handlers
-  const handleClusterClick = (clusterId: number, latitude: number, longitude: number) => {
-    const leaves = supercluster.getLeaves(clusterId, 2000); // Increased limit
+  // Pape Location Hover Handlers
 
-    let anchor: 'top' | 'bottom' = 'bottom';
-    if (mapRef.current) {
-      const map = mapRef.current.getMap();
-      const point = map.project([longitude, latitude]);
-      // If in top half of screen, anchor top (open down), else anchor bottom (open up)
-      if (point.y < map.getContainer().clientHeight / 2) {
-        anchor = 'top';
-      }
+  const handlePapeHoverEnter = (feature: any) => {
+    // Cancel any pending close timeout
+    if (closePopupTimeoutRef.current) {
+      clearTimeout(closePopupTimeoutRef.current);
+      closePopupTimeoutRef.current = null;
     }
 
-    setPopupInfo({
-      longitude,
-      latitude,
-      features: leaves,
-      anchor
-    });
-  };
+    // Clear county hover immediately when entering a Pape location
+    if (hoveredCountyId !== null) {
+      mapRef.current?.getMap().setFeatureState(
+        { source: 'counties', id: hoveredCountyId },
+        { hover: false }
+      );
+      setHoveredCountyId(null);
+    }
+    setHoverInfo(null);
 
-  const handlePointClick = (feature: any) => {
     const [longitude, latitude] = feature.geometry.coordinates;
     let anchor: 'top' | 'bottom' = 'bottom';
     if (mapRef.current) {
@@ -841,6 +840,26 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       features: [feature],
       anchor
     });
+  };
+
+  const handlePapeHoverLeave = () => {
+    // Use a small delay to allow moving from marker to popup
+    closePopupTimeoutRef.current = window.setTimeout(() => {
+      setPopupInfo(null);
+    }, 150);
+  };
+
+  const handlePopupMouseEnter = () => {
+    // Cancel pending close when entering popup
+    if (closePopupTimeoutRef.current) {
+      clearTimeout(closePopupTimeoutRef.current);
+      closePopupTimeoutRef.current = null;
+    }
+  };
+
+  const handlePopupMouseLeave = () => {
+    // Close popup when leaving
+    setPopupInfo(null);
   };
 
   // Handle hover
@@ -954,11 +973,6 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
   const onClick = (event: MapLayerMouseEvent) => {
     const feature = event.features?.[0];
-
-    // Always close Pape popup if we click on the map (unless stopped by marker click which happens before this)
-    if (popupInfo) {
-      setPopupInfo(null);
-    }
 
     // Check if clicked county
     if (feature && feature.source === 'counties' && onCountyClick) {
@@ -1118,48 +1132,22 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
         {/* CLUSTER MARKERS - Only show if toggle is enabled */}
         {showPapeLocations && clusters.map((cluster) => {
           const [longitude, latitude] = cluster.geometry.coordinates;
-          const { cluster: isCluster, point_count: pointCount } = cluster.properties;
-
-          if (isCluster) {
-            return (
-              <Marker
-                key={`cluster-${cluster.id}`}
-                longitude={longitude}
-                latitude={latitude}
-                anchor="center"
-                onClick={(e) => {
-                  e.originalEvent.stopPropagation();
-                  handleClusterClick(cluster.id, latitude, longitude);
-                }}
-              >
-                <div
-                  className="flex items-center justify-center rounded-full border-2 border-[#FFDE00] bg-black text-white font-bold cursor-pointer hover:scale-110 transition-transform shadow-lg hover:z-50"
-                  style={{
-                    width: `${30 + (pointCount / 40) * 30}px`,
-                    height: `${30 + (pointCount / 40) * 30}px`,
-                    fontSize: '13px'
-                  }}
-                >
-                  {pointCount}
-                </div>
-              </Marker>
-            );
-          }
 
           return (
             <Marker
-              key={`location-${cluster.properties.name}-${longitude}-${latitude}`}
+              key={`location-${cluster.id || cluster.properties.name}-${longitude}-${latitude}`}
               longitude={longitude}
               latitude={latitude}
               anchor="center"
-              onClick={(e) => {
-                e.originalEvent.stopPropagation();
-                handlePointClick(cluster);
-              }}
             >
-              <div className="flex items-center justify-center w-6 h-6 rounded-full border-[1.5px] border-white bg-black text-[#FFDE00] font-bold cursor-pointer hover:scale-110 transition-transform shadow-md group">
-                <span className="text-[10px] font-bold">P</span>
-              </div>
+              <div
+                className="w-3 h-3 bg-[#FFDE00] rounded-full border border-black/50 shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                onMouseEnter={(e) => {
+                  e.stopPropagation();
+                  handlePapeHoverEnter(cluster);
+                }}
+                onMouseLeave={handlePapeHoverLeave}
+              />
             </Marker>
           );
         })}
@@ -1178,7 +1166,11 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
           >
             <div
               className="flex flex-col max-h-[300px]"
-              onMouseEnter={() => setHoverInfo(null)}
+              onMouseEnter={() => {
+                handlePopupMouseEnter();
+                setHoverInfo(null);
+              }}
+              onMouseLeave={handlePopupMouseLeave}
               onMouseMove={(e) => e.stopPropagation()}
             >
               {popupInfo.features.length > 3 && (
@@ -1222,8 +1214,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       {/* Map Legend */}
       <MapLegend />
 
-      {/* Hover tooltip - ONLY for counties now */}
-      {hoverInfo && (
+      {/* Hover tooltip - ONLY for counties now, hidden when Pape popup is open */}
+      {hoverInfo && !popupInfo && (
         <div
           className="absolute bg-card border border-border rounded-md px-3 py-2 shadow-lg pointer-events-none z-[1] min-w-[220px] text-center flex flex-col justify-center items-center"
           style={{
