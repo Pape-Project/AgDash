@@ -540,6 +540,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null);
   const [hoveredCountyId, setHoveredCountyId] = useState<string | number | null>(null);
   const [countiesData, setCountiesData] = useState<any>(null);
+  const [stateData, setStateData] = useState<any>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Map Control Handlers
@@ -590,6 +591,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
   // Load GeoJSON data
   useEffect(() => {
+    // Load counties
     fetch('/data/counties_expanded.json')
       .then((response) => response.json())
       .then((data) => {
@@ -598,6 +600,17 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       })
       .catch((err) => {
         console.error('Error loading county boundaries:', err);
+      });
+
+    // Load state outlines
+    fetch('/data/state_outlines.json')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('State outlines loaded:', data);
+        setStateData(data);
+      })
+      .catch((err) => {
+        console.error('Error loading state outlines:', err);
       });
 
   }, []);
@@ -870,6 +883,20 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
             <Layer {...countyOutlineLayer} />
             <Layer {...countyOutlineComparisonLayer} />
             <Layer {...countyOutlineHoverLayer} />
+          </Source>
+        )}
+
+        {/* State outlines source and layer */}
+        {stateData && (
+          <Source id="states" type="geojson" data={stateData}>
+            <Layer
+              id="states-outline"
+              type="line"
+              paint={{
+                'line-color': '#9ca3af',
+                'line-width': 1,
+              }}
+            />
           </Source>
         )}
 
