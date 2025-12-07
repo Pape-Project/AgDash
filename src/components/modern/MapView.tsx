@@ -542,7 +542,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Get comparison counties from store
-  const { comparisonCounties, heatmapMode, heatmapMetric, heatmapStateFilter } = useStore();
+  const { comparisonCounties, heatmapMode, sortField } = useStore();
 
   // Create a Set of comparison county keys for quick lookup
   const comparisonCountySet = useMemo(() => {
@@ -557,8 +557,10 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
   // Create a Set of filtered county names+states for quick lookup
   const filteredCountySet = useMemo(() => {
-    if (!filteredCounties || filteredCounties.length === 0) {
-      return null; // Show all counties with their original colors if no filter
+    // Only return null (show all) if filteredCounties is explicitly undefined (not passed)
+    // If it is an empty array (0 matches), we return an empty Set to hide everything
+    if (filteredCounties === undefined) {
+      return null;
     }
     const set = new Set<string>();
     filteredCounties.forEach((county) => {
@@ -607,16 +609,12 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
     // Handle Heatmap Data Sync: Push values to feature-state
     // We do this every time heatmap settings OR map/data load changes
-    if (heatmapMode && heatmapMetric) {
-
-      // Filter data first if state filter is active
-      const targetCounties = heatmapStateFilter
-        ? counties.filter(c => c.stateName === heatmapStateFilter)
-        : counties;
-
-      // Update the COLOR expression dynamically?
-      // No, the color expression is in 'countyFillLayer' memo.
-      // We need to add 'heatmapStateFilter' to the dependency of 'countyFillLayer' so it rebuilds the expression with new min/max!
+    if (heatmapMode) {
+      // Use filteredCounties if available to respect global filters
+      // If filteredCounties is empty, it means 0 matches, so heatmap should be empty.
+      // We only fallback to counties if filteredCounties is undefined.
+      const targetCounties = filteredCounties !== undefined ? filteredCounties : counties;
+      const metric = sortField;
 
       countiesData.features.forEach((feature: any, index: number) => {
         const countyName = feature.properties?.NAME;
@@ -631,9 +629,9 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
           );
 
           if (county) {
-            const val = county[heatmapMetric as keyof EnhancedCountyData] as number | null;
+            const val = county[metric as keyof EnhancedCountyData] as number | null;
             // Set state
-            if (val !== null && val !== undefined && !isNaN(val)) {
+            if (val !== null && val !== undefined && typeof val === 'number' && !isNaN(val)) {
               map.setFeatureState(
                 { source: 'counties', id: index },
                 { heatmapValue: val }
@@ -663,7 +661,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       });
     }
 
-  }, [mapLoaded, countiesData, comparisonCountySet, heatmapMode, heatmapMetric, heatmapStateFilter, counties]);
+  }, [mapLoaded, countiesData, comparisonCountySet, heatmapMode, sortField, counties, filteredCounties]);
 
 
   // Handle hover
@@ -757,11 +755,9 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
     if (heatmapMode) {
       // Pass the filtered subset to the color generator to ensure the color scale adapts to the visible data range
-      const targetCounties = heatmapStateFilter
-        ? counties.filter(c => c.stateName === heatmapStateFilter)
-        : counties;
+      const targetCounties = filteredCounties !== undefined ? filteredCounties : counties;
 
-      fillColorExpression = buildHeatmapColorExpression(heatmapMetric, targetCounties);
+      fillColorExpression = buildHeatmapColorExpression(sortField, targetCounties);
       fillOpacityExpression = buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE, true);
     } else {
       fillColorExpression = buildFilteredColorExpression(filteredCountySet, FIPS_TO_STATE);
@@ -776,7 +772,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
         'fill-opacity': fillOpacityExpression as any,
       },
     };
-  }, [filteredCountySet, heatmapMode, heatmapMetric, heatmapStateFilter, counties]);
+  }, [filteredCountySet, heatmapMode, sortField, counties, filteredCounties]);
 
   // Base outline layer - just gray borders for all counties
   const countyOutlineLayer = useMemo(() => ({

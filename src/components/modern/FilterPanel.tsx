@@ -14,9 +14,10 @@ import { getUniqueStates } from '../../utils/dataUtils';
 
 interface FilterPanelProps {
   allCounties: EnhancedCountyData[];
+  onOpenRankingModal: () => void;
 }
 
-export function FilterPanel({ allCounties }: FilterPanelProps) {
+export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProps) {
   const {
     searchQuery,
     setSearchQuery,
@@ -268,7 +269,11 @@ export function FilterPanel({ allCounties }: FilterPanelProps) {
       </Card>
 
       {/* Heatmap Control */}
-      <HeatmapControl availableStates={availableStates} allCounties={allCounties} />
+      <HeatmapControl
+        availableStates={availableStates}
+        allCounties={allCounties}
+        onOpenRankingModal={onOpenRankingModal}
+      />
     </div>
   );
 }
