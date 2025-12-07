@@ -4,6 +4,7 @@ import type { MapRef, MapLayerMouseEvent } from 'react-map-gl/maplibre';
 import Supercluster from 'supercluster';
 import type { EnhancedCountyData } from '../../types/ag';
 import papeLocationsData from '../../data/pape-locations.json';
+import { useStore } from '../../store/useStore';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 interface MapViewProps {
@@ -416,8 +417,22 @@ function buildFilteredColorExpression(
 // Build expression for opacity based on filter
 function buildFilteredOpacityExpression(
   filteredSet: Set<string> | null,
-  fipsToState: Record<string, string>
+  fipsToState: Record<string, string>,
+  heatmapMode: boolean
 ) {
+  if (heatmapMode) {
+    // If heatmap is on, show opacity 0.8 for any feature that has a valid heatmap value
+    // We can check if feature-state heatmapValue is present/valid.
+    // Since we can't easily check for "existence" of feature-state with default value in 'case', 
+    // we will rely on the fact that we set heatmapValue to -1 or null for invalid ones?
+    // Or just use the boolean check.
+    return ['case',
+      ['!=', ['feature-state', 'heatmapValue'], null],
+      0.8,
+      0
+    ];
+  }
+
   if (!filteredSet) {
     // No filter active - show all counties with their original opacity
     return buildOpacityExpression();
@@ -444,6 +459,46 @@ function buildFilteredOpacityExpression(
   // Default: transparent for non-filtered counties
   cases.push(0);
   return ['case', ...cases];
+}
+
+// Build Heatmap Color Expression using feature-state
+function buildHeatmapColorExpression(metric: string, counties: EnhancedCountyData[]) {
+  // 1. Calculate min/max for the metric globally for the interpolation range
+  const values = counties
+    .map(c => c[metric as keyof EnhancedCountyData] as number)
+    .filter(v => typeof v === 'number' && v !== null && !isNaN(v));
+
+  if (values.length === 0) return 'rgba(0,0,0,0)';
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+
+  // 2. Define color scale based on metric type
+  const isLivestock = ['beefCattleHead', 'dairyCattleHead', 'livestockSalesDollars'].includes(metric);
+
+  // Interpolate color based on feature-state "heatmapValue"
+  // MapLibre interpolate expression: ['interpolate', ['linear'], ['feature-state', 'heatmapValue'], min, colorMin, max, colorMax]
+
+  if (isLivestock) {
+    // Orange/Red scale: Light Orange to Dark Red
+    // using exact rgba or hex might be cleaner than hsl interpolation in expression if we want specific stops
+    return [
+      'interpolate',
+      ['linear'],
+      ['feature-state', 'heatmapValue'],
+      min, 'rgba(254, 217, 118, 0.8)', // Light orange
+      max, 'rgba(189, 0, 38, 0.9)'     // Dark red
+    ];
+  } else {
+    // Green scale: Light Green to Dark Green
+    return [
+      'interpolate',
+      ['linear'],
+      ['feature-state', 'heatmapValue'],
+      min, 'rgba(237, 248, 233, 0.8)', // Light green
+      max, 'rgba(0, 109, 44, 0.9)'     // Dark green
+    ];
+  }
 }
 
 // Map Legend Component
@@ -495,177 +550,20 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const [hoveredCountyId, setHoveredCountyId] = useState<string | number | null>(null);
   const [countiesData, setCountiesData] = useState<any>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
-  // Clustering state
-  const [clusters, setClusters] = useState<any[]>([]);
-  const [bounds, setBounds] = useState<[number, number, number, number] | null>(null);
-  const [zoom, setZoom] = useState(4);
+  // Get comparison counties from store
+  const { comparisonCounties, heatmapMode, heatmapMetric, heatmapStateFilter } = useStore();
 
-  // Initialize Supercluster
-  const supercluster = useMemo(() => {
-    const index = new Supercluster({
-      radius: 75, // Radius 75 to balance distribution (break up large 20+ clusters)
-      maxZoom: 14,
+  // Create a Set of comparison county keys for quick lookup
+  const comparisonCountySet = useMemo(() => {
+    const set = new Set<string>();
+    comparisonCounties.forEach((county) => {
+      const key = `${county.countyName.toUpperCase()}|${county.stateName.toUpperCase()}`;
+      set.add(key);
     });
-    index.load(papeLocationsData.features as any);
-    return index;
-  }, []);
-
-  // Update clusters when map moves
-  const updateClusters = useCallback(() => {
-    if (!mapRef.current) return;
-    const map = mapRef.current.getMap();
-
-    const b = map.getBounds();
-    const newBounds: [number, number, number, number] = [
-      b.getWest(), b.getSouth(), b.getEast(), b.getNorth()
-    ];
-    const newZoom = map.getZoom();
-
-    setBounds(newBounds);
-    setZoom(newZoom);
-
-    try {
-      setClusters(supercluster.getClusters(newBounds, Math.floor(newZoom)));
-    } catch (e) {
-      console.error("Error updating clusters", e);
-    }
-  }, [supercluster]);
-
-  // Initial cluster load 
-  useEffect(() => {
-    updateClusters();
-  }, [updateClusters]);
-
-  // Update popup when clusters change (handle zoom/pan updates)
-  useEffect(() => {
-    if (!popupInfo || !mapRef.current) return;
-    const map = mapRef.current.getMap();
-
-    // Find the nearest cluster/point in the NEW clusters list to the current popup position
-    const currentPoint = map.project([popupInfo.longitude, popupInfo.latitude]);
-
-    let closestFeature = null;
-    let minDistance = Infinity;
-
-    // We only check clusters that are rendered (in the clusters array)
-    for (const feature of clusters) {
-      const [lon, lat] = feature.geometry.coordinates;
-      const featurePoint = map.project([lon, lat]);
-      const dist = Math.sqrt(
-        Math.pow(featurePoint.x - currentPoint.x, 2) +
-        Math.pow(featurePoint.y - currentPoint.y, 2)
-      );
-      if (dist < minDistance) {
-        minDistance = dist;
-        closestFeature = feature;
-      }
-    }
-
-    // Threshold: If the closest feature is more than 50px away, assume the cluster decomposed/merged significantly
-    if (!closestFeature || minDistance > 50) {
-      // Check if the popup is simply off-screen (Supercluster only returns on-screen clusters)
-      // If it's off-screen, keep it open (standard map behavior)
-      const bounds = map.getBounds();
-      if (!bounds.contains([popupInfo.longitude, popupInfo.latitude])) {
-        return;
-      }
-
-      setPopupInfo(null);
-      return;
-    }
-
-    // If we found a matching features, update the popup
-    const { cluster: isCluster, cluster_id, point_count } = closestFeature.properties;
-    const [newLon, newLat] = closestFeature.geometry.coordinates;
-
-    // Strict check: If the point count changed, the cluster composition changed (merged or split) -> Close popup
-    // exception: single points don't have point_count, so check for that.
-    const currentCount = popupInfo.features.length;
-    const newCount = isCluster ? point_count : 1;
-
-    if (currentCount !== newCount) {
-      setPopupInfo(null);
-      return;
-    }
-
-    if (isCluster) {
-      // Update with new leaves (position might have shifted slightly)
-      const leaves = supercluster.getLeaves(cluster_id, 2000); // Increased limit
-      setPopupInfo(prev => prev ? ({
-        ...prev,
-        longitude: newLon,
-        latitude: newLat,
-        features: leaves
-      }) : null);
-    } else {
-      // It became a single point (or was one), and count matches (1 === 1)
-      setPopupInfo(prev => prev ? ({
-        ...prev,
-        longitude: newLon,
-        latitude: newLat,
-        features: [closestFeature]
-      }) : null);
-    }
-  }, [clusters, supercluster]); // Removed popupInfo from dependencies to prevent immediate auto-close
-
-  // Close popup logic for external clicks (sidebar, menus, etc.)
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement;
-      // Close popup if click is NOT inside the popup itself.
-      // This handles map background, sidebar buttons, modals, etc.
-      if (popupInfo && !target.closest('.maplibregl-popup')) {
-        setPopupInfo(null);
-      }
-    };
-    // Use capture phase to intercept clicks before they are stopped by other components
-    // Changed from 'mousedown' to 'click' to allow map dragging/panning (which starts with mousedown)
-    // without immediately closing the popup.
-    document.addEventListener('click', handleClickOutside, true);
-    return () => document.removeEventListener('click', handleClickOutside, true);
-  }, [popupInfo]);
-
-  // Marker Click Handlers
-  const handleClusterClick = (clusterId: number, latitude: number, longitude: number) => {
-    const leaves = supercluster.getLeaves(clusterId, 2000); // Increased limit
-
-    let anchor: 'top' | 'bottom' = 'bottom';
-    if (mapRef.current) {
-      const map = mapRef.current.getMap();
-      const point = map.project([longitude, latitude]);
-      // If in top half of screen, anchor top (open down), else anchor bottom (open up)
-      if (point.y < map.getContainer().clientHeight / 2) {
-        anchor = 'top';
-      }
-    }
-
-    setPopupInfo({
-      longitude,
-      latitude,
-      features: leaves,
-      anchor
-    });
-  };
-
-  const handlePointClick = (feature: any) => {
-    const [longitude, latitude] = feature.geometry.coordinates;
-    let anchor: 'top' | 'bottom' = 'bottom';
-    if (mapRef.current) {
-      const map = mapRef.current.getMap();
-      const point = map.project([longitude, latitude]);
-      if (point.y < map.getContainer().clientHeight / 2) {
-        anchor = 'top';
-      }
-    }
-
-    setPopupInfo({
-      longitude,
-      latitude,
-      features: [feature],
-      anchor
-    });
-  };
+    return set;
+  }, [comparisonCounties]);
 
 
   // Create a Set of filtered county names+states for quick lookup
@@ -695,6 +593,88 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       });
 
   }, []);
+
+  // Update feature state for comparison counties
+  useEffect(() => {
+    const map = mapRef.current?.getMap();
+    if (!map || !mapLoaded || !countiesData) return;
+
+    // Iterate through all features and set comparison state
+    countiesData.features.forEach((feature: any, index: number) => {
+      const countyName = feature.properties?.NAME;
+      const stateFips = feature.properties?.STATEFP;
+      const stateName = FIPS_TO_STATE[stateFips];
+
+      if (countyName && stateName) {
+        const key = `${countyName.toUpperCase()}|${stateName.toUpperCase()}`;
+        const isInComparison = comparisonCountySet.has(key);
+
+        map.setFeatureState(
+          { source: 'counties', id: index },
+          { comparison: isInComparison }
+        );
+      }
+    });
+
+    // Handle Heatmap Data Sync: Push values to feature-state
+    // We do this every time heatmap settings OR map/data load changes
+    if (heatmapMode && heatmapMetric) {
+
+      // Filter data first if state filter is active
+      const targetCounties = heatmapStateFilter
+        ? counties.filter(c => c.stateName === heatmapStateFilter)
+        : counties;
+
+      // Update the COLOR expression dynamically?
+      // No, the color expression is in 'countyFillLayer' memo.
+      // We need to add 'heatmapStateFilter' to the dependency of 'countyFillLayer' so it rebuilds the expression with new min/max!
+
+      countiesData.features.forEach((feature: any, index: number) => {
+        const countyName = feature.properties?.NAME;
+        const stateFips = feature.properties?.STATEFP;
+        const stateName = FIPS_TO_STATE[stateFips];
+
+        if (countyName && stateName) {
+          // Find data
+          const county = targetCounties.find(
+            (c) => c.countyName.toUpperCase() === countyName.toUpperCase() &&
+              c.stateName.toUpperCase() === stateName.toUpperCase()
+          );
+
+          if (county) {
+            const val = county[heatmapMetric as keyof EnhancedCountyData] as number | null;
+            // Set state
+            if (val !== null && val !== undefined && !isNaN(val)) {
+              map.setFeatureState(
+                { source: 'counties', id: index },
+                { heatmapValue: val }
+              );
+            } else {
+              map.removeFeatureState(
+                { source: 'counties', id: index },
+                'heatmapValue'
+              );
+            }
+          } else {
+            // If not in target subset (e.g. filtered out by state), remove heatmapValue
+            map.removeFeatureState(
+              { source: 'counties', id: index },
+              'heatmapValue'
+            );
+          }
+        }
+      });
+    } else {
+      // Clear heatmap values if mode is off, to be safe/clean
+      countiesData.features.forEach((_: any, index: number) => {
+        map.removeFeatureState(
+          { source: 'counties', id: index },
+          'heatmapValue'
+        );
+      });
+    }
+
+  }, [mapLoaded, countiesData, comparisonCountySet, heatmapMode, heatmapMetric, heatmapStateFilter, counties]);
 
 
   // Handle hover
@@ -830,41 +810,67 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
 
   // Layer styles - memoized to update when filter changes
-  const countyFillLayer = useMemo(() => ({
-    id: 'counties-fill',
-    type: 'fill' as const,
-    paint: {
-      'fill-color': buildFilteredColorExpression(filteredCountySet, FIPS_TO_STATE) as any,
-      'fill-opacity': buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE) as any,
-    },
-  }), [filteredCountySet]);
+  const countyFillLayer = useMemo(() => {
+    let fillColorExpression;
+    let fillOpacityExpression;
 
+    if (heatmapMode) {
+      // Pass the filtered subset to the color generator to ensure the color scale adapts to the visible data range
+      const targetCounties = heatmapStateFilter
+        ? counties.filter(c => c.stateName === heatmapStateFilter)
+        : counties;
+
+      fillColorExpression = buildHeatmapColorExpression(heatmapMetric, targetCounties);
+      fillOpacityExpression = buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE, true);
+    } else {
+      fillColorExpression = buildFilteredColorExpression(filteredCountySet, FIPS_TO_STATE);
+      fillOpacityExpression = buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE, false);
+    }
+
+    return {
+      id: 'counties-fill',
+      type: 'fill' as const,
+      paint: {
+        'fill-color': fillColorExpression as any,
+        'fill-opacity': fillOpacityExpression as any,
+      },
+    };
+  }, [filteredCountySet, heatmapMode, heatmapMetric, heatmapStateFilter, counties]);
+
+  // Base outline layer - just gray borders for all counties
   const countyOutlineLayer = useMemo(() => ({
     id: 'counties-outline',
     type: 'line' as const,
     paint: {
-      'line-color': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        '#ffffff', // White border on hover
-        '#6b7280', // Gray color default
-      ] as any,
+      'line-color': '#6b7280',
       'line-width': 1,
-      'line-opacity': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        1, // Full opacity on hover
-        0.6, // Default opacity
-      ] as any,
+      'line-opacity': 0.6,
     },
   }), []);
 
+  // Comparison outline layer - white borders for comparison counties, rendered on top
+  const countyOutlineComparisonLayer = {
+    id: 'counties-outline-comparison',
+    type: 'line' as const,
+    paint: {
+      'line-color': '#ffffff',
+      'line-width': 2,
+      'line-opacity': [
+        'case',
+        ['boolean', ['feature-state', 'comparison'], false],
+        1,
+        0,
+      ] as any,
+    },
+  };
+
+  // Hover outline layer - white borders on hover, rendered on top of everything
   const countyOutlineHoverLayer = {
     id: 'counties-outline-hover',
     type: 'line' as const,
     paint: {
       'line-color': '#ffffff',
-      'line-width': 1,
+      'line-width': 2,
       'line-opacity': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
@@ -917,7 +923,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
         ]}
         style={{ width: '100%', height: '100%' }}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
-        interactiveLayerIds={['counties-fill', 'counties-outline', 'counties-outline-hover']}
+        interactiveLayerIds={['counties-fill', 'counties-outline', 'counties-outline-comparison', 'counties-outline-hover']}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         onClick={onClick}
@@ -935,6 +941,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
           <Source id="counties" type="geojson" data={countiesData} generateId={true}>
             <Layer {...countyFillLayer} />
             <Layer {...countyOutlineLayer} />
+            <Layer {...countyOutlineComparisonLayer} />
             <Layer {...countyOutlineHoverLayer} />
           </Source>
         )}
