@@ -554,8 +554,6 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
   // Clustering state
   const [clusters, setClusters] = useState<any[]>([]);
-  const [bounds, setBounds] = useState<[number, number, number, number] | null>(null);
-  const [zoom, setZoom] = useState(4);
 
   // Initialize Supercluster
   const supercluster = useMemo(() => {
@@ -577,9 +575,6 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       b.getWest(), b.getSouth(), b.getEast(), b.getNorth()
     ];
     const newZoom = map.getZoom();
-
-    setBounds(newBounds);
-    setZoom(newZoom);
 
     try {
       setClusters(supercluster.getClusters(newBounds, Math.floor(newZoom)));
