@@ -4,6 +4,7 @@ import type { MapRef, MapLayerMouseEvent } from 'react-map-gl/maplibre';
 import Supercluster from 'supercluster';
 import type { EnhancedCountyData } from '../../types/ag';
 import papeLocationsData from '../../data/pape-locations.json';
+import { useStore } from '../../store/useStore';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 interface MapViewProps {
@@ -416,8 +417,22 @@ function buildFilteredColorExpression(
 // Build expression for opacity based on filter
 function buildFilteredOpacityExpression(
   filteredSet: Set<string> | null,
-  fipsToState: Record<string, string>
+  fipsToState: Record<string, string>,
+  heatmapMode: boolean
 ) {
+  if (heatmapMode) {
+    // If heatmap is on, show opacity 0.8 for any feature that has a valid heatmap value
+    // We can check if feature-state heatmapValue is present/valid.
+    // Since we can't easily check for "existence" of feature-state with default value in 'case', 
+    // we will rely on the fact that we set heatmapValue to -1 or null for invalid ones?
+    // Or just use the boolean check.
+    return ['case',
+      ['!=', ['feature-state', 'heatmapValue'], null],
+      0.8,
+      0
+    ];
+  }
+
   if (!filteredSet) {
     // No filter active - show all counties with their original opacity
     return buildOpacityExpression();
@@ -444,6 +459,46 @@ function buildFilteredOpacityExpression(
   // Default: transparent for non-filtered counties
   cases.push(0);
   return ['case', ...cases];
+}
+
+// Build Heatmap Color Expression using feature-state
+function buildHeatmapColorExpression(metric: string, counties: EnhancedCountyData[]) {
+  // 1. Calculate min/max for the metric globally for the interpolation range
+  const values = counties
+    .map(c => c[metric as keyof EnhancedCountyData] as number)
+    .filter(v => typeof v === 'number' && v !== null && !isNaN(v));
+
+  if (values.length === 0) return 'rgba(0,0,0,0)';
+
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+
+  // 2. Define color scale based on metric type
+  const isLivestock = ['beefCattleHead', 'dairyCattleHead', 'livestockSalesDollars'].includes(metric);
+
+  // Interpolate color based on feature-state "heatmapValue"
+  // MapLibre interpolate expression: ['interpolate', ['linear'], ['feature-state', 'heatmapValue'], min, colorMin, max, colorMax]
+
+  if (isLivestock) {
+    // Orange/Red scale: Light Orange to Dark Red
+    // using exact rgba or hex might be cleaner than hsl interpolation in expression if we want specific stops
+    return [
+      'interpolate',
+      ['linear'],
+      ['feature-state', 'heatmapValue'],
+      min, 'rgba(254, 217, 118, 0.8)', // Light orange
+      max, 'rgba(189, 0, 38, 0.9)'     // Dark red
+    ];
+  } else {
+    // Green scale: Light Green to Dark Green
+    return [
+      'interpolate',
+      ['linear'],
+      ['feature-state', 'heatmapValue'],
+      min, 'rgba(237, 248, 233, 0.8)', // Light green
+      max, 'rgba(0, 109, 44, 0.9)'     // Dark green
+    ];
+  }
 }
 
 // Map Legend Component
@@ -495,6 +550,20 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const [popupInfo, setPopupInfo] = useState<PopupInfo | null>(null);
   const [hoveredCountyId, setHoveredCountyId] = useState<string | number | null>(null);
   const [countiesData, setCountiesData] = useState<any>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
+
+  // Get comparison counties from store
+  const { comparisonCounties, heatmapMode, heatmapMetric, heatmapStateFilter } = useStore();
+
+  // Create a Set of comparison county keys for quick lookup
+  const comparisonCountySet = useMemo(() => {
+    const set = new Set<string>();
+    comparisonCounties.forEach((county) => {
+      const key = `${county.countyName.toUpperCase()}|${county.stateName.toUpperCase()}`;
+      set.add(key);
+    });
+    return set;
+  }, [comparisonCounties]);
 
   // Clustering state
   const [clusters, setClusters] = useState<any[]>([]);
@@ -696,6 +765,88 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
   }, []);
 
+  // Update feature state for comparison counties
+  useEffect(() => {
+    const map = mapRef.current?.getMap();
+    if (!map || !mapLoaded || !countiesData) return;
+
+    // Iterate through all features and set comparison state
+    countiesData.features.forEach((feature: any, index: number) => {
+      const countyName = feature.properties?.NAME;
+      const stateFips = feature.properties?.STATEFP;
+      const stateName = FIPS_TO_STATE[stateFips];
+
+      if (countyName && stateName) {
+        const key = `${countyName.toUpperCase()}|${stateName.toUpperCase()}`;
+        const isInComparison = comparisonCountySet.has(key);
+
+        map.setFeatureState(
+          { source: 'counties', id: index },
+          { comparison: isInComparison }
+        );
+      }
+    });
+
+    // Handle Heatmap Data Sync: Push values to feature-state
+    // We do this every time heatmap settings OR map/data load changes
+    if (heatmapMode && heatmapMetric) {
+
+      // Filter data first if state filter is active
+      const targetCounties = heatmapStateFilter
+        ? counties.filter(c => c.stateName === heatmapStateFilter)
+        : counties;
+
+      // Update the COLOR expression dynamically?
+      // No, the color expression is in 'countyFillLayer' memo.
+      // We need to add 'heatmapStateFilter' to the dependency of 'countyFillLayer' so it rebuilds the expression with new min/max!
+
+      countiesData.features.forEach((feature: any, index: number) => {
+        const countyName = feature.properties?.NAME;
+        const stateFips = feature.properties?.STATEFP;
+        const stateName = FIPS_TO_STATE[stateFips];
+
+        if (countyName && stateName) {
+          // Find data
+          const county = targetCounties.find(
+            (c) => c.countyName.toUpperCase() === countyName.toUpperCase() &&
+              c.stateName.toUpperCase() === stateName.toUpperCase()
+          );
+
+          if (county) {
+            const val = county[heatmapMetric as keyof EnhancedCountyData] as number | null;
+            // Set state
+            if (val !== null && val !== undefined && !isNaN(val)) {
+              map.setFeatureState(
+                { source: 'counties', id: index },
+                { heatmapValue: val }
+              );
+            } else {
+              map.removeFeatureState(
+                { source: 'counties', id: index },
+                'heatmapValue'
+              );
+            }
+          } else {
+            // If not in target subset (e.g. filtered out by state), remove heatmapValue
+            map.removeFeatureState(
+              { source: 'counties', id: index },
+              'heatmapValue'
+            );
+          }
+        }
+      });
+    } else {
+      // Clear heatmap values if mode is off, to be safe/clean
+      countiesData.features.forEach((_: any, index: number) => {
+        map.removeFeatureState(
+          { source: 'counties', id: index },
+          'heatmapValue'
+        );
+      });
+    }
+
+  }, [mapLoaded, countiesData, comparisonCountySet, heatmapMode, heatmapMetric, heatmapStateFilter, counties]);
+
 
   // Handle hover
   const onMouseMove = (event: MapLayerMouseEvent) => {
@@ -830,41 +981,67 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
 
   // Layer styles - memoized to update when filter changes
-  const countyFillLayer = useMemo(() => ({
-    id: 'counties-fill',
-    type: 'fill' as const,
-    paint: {
-      'fill-color': buildFilteredColorExpression(filteredCountySet, FIPS_TO_STATE) as any,
-      'fill-opacity': buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE) as any,
-    },
-  }), [filteredCountySet]);
+  const countyFillLayer = useMemo(() => {
+    let fillColorExpression;
+    let fillOpacityExpression;
 
+    if (heatmapMode) {
+      // Pass the filtered subset to the color generator to ensure the color scale adapts to the visible data range
+      const targetCounties = heatmapStateFilter
+        ? counties.filter(c => c.stateName === heatmapStateFilter)
+        : counties;
+
+      fillColorExpression = buildHeatmapColorExpression(heatmapMetric, targetCounties);
+      fillOpacityExpression = buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE, true);
+    } else {
+      fillColorExpression = buildFilteredColorExpression(filteredCountySet, FIPS_TO_STATE);
+      fillOpacityExpression = buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE, false);
+    }
+
+    return {
+      id: 'counties-fill',
+      type: 'fill' as const,
+      paint: {
+        'fill-color': fillColorExpression as any,
+        'fill-opacity': fillOpacityExpression as any,
+      },
+    };
+  }, [filteredCountySet, heatmapMode, heatmapMetric, heatmapStateFilter, counties]);
+
+  // Base outline layer - just gray borders for all counties
   const countyOutlineLayer = useMemo(() => ({
     id: 'counties-outline',
     type: 'line' as const,
     paint: {
-      'line-color': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        '#ffffff', // White border on hover
-        '#6b7280', // Gray color default
-      ] as any,
+      'line-color': '#6b7280',
       'line-width': 1,
-      'line-opacity': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        1, // Full opacity on hover
-        0.6, // Default opacity
-      ] as any,
+      'line-opacity': 0.6,
     },
   }), []);
 
+  // Comparison outline layer - white borders for comparison counties, rendered on top
+  const countyOutlineComparisonLayer = {
+    id: 'counties-outline-comparison',
+    type: 'line' as const,
+    paint: {
+      'line-color': '#ffffff',
+      'line-width': 2,
+      'line-opacity': [
+        'case',
+        ['boolean', ['feature-state', 'comparison'], false],
+        1,
+        0,
+      ] as any,
+    },
+  };
+
+  // Hover outline layer - white borders on hover, rendered on top of everything
   const countyOutlineHoverLayer = {
     id: 'counties-outline-hover',
     type: 'line' as const,
     paint: {
       'line-color': '#ffffff',
-      'line-width': 1,
+      'line-width': 2,
       'line-opacity': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
@@ -917,7 +1094,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
         ]}
         style={{ width: '100%', height: '100%' }}
         mapStyle="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
-        interactiveLayerIds={['counties-fill', 'counties-outline', 'counties-outline-hover']}
+        interactiveLayerIds={['counties-fill', 'counties-outline', 'counties-outline-comparison', 'counties-outline-hover']}
         onMouseMove={onMouseMove}
         onMouseLeave={onMouseLeave}
         onClick={onClick}
@@ -935,6 +1112,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
           <Source id="counties" type="geojson" data={countiesData} generateId={true}>
             <Layer {...countyFillLayer} />
             <Layer {...countyOutlineLayer} />
+            <Layer {...countyOutlineComparisonLayer} />
             <Layer {...countyOutlineHoverLayer} />
           </Source>
         )}

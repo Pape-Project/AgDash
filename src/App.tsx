@@ -155,6 +155,7 @@ export default function App() {
         isOpen={isRankingModalOpen}
         onClose={() => setIsRankingModalOpen(false)}
         availableStates={availableStates}
+        allCounties={allCounties}
       />
 
       <div className="h-screen w-screen flex flex-col bg-background text-foreground overflow-hidden">
@@ -176,7 +177,7 @@ export default function App() {
         <div className="flex-1 flex overflow-hidden">
           {/* Left Sidebar - Filters */}
           <aside className="w-80 border-r border-border bg-card overflow-y-auto">
-            <FilterPanel />
+            <FilterPanel allCounties={allCounties} />
           </aside>
 
           {/* Center - Map & KPIs */}
@@ -204,8 +205,8 @@ export default function App() {
           </main>
 
           {/* Right Sidebar - County List / Comparison */}
-          <aside className="w-96 border-l border-border bg-card flex flex-col overflow-hidden">
-            {comparisonCounties.length > 0 ? (
+          <aside className="w-96 border-l border-border bg-card flex flex-col overflow-y-auto">
+            {comparisonCounties.length > 1 ? (
               <ComparisonDrawer
                 counties={comparisonCounties}
                 onRemove={removeFromComparison}
