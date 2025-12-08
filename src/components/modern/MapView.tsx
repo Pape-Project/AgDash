@@ -790,12 +790,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       fillColorExpression = buildHeatmapColorExpression(sortField, targetCounties);
       fillOpacityExpression = buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE, true);
     } else {
-      // If region mode is OFF, and we are showing all data (not filtering), 
-      // we hide the region colors to prevent the default "rainbow map".
-      // We check if filteredCounties matches the total count (or is undefined).
-      const isShowingAll = filteredCounties === undefined || (counties && filteredCounties.length === counties.length);
-
-      if (!regionMode && isShowingAll) {
+      // If region mode is OFF, we hide the region colors regardless of filter state.
+      if (!regionMode) {
         fillColorExpression = 'rgba(0, 0, 0, 0)';
         fillOpacityExpression = 0;
       } else {
@@ -803,6 +799,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
         fillOpacityExpression = buildFilteredOpacityExpression(filteredCountySet, FIPS_TO_STATE, false);
       }
     }
+
+
 
     return {
       id: 'counties-fill',
