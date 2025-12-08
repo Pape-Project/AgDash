@@ -1,4 +1,4 @@
-import { Search, X, Info, Sparkles, Plus, ChevronDown, BarChart3, Clock, Layers } from 'lucide-react';
+import { X, Plus, BarChart3, Clock, Layers } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';

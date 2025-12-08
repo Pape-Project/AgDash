@@ -558,7 +558,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   const closePopupTimeoutRef = useRef<number | null>(null);
 
   // Get comparison counties from store
-  const { comparisonCounties, heatmapMode, heatmapMetric, heatmapStateFilter, showPapeLocations } = useStore();
+  // Get comparison counties from store
+  const { comparisonCounties, heatmapMode, showPapeLocations, sortField, regionMode } = useStore();
 
   // Clustering state
   const [clusters, setClusters] = useState<any[]>([]);
@@ -612,7 +613,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
   };
 
   // Get comparison counties from store
-  const { comparisonCounties, heatmapMode, sortField, regionMode } = useStore();
+  // Get comparison counties from store - ALREADY IMPORTED ABOVE
 
   // Create a Set of comparison county keys for quick lookup
   const comparisonCountySet = useMemo(() => {
@@ -1165,9 +1166,6 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
           </Source>
         )}
 
-        {/* CLUSTER MARKERS - Only show if toggle is enabled */}
-        {showPapeLocations && clusters.map((cluster) => {
-          const [longitude, latitude] = cluster.geometry.coordinates;
         {/* State outlines source and layer */}
         {stateData && (
           <Source id="states" type="geojson" data={stateData}>
@@ -1181,6 +1179,10 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
             />
           </Source>
         )}
+
+        {/* CLUSTER MARKERS - Only show if toggle is enabled */}
+        {showPapeLocations && clusters.map((cluster) => {
+          const [longitude, latitude] = cluster.geometry.coordinates;
 
 
           return (
