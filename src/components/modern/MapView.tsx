@@ -504,6 +504,8 @@ function buildHeatmapColorExpression(metric: string, counties: EnhancedCountyDat
 
 // Map Legend Component
 function MapLegend() {
+  const { regionMode, showPapeLocations } = useStore();
+
   const regionOrder: (keyof typeof REGIONS)[] = [
     'PUGET_SOUND',
     'INLAND_NW',
@@ -513,26 +515,48 @@ function MapLegend() {
     'SACRAMENTO',
   ];
 
+  if (!regionMode && !showPapeLocations) return null;
+
   return (
     <div className="absolute bottom-12 right-6 bg-card/95 backdrop-blur-sm border border-border rounded-md p-3 shadow-lg z-10 min-w-[140px]">
-      <h3 className="text-xs font-semibold mb-2 text-foreground">Region Key</h3>
-      <div className="space-y-1.5">
-        {regionOrder.map((regionKey) => {
-          const region = REGIONS[regionKey];
-          return (
-            <div key={regionKey} className="flex items-center gap-2">
-              <div
-                className="w-3 h-3 rounded-full border border-border/50 flex-shrink-0"
-                style={{
-                  backgroundColor: region.color,
-                  opacity: region.opacity + 0.3,
-                }}
-              />
-              <span className="text-[11px] text-foreground/90">{region.name}</span>
-            </div>
-          );
-        })}
-      </div>
+      {regionMode && (
+        <>
+          <h3 className="text-xs font-semibold mb-2 text-foreground">Region Key</h3>
+          <div className="space-y-1.5">
+            {regionOrder.map((regionKey) => {
+              const region = REGIONS[regionKey];
+              return (
+                <div key={regionKey} className="flex items-center gap-2">
+                  <div
+                    className="w-3 h-3 rounded-full border border-border/50 flex-shrink-0"
+                    style={{
+                      backgroundColor: region.color,
+                      opacity: region.opacity + 0.3,
+                    }}
+                  />
+                  <span className="text-[11px] text-foreground/90">{region.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {regionMode && showPapeLocations && (
+        <div className="my-2 border-t border-border/50" />
+      )}
+
+      {showPapeLocations && (
+        <>
+          <h3 className="text-xs font-semibold mb-2 text-foreground">Dealership Locations</h3>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-2 h-2 rounded-full border border-border/50 flex-shrink-0 bg-[#FFDE00]"
+            />
+            <span className="text-[11px] text-foreground/90">Papé Locations</span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -1295,7 +1319,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       </div>
 
       {/* Map Legend */}
-      {regionMode && <MapLegend />}
+      {(regionMode || showPapeLocations) && <MapLegend />}
 
       {/* Hover tooltip - ONLY for counties now, hidden when Pape popup is open */}
       {hoverInfo && !popupInfo && (

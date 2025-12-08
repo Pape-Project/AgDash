@@ -67,7 +67,7 @@ export const useStore = create<DashboardState>((set) => ({
   heatmapMode: false,
   heatmapMetric: 'croplandAcres', // Default metric
   heatmapStateFilter: null,
-  showPapeLocations: true,
+  showPapeLocations: false,
   regionMode: true,
 
   // Actions

@@ -1,4 +1,4 @@
-import { X, Plus, BarChart3, Clock, Layers } from 'lucide-react';
+import { X, Plus, BarChart3, Clock, MapPin } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -184,28 +184,27 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
         allCounties={allCounties}
         onOpenRankingModal={onOpenRankingModal}
       />
-        
+
       {/* Region Control */}
       <RegionControl />
 
-      {/* Map Layers */}
-      <Card className="p-4">
+      {/* Dealership Locations Control */}
+      <Card className="p-4 border-l-4 border-l-yellow-500 transition-all duration-300">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Layers className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium">Map Layers</span>
+            <MapPin className={`h-5 w-5 ${showPapeLocations ? 'text-yellow-500' : 'text-muted-foreground'}`} />
+            <span className="font-semibold">Dealership Locations</span>
           </div>
-        </div>
-        <div className="mt-3 space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-foreground">Show Papé Locations</span>
-            <div
-              className={`w-9 h-5 rounded-full p-1 cursor-pointer transition-colors ${showPapeLocations ? 'bg-primary' : 'bg-input'}`}
-              onClick={togglePapeLocations}
-            >
-              <div className={`w-3 h-3 rounded-full bg-background shadow-sm transition-transform ${showPapeLocations ? 'translate-x-4' : 'translate-x-0'}`} />
-            </div>
-          </div>
+          <button
+            onClick={togglePapeLocations}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
+              }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showPapeLocations ? 'translate-x-6' : 'translate-x-1'
+                }`}
+            />
+          </button>
         </div>
       </Card>
     </div>
