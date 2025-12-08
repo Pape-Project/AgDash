@@ -1,4 +1,4 @@
-import { Search, X, Info, Sparkles, Plus, ChevronDown, BarChart3, Clock } from 'lucide-react';
+import { Search, X, Info, Sparkles, Plus, BarChart3, Clock } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -9,6 +9,7 @@ import type { EnhancedCountyData } from '../../types/ag';
 
 
 import { HeatmapControl } from './HeatmapControl';
+import { RegionControl } from './RegionControl';
 
 import { getUniqueStates } from '../../utils/dataUtils';
 
@@ -42,9 +43,9 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
     return allCounties
       .filter(c =>
         !comparisonCounties.some(cc => cc.id === c.id) &&
-        (c.countyName.toLowerCase().includes(query) ||
-          c.stateName.toLowerCase().includes(query) ||
-          `${c.countyName}, ${c.stateName}`.toLowerCase().includes(query))
+        (c.countyName.toLowerCase().startsWith(query) ||
+          c.stateName.toLowerCase().startsWith(query) ||
+          `${c.countyName}, ${c.stateName}`.toLowerCase().startsWith(query))
       )
       .slice(0, 8);
   }, [countySearchQuery, allCounties, comparisonCounties]);
@@ -199,7 +200,6 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
                   className="pr-8"
                   disabled={comparisonCounties.length >= 5}
                 />
-                <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               </div>
             </div>
 
@@ -274,6 +274,9 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
         allCounties={allCounties}
         onOpenRankingModal={onOpenRankingModal}
       />
+
+      {/* Region Control */}
+      <RegionControl />
     </div>
   );
 }
