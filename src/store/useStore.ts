@@ -64,7 +64,7 @@ export const useStore = create<DashboardState>((set) => ({
   heatmapMode: false,
   heatmapMetric: 'croplandAcres', // Default metric
   heatmapStateFilter: null,
-  regionMode: false,
+  regionMode: true,
 
   // Actions
   setSelectedCounty: (county) => set({ selectedCounty: county }),
@@ -115,6 +115,6 @@ export const useStore = create<DashboardState>((set) => ({
       heatmapMode: false,
       heatmapMetric: 'croplandAcres',
       heatmapStateFilter: null,
-      regionMode: false,
+      regionMode: true,
     }),
 }));
