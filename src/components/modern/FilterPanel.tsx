@@ -76,12 +76,13 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
 
 
       {/* County Comparison */}
-      <Card className="p-4">
+
+      <Card className={`p-4 relative overflow-visible transition-all duration-300 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-primary before:transition-all before:duration-300 before:rounded-l-lg ${comparisonCounties.length >= 2 ? 'before:opacity-100' : 'before:opacity-0'}`}>
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium">Compare Counties</span>
+              <BarChart3 className={`h-5 w-5 ${comparisonCounties.length >= 2 ? 'text-primary' : 'text-muted-foreground'}`} />
+              <span className="font-semibold">Compare</span>
             </div>
             {comparisonCounties.length > 0 && (
               <Button
@@ -189,11 +190,11 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
       <RegionControl />
 
       {/* Dealership Locations Control */}
-      <Card className="p-4 border-l-4 border-l-yellow-500 transition-all duration-300">
+      <Card className={`p-4 relative overflow-hidden transition-all duration-300 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-yellow-500 before:transition-all before:duration-300 ${showPapeLocations ? 'before:opacity-100' : 'before:opacity-0'}`}>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <MapPin className={`h-5 w-5 ${showPapeLocations ? 'text-yellow-500' : 'text-muted-foreground'}`} />
-            <span className="font-semibold">Dealership Locations</span>
+            <span className="font-semibold">Dealerships</span>
           </div>
           <button
             onClick={togglePapeLocations}
