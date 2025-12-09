@@ -23,6 +23,8 @@ interface DashboardState {
   heatmapMetric: string;
   heatmapStateFilter: string | null;
 
+  // Layer Visibility
+  showPapeLocations: boolean;
   // Regions
   regionMode: boolean;
 
@@ -46,6 +48,7 @@ interface DashboardState {
   setHeatmapMetric: (metric: string) => void;
   setHeatmapStateFilter: (state: string | null) => void;
 
+  togglePapeLocations: () => void;
   setRegionMode: (enabled: boolean) => void;
 
   resetFilters: () => void;
@@ -64,6 +67,7 @@ export const useStore = create<DashboardState>((set) => ({
   heatmapMode: false,
   heatmapMetric: 'croplandAcres', // Default metric
   heatmapStateFilter: null,
+  showPapeLocations: false,
   regionMode: true,
 
   // Actions
@@ -105,6 +109,8 @@ export const useStore = create<DashboardState>((set) => ({
   setHeatmapMetric: (metric) => set({ heatmapMetric: metric }),
   setHeatmapStateFilter: (state) => set({ heatmapStateFilter: state }),
   setRegionMode: (enabled) => set({ regionMode: enabled }),
+
+  togglePapeLocations: () => set((state) => ({ showPapeLocations: !state.showPapeLocations })),
 
   resetFilters: () =>
     set({

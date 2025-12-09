@@ -1,4 +1,4 @@
-import { X, Plus, BarChart3, Clock } from 'lucide-react';
+import { X, Plus, BarChart3, Clock, MapPin } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -24,6 +24,8 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
     addToComparison,
     removeFromComparison,
     clearComparison,
+    showPapeLocations,
+    togglePapeLocations,
   } = useStore();
 
   const availableStates = useMemo(() => getUniqueStates(allCounties), [allCounties]);
@@ -185,6 +187,26 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
 
       {/* Region Control */}
       <RegionControl />
+
+      {/* Dealership Locations Control */}
+      <Card className="p-4 border-l-4 border-l-yellow-500 transition-all duration-300">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <MapPin className={`h-5 w-5 ${showPapeLocations ? 'text-yellow-500' : 'text-muted-foreground'}`} />
+            <span className="font-semibold">Dealership Locations</span>
+          </div>
+          <button
+            onClick={togglePapeLocations}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
+              }`}
+          >
+            <span
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showPapeLocations ? 'translate-x-6' : 'translate-x-1'
+                }`}
+            />
+          </button>
+        </div>
+      </Card>
     </div>
   );
 }

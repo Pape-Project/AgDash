@@ -22,6 +22,7 @@ export function ComparisonDrawer({
     const metrics: { key: keyof EnhancedCountyData; label: string; format: (v: number) => string; color: string }[] = [
       { key: 'farms', label: 'Farms', format: formatNumber, color: 'bg-blue-500' },
       { key: 'croplandAcres', label: 'Cropland', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-emerald-500' },
+      { key: 'harvestedCroplandAcres', label: 'Harvested', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-emerald-600' },
       { key: 'irrigatedAcres', label: 'Irrigated', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-cyan-500' },
       { key: 'marketValueTotalDollars', label: 'Market Value', format: formatCurrencyMillions, color: 'bg-yellow-500' },
       { key: 'cropsSalesDollars', label: 'Crop Sales', format: formatCurrencyMillions, color: 'bg-lime-500' },
@@ -31,6 +32,12 @@ export function ComparisonDrawer({
       { key: 'wheatAcres', label: 'Wheat', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-amber-500' },
       { key: 'hayAcres', label: 'Hay', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-green-600' },
       { key: 'cornAcres', label: 'Corn', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-yellow-600' },
+      { key: 'applesAcres', label: 'Apples', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-red-600' },
+      { key: 'riceAcres', label: 'Rice', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-cyan-600' },
+      { key: 'hazelnutsAcres', label: 'Hazelnuts', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-amber-800' },
+      { key: 'grassSeedAcres', label: 'Grass Seed', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-lime-600' },
+      { key: 'cornSilageAcres', label: 'Corn Silage', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-yellow-700' },
+      { key: 'haylageAcres', label: 'Haylage', format: (v) => formatAcres(v).replace(' acres', ''), color: 'bg-green-700' },
     ];
 
     // Only return metrics where at least one county has data
