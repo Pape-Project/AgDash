@@ -25,6 +25,19 @@ async function createServer() {
         appType: 'spa',
     });
 
+    // Enable JSON body parsing for API requests
+    app.use(express.json());
+
+    // API Route for Admin Verification
+    app.post('/api/verify-admin', (req, res) => {
+        const { password } = req.body;
+        if (password === process.env.ADMIN_PASSWORD) {
+            res.json({ success: true });
+        } else {
+            res.status(401).json({ error: 'Incorrect password' });
+        }
+    });
+
     // API Route for Upload
     app.post('/api/upload-data', upload.single('file'), async (req, res) => {
         try {
