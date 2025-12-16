@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { X, MapPin, Sprout, DollarSign, Beef, Plus, Minus, Building2, Table } from 'lucide-react';
+import { X, MapPin, Sprout, DollarSign, Beef, Plus, Minus, Building2, Table, ChevronDown } from 'lucide-react';
 import type { EnhancedCountyData } from '../../types/ag';
 import type { PapeDataMap } from '../../hooks/usePapeData';
 import { formatNumber, formatAcres, formatCurrency, formatCurrencyMillions } from '../../lib/format';
@@ -17,6 +17,7 @@ interface CountyDetailModalProps {
 export function CountyDetailModal({ county, allCounties, papeData, lastUpdated, onClose }: CountyDetailModalProps) {
     const { comparisonCounties, addToComparison, removeFromComparison } = useStore();
     const [activeTab, setActiveTab] = useState<'public' | 'pape'>('public');
+    const [isDemographicsOpen, setIsDemographicsOpen] = useState(false);
 
     // Reset tab when county changes
     useEffect(() => {
@@ -211,104 +212,7 @@ export function CountyDetailModal({ county, allCounties, papeData, lastUpdated, 
                                 )}
                             </div>
 
-                            {/* Farm Demographics & Market Potential */}
-                            <div className="space-y-4">
-                                <h3 className="text-lg font-semibold flex items-center gap-2">
-                                    <Building2 className="h-5 w-5 text-indigo-500" />
-                                    Farm Demographics
-                                </h3>
 
-                                <div className="bg-secondary/30 rounded-xl p-5 border border-border">
-                                    {/* 1. Stacked Bar Chart */}
-                                    <div className="mb-6">
-                                        <div className="flex justify-between text-sm mb-2">
-                                            <span className="font-medium">Farm Size Distribution</span>
-                                            <span className="text-muted-foreground">{formatNumber(county.farms || 0)} Total Farms</span>
-                                        </div>
-                                        <div className="h-4 w-full rounded-full overflow-hidden flex">
-                                            {/* 1-9 Acres */}
-                                            <div className="h-full bg-emerald-500" style={{ width: `${((county.farms1to9Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 10-49 Acres */}
-                                            <div className="h-full bg-blue-500" style={{ width: `${((county.farms10to49Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 50-69 Acres */}
-                                            <div className="h-full bg-amber-500" style={{ width: `${((county.farms50to69Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 70-99 Acres */}
-                                            <div className="h-full bg-orange-500" style={{ width: `${((county.farms70to99Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 100-139 Acres */}
-                                            <div className="h-full bg-red-500" style={{ width: `${((county.farms100to139Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 140-179 Acres */}
-                                            <div className="h-full bg-purple-500" style={{ width: `${((county.farms140to179Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 180-499 Acres */}
-                                            <div className="h-full bg-pink-500" style={{ width: `${((county.farms180to499Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 500-999 Acres */}
-                                            <div className="h-full bg-indigo-500" style={{ width: `${((county.farms500to999Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 1000-1999 Acres */}
-                                            <div className="h-full bg-cyan-500" style={{ width: `${((county.farms1000to1999Acres || 0) / (county.farms || 1)) * 100}%` }} />
-                                            {/* 2000+ Acres */}
-                                            <div className="h-full bg-slate-600" style={{ width: `${((county.farms2000PlusAcres || 0) / (county.farms || 1)) * 100}%` }} />
-                                        </div>
-                                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-xs text-muted-foreground mt-2">
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-emerald-500" /><span>1-9 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-blue-500" /><span>10-49 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-amber-500" /><span>50-69 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-orange-500" /><span>70-99 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-red-500" /><span>100-139 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-purple-500" /><span>140-179 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-pink-500" /><span>180-499 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-indigo-500" /><span>500-999 ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-cyan-500" /><span>1k-2k ac</span></div>
-                                            <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-slate-600" /><span>2k+ ac</span></div>
-                                        </div>
-                                    </div>
-
-                                    {/* 2. Data Grid */}
-                                    <div>
-                                        <h4 className="text-sm font-medium text-muted-foreground uppercase tracking-wider mb-3">Population Counts</h4>
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">1 - 9 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms1to9Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">10 - 49 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms10to49Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">50 - 69 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms50to69Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">70 - 99 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms70to99Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">100 - 139 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms100to139Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">140 - 179 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms140to179Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">180 - 499 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms180to499Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">500 - 999 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms500to999Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">1,000 - 1,999 Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms1000to1999Acres || 0)}</span>
-                                            </div>
-                                            <div className="flex flex-col p-3 bg-background/50 rounded-lg border border-border/50">
-                                                <span className="text-xs text-muted-foreground mb-1">2,000+ Acres</span>
-                                                <span className="text-xl font-bold">{formatNumber(county.farms2000PlusAcres || 0)}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
 
                             {/* Financials Section */}
@@ -358,7 +262,78 @@ export function CountyDetailModal({ county, allCounties, papeData, lastUpdated, 
                                 </div>
                             )}
 
-                            {/* Split Crops and Livestock Sections */}
+                            {/* Farm Demographics & Market Potential (Moved) */}
+                            {/* Farm Demographics - Simplified */}
+                            <div className="space-y-2">
+                                <h3 className="text-lg font-semibold flex items-center gap-2 mb-3">
+                                    <Building2 className="h-5 w-5 text-indigo-500" />
+                                    Farm Demographics
+                                </h3>
+
+                                {/* Seamless Total Farms Row */}
+                                <div className="flex justify-between items-center py-1">
+                                    <span className="text-sm font-medium text-foreground">Total Farms</span>
+                                    <span className="font-bold">{formatNumber(county.farms || 0)}</span>
+                                </div>
+
+                                {/* Dropdown Trigger - Left Aligned */}
+                                <button
+                                    onClick={() => setIsDemographicsOpen(!isDemographicsOpen)}
+                                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors outline-none"
+                                >
+                                    <span>View farm demographics</span>
+                                    <div className={`transition-transform duration-300 ${isDemographicsOpen ? 'rotate-180' : ''}`}>
+                                        <ChevronDown className="h-3 w-3" />
+                                    </div>
+                                </button>
+
+                                {/* Expandable Bubble */}
+                                <div
+                                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${isDemographicsOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                                        }`}
+                                >
+                                    <div className="overflow-hidden">
+                                        {/* The "Bubble" */}
+                                        <div className="bg-secondary/30 rounded-xl border border-border p-4 mt-2">
+                                            <div className="space-y-4">
+                                                {(() => {
+                                                    const farmSizes = [
+                                                        { label: '1-9 Acres', value: county.farms1to9Acres, color: 'bg-emerald-500' },
+                                                        { label: '10-49 Acres', value: county.farms10to49Acres, color: 'bg-blue-500' },
+                                                        { label: '50-69 Acres', value: county.farms50to69Acres, color: 'bg-amber-500' },
+                                                        { label: '70-99 Acres', value: county.farms70to99Acres, color: 'bg-orange-500' },
+                                                        { label: '100-139 Acres', value: county.farms100to139Acres, color: 'bg-red-500' },
+                                                        { label: '140-179 Acres', value: county.farms140to179Acres, color: 'bg-purple-500' },
+                                                        { label: '180-499 Acres', value: county.farms180to499Acres, color: 'bg-pink-500' },
+                                                        { label: '500-999 Acres', value: county.farms500to999Acres, color: 'bg-indigo-500' },
+                                                        { label: '1,000-1,999 Acres', value: county.farms1000to1999Acres, color: 'bg-cyan-500' },
+                                                        { label: '2,000+ Acres', value: county.farms2000PlusAcres, color: 'bg-slate-600' },
+                                                    ].filter(item => (item.value || 0) > 0)
+                                                        .sort((a, b) => (b.value || 0) - (a.value || 0));
+
+                                                    const maxValue = Math.max(...farmSizes.map(item => item.value || 0));
+
+                                                    return farmSizes.map((item, index) => (
+                                                        <div key={index} className="space-y-1">
+                                                            <div className="flex justify-between text-xs">
+                                                                <span className="font-medium text-muted-foreground">{item.label}</span>
+                                                                <span className="font-bold">{formatNumber(item.value || 0)}</span>
+                                                            </div>
+                                                            <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                                                                <div
+                                                                    className={`h-full ${item.color} rounded-full`}
+                                                                    style={{ width: `${((item.value || 0) / maxValue) * 100}%` }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    ));
+                                                })()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="flex flex-col gap-8">
                                 {/* Major Crops Section */}
                                 {(county.wheatAcres !== null || county.hayAcres !== null || county.haylageAcres !== null || county.grassSeedAcres !== null || county.cornAcres !== null || county.cornSilageAcres !== null || county.hazelnutsAcres !== null || county.applesAcres !== null || county.riceAcres !== null) && (
