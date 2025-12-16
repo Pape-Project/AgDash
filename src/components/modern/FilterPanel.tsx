@@ -250,7 +250,7 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
           </div>
           <button
             onClick={handleDealershipsToggle}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${dealershipsExpanded ? 'bg-primary' : 'bg-input'
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${dealershipsExpanded ? 'bg-primary' : 'bg-input'
               }`}
           >
             <span
@@ -268,11 +268,11 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
                   <div className={`h-2 w-2 rounded-full ${showPapeLocations ? 'bg-yellow-500' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">Papé Dealerships</span>
+                  <span className="text-sm font-medium">Papé</span>
                 </div>
                 <button
                   onClick={togglePapeLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-1 ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
                     }`}
                 >
                   <span
@@ -286,11 +286,11 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
                   <div className={`h-2 w-2 rounded-full ${showNewHollandLocations ? 'bg-blue-600' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">New Holland Dealers</span>
+                  <span className="text-sm font-medium">New Holland</span>
                 </div>
                 <button
                   onClick={toggleNewHollandLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1 ${showNewHollandLocations ? 'bg-blue-600' : 'bg-input'
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showNewHollandLocations ? 'bg-blue-600' : 'bg-input'
                     }`}
                 >
                   <span
@@ -304,11 +304,11 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
                   <div className={`h-2 w-2 rounded-full ${showCaseIHLocations ? 'bg-red-600' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">Case IH Dealers</span>
+                  <span className="text-sm font-medium">Case IH</span>
                 </div>
                 <button
                   onClick={toggleCaseIHLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-offset-1 ${showCaseIHLocations ? 'bg-red-600' : 'bg-input'
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showCaseIHLocations ? 'bg-red-600' : 'bg-input'
                     }`}
                 >
                   <span
@@ -322,11 +322,11 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
                   <div className={`h-2 w-2 rounded-full ${showKubotaLocations ? 'bg-orange-500' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">Kubota Dealers</span>
+                  <span className="text-sm font-medium">Kubota</span>
                 </div>
                 <button
                   onClick={toggleKubotaLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 ${showKubotaLocations ? 'bg-orange-500' : 'bg-input'
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors  ${showKubotaLocations ? 'bg-orange-500' : 'bg-input'
                     }`}
                 >
                   <span
