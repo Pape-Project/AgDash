@@ -28,6 +28,7 @@ interface DashboardState {
   showNewHollandLocations: boolean;
   showCaseIHLocations: boolean;
   showKubotaLocations: boolean;
+  showKiotiLocations: boolean;
   // Regions
   regionMode: boolean;
 
@@ -55,6 +56,7 @@ interface DashboardState {
   toggleNewHollandLocations: () => void;
   toggleCaseIHLocations: () => void;
   toggleKubotaLocations: () => void;
+  toggleKiotiLocations: () => void;
   setRegionMode: (enabled: boolean) => void;
 
   resetFilters: () => void;
@@ -77,6 +79,7 @@ export const useStore = create<DashboardState>((set) => ({
   showNewHollandLocations: false,
   showCaseIHLocations: false,
   showKubotaLocations: false,
+  showKiotiLocations: false,
   regionMode: true,
 
   // Actions
@@ -123,6 +126,7 @@ export const useStore = create<DashboardState>((set) => ({
   toggleNewHollandLocations: () => set((state) => ({ showNewHollandLocations: !state.showNewHollandLocations })),
   toggleCaseIHLocations: () => set((state) => ({ showCaseIHLocations: !state.showCaseIHLocations })),
   toggleKubotaLocations: () => set((state) => ({ showKubotaLocations: !state.showKubotaLocations })),
+  toggleKiotiLocations: () => set((state) => ({ showKiotiLocations: !state.showKiotiLocations })),
 
   resetFilters: () =>
     set({
