@@ -194,27 +194,29 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
           )}
 
           {/* Selected Counties Tags */}
-          {comparisonCounties.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {comparisonCounties.map((county, index) => {
-                const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500'];
-                return (
-                  <div
-                    key={county.id}
-                    className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs ${colors[index]} text-white`}
-                  >
-                    <span className="max-w-[100px] truncate">{county.countyName}</span>
-                    <button
-                      onClick={() => removeFromComparison(county.id)}
-                      className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
+          <div className={`grid transition-all duration-300 ease-in-out ${comparisonCounties.length > 0 ? 'grid-rows-[1fr] opacity-100 mt-0' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+            <div className="overflow-hidden">
+              <div className="flex flex-wrap gap-2 pt-2">
+                {comparisonCounties.map((county, index) => {
+                  const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500'];
+                  return (
+                    <div
+                      key={county.id}
+                      className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs ${colors[index]} text-white`}
                     >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </div>
-                );
-              })}
+                      <span className="max-w-[100px] truncate">{county.countyName}</span>
+                      <button
+                        onClick={() => removeFromComparison(county.id)}
+                        className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          )}
+          </div>
 
 
 
@@ -230,7 +232,11 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
             </p>
           )}
 
-          {comparisonCounties.length >= 2 && <ComparisonInsights counties={comparisonCounties} />}
+          <div className={`grid transition-all duration-300 ease-in-out ${comparisonCounties.length >= 2 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+            <div className="overflow-hidden">
+              <ComparisonInsights counties={comparisonCounties} />
+            </div>
+          </div>
         </div>
       </Card>
 
@@ -246,7 +252,7 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
 
       {/* Dealership Locations Control */}
       {/* Dealerships Group */}
-      <Card className={`p-4 transition-all duration-300 ${dealershipsExpanded ? 'ring-2 ring-primary/20' : ''}`}>
+      <Card className={`p-4 relative overflow-visible transition-all duration-300 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-primary before:transition-all before:duration-300 before:rounded-l-lg ${dealershipsExpanded ? 'before:opacity-100' : 'before:opacity-0'}`}>
         <div className="flex items-center justify-between mb-0">
           <div className="flex items-center gap-2">
             <Building2 className={`h-5 w-5 ${dealershipsExpanded ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -381,10 +387,14 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
 
 // Quick insights
 function ComparisonInsights({ counties }: { counties: EnhancedCountyData[] }) {
+  if (counties.length === 0) return null;
+
   const topByFarms = [...counties].sort((a, b) => (b.farms || 0) - (a.farms || 0))[0];
   const topByCropland = [...counties].sort(
     (a, b) => (b.croplandAcres || 0) - (a.croplandAcres || 0)
   )[0];
+
+  if (!topByFarms || !topByCropland) return null;
 
   return (
     <Card className="p-2 bg-primary/10 border-primary/20">
