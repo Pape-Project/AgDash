@@ -103,8 +103,8 @@
 
 .maplibregl-popup-content {
   background-color: #000000 !important;
-  border: 1px solid #FFDE00;
-  /* John Deere Yellow Border */
+  border: 1px solid transparent;
+  /* Default transparent, overridden by specific classes */
   border-radius: 6px !important;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3) !important;
   color: #ffffff;
@@ -116,7 +116,8 @@
 }
 
 .maplibregl-popup-close-button {
-  color: #FFDE00;
+  color: #ffffff;
+  /* Default, overridden by specific classes */
   font-size: 20px;
   padding: 5px 8px;
   right: 0;
@@ -131,6 +132,52 @@
 .maplibregl-popup-close-button:hover {
   background-color: transparent !important;
   color: #ffffff;
+}
+
+/* Brand-specific popup overrides */
+/* Default / Pape (Yellow) */
+.maplibregl-popup.popup-pape .maplibregl-popup-content {
+  border-color: #FFDE00;
+}
+
+.maplibregl-popup.popup-pape .maplibregl-popup-close-button {
+  color: #FFDE00;
+}
+
+/* New Holland (Blue) */
+.maplibregl-popup.popup-new-holland .maplibregl-popup-content {
+  border-color: #0057B8;
+}
+
+.maplibregl-popup.popup-new-holland .maplibregl-popup-close-button {
+  color: #0057B8;
+}
+
+/* Case IH (Red) */
+.maplibregl-popup.popup-case-ih .maplibregl-popup-content {
+  border-color: #D80000;
+}
+
+.maplibregl-popup.popup-case-ih .maplibregl-popup-close-button {
+  color: #D80000;
+}
+
+/* Kubota (Orange) */
+.maplibregl-popup.popup-kubota .maplibregl-popup-content {
+  border-color: #F39200;
+}
+
+.maplibregl-popup.popup-kubota .maplibregl-popup-close-button {
+  color: #F39200;
+}
+
+/* Kioti (Deep Orange) */
+.maplibregl-popup.popup-kioti .maplibregl-popup-content {
+  border-color: #D94E27;
+}
+
+.maplibregl-popup.popup-kioti .maplibregl-popup-close-button {
+  color: #D94E27;
 }
 
 /* Anchor triangles - make them black */

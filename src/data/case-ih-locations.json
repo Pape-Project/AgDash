@@ -580,22 +580,6 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Century Equip Co Inc",
-                "address": "482 North Main Street, Cedar City, UT 84720",
-                "type": "Case IH Dealer",
-                "phone": "(435) 586-4406"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -113.0613733,
-                    37.6858269
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "name": "Torgerson's, LLC",
                 "address": "90 Cottonwood Creek Road, Lewistown, MT 59457",
                 "type": "Case IH Dealer",
@@ -622,38 +606,6 @@
                 "coordinates": [
                     -119.0778322,
                     35.4427533
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "Torgerson's, LLC",
-                "address": "736 Lane 9 1/2, Powell, WY 82435",
-                "type": "Case IH Dealer",
-                "phone": "(307) 271-1112"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -108.7269495,
-                    44.74609
-                ]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "Ag Equipment Inc.",
-                "address": "1843 West Highway 40, Roosevelt, UT 84066-9606",
-                "type": "Case IH Dealer",
-                "phone": "(435) 722-4488"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -110.024717,
-                    40.275499
                 ]
             }
         },

@@ -1449,7 +1449,17 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
             onClose={() => setPopupInfo(null)}
             closeOnClick={false}
             closeOnMove={false} // Allow moving map without closing
-            className="pape-popup"
+            className={`pape-popup ${(() => {
+              if (popupInfo.features.length === 0) return 'popup-pape';
+              const firstFeature = popupInfo.features[0];
+              const type = firstFeature.properties.type;
+
+              if (type === 'New Holland Dealer') return 'popup-new-holland';
+              if (type === 'Case IH Dealer') return 'popup-case-ih';
+              if (type === 'Kubota Dealer') return 'popup-kubota';
+              if (type === 'Kioti Dealer') return 'popup-kioti';
+              return 'popup-pape';
+            })()}`}
             maxWidth="300px"
             offset={20}
           >
