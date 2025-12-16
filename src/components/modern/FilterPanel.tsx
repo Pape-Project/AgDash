@@ -12,6 +12,7 @@ import { HeatmapControl } from './HeatmapControl';
 import { RegionControl } from './RegionControl';
 
 import { getUniqueStates } from '../../utils/dataUtils';
+import { DEALERSHIP_BRANDING } from '../../constants/branding';
 
 interface FilterPanelProps {
   allCounties: EnhancedCountyData[];
@@ -270,13 +271,16 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               {/* Pape Dealerships */}
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full ${showPapeLocations ? 'bg-yellow-500' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">Papé</span>
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.PAPE.color, opacity: showPapeLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.PAPE.name}</span>
                 </div>
                 <button
                   onClick={togglePapeLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
-                    }`}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showPapeLocations ? DEALERSHIP_BRANDING.PAPE.color : undefined }}
                 >
                   <span
                     className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showPapeLocations ? 'translate-x-5' : 'translate-x-1'
@@ -288,13 +292,16 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               {/* New Holland Dealers */}
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full ${showNewHollandLocations ? 'bg-blue-600' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">New Holland</span>
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.NEW_HOLLAND.color, opacity: showNewHollandLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.NEW_HOLLAND.name}</span>
                 </div>
                 <button
                   onClick={toggleNewHollandLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showNewHollandLocations ? 'bg-blue-600' : 'bg-input'
-                    }`}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showNewHollandLocations ? DEALERSHIP_BRANDING.NEW_HOLLAND.color : undefined }}
                 >
                   <span
                     className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showNewHollandLocations ? 'translate-x-5' : 'translate-x-1'
@@ -306,13 +313,16 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               {/* Case IH Dealers */}
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full ${showCaseIHLocations ? 'bg-red-600' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">Case IH</span>
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.CASE_IH.color, opacity: showCaseIHLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.CASE_IH.name}</span>
                 </div>
                 <button
                   onClick={toggleCaseIHLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showCaseIHLocations ? 'bg-red-600' : 'bg-input'
-                    }`}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showCaseIHLocations ? DEALERSHIP_BRANDING.CASE_IH.color : undefined }}
                 >
                   <span
                     className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showCaseIHLocations ? 'translate-x-5' : 'translate-x-1'
@@ -324,13 +334,16 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               {/* Kubota Dealers */}
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full ${showKubotaLocations ? 'bg-orange-500' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">Kubota</span>
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.KUBOTA.color, opacity: showKubotaLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.KUBOTA.name}</span>
                 </div>
                 <button
                   onClick={toggleKubotaLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors  ${showKubotaLocations ? 'bg-orange-500' : 'bg-input'
-                    }`}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showKubotaLocations ? DEALERSHIP_BRANDING.KUBOTA.color : undefined }}
                 >
                   <span
                     className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showKubotaLocations ? 'translate-x-5' : 'translate-x-1'
@@ -341,13 +354,16 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
               {/* Kioti Dealers */}
               <div className="flex items-center justify-between group">
                 <div className="flex items-center gap-2">
-                  <div className={`h-2 w-2 rounded-full ${showKiotiLocations ? 'bg-amber-600' : 'bg-muted'}`} />
-                  <span className="text-sm font-medium">Kioti</span>
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.KIOTI.color, opacity: showKiotiLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.KIOTI.name}</span>
                 </div>
                 <button
                   onClick={toggleKiotiLocations}
-                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors ${showKiotiLocations ? 'bg-amber-600' : 'bg-input'
-                    }`}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showKiotiLocations ? DEALERSHIP_BRANDING.KIOTI.color : undefined }}
                 >
                   <span
                     className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showKiotiLocations ? 'translate-x-5' : 'translate-x-1'

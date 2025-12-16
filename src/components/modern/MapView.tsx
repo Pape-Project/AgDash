@@ -10,6 +10,7 @@ import caseIHLocationsData from '../../data/case-ih-locations.json';
 import kubotaLocationsData from '../../data/kubota-locations.json';
 import kiotiLocationsData from '../../data/kioti-locations.json';
 import { useStore } from '../../store/useStore';
+import { DEALERSHIP_BRANDING } from '../../constants/branding';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
 interface MapViewProps {
@@ -556,41 +557,46 @@ function MapLegend() {
           {showPapeLocations && (
             <div className="flex items-center gap-2">
               <div
-                className="w-3 h-3 rounded-full flex-shrink-0 bg-[#FFDE00]"
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.PAPE.color }}
               />
-              <span className="text-[11px] text-foreground/90">Papé</span>
+              <span className="text-[11px] text-foreground/90">{DEALERSHIP_BRANDING.PAPE.name}</span>
             </div>
           )}
           {showNewHollandLocations && (
             <div className={`flex items-center gap-2 ${showPapeLocations ? 'mt-1' : ''}`}>
               <div
-                className="w-3 h-3 rounded-full flex-shrink-0 bg-[#0057B8]"
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.NEW_HOLLAND.color }}
               />
-              <span className="text-[11px] text-foreground/90">New Holland</span>
+              <span className="text-[11px] text-foreground/90">{DEALERSHIP_BRANDING.NEW_HOLLAND.name}</span>
             </div>
           )}
           {showCaseIHLocations && (
             <div className={`flex items-center gap-2 ${showPapeLocations || showNewHollandLocations ? 'mt-1' : ''}`}>
               <div
-                className="w-3 h-3 rounded-full flex-shrink-0 bg-[#D80000]"
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.CASE_IH.color }}
               />
-              <span className="text-[11px] text-foreground/90">Case IH</span>
+              <span className="text-[11px] text-foreground/90">{DEALERSHIP_BRANDING.CASE_IH.name}</span>
             </div>
           )}
           {showKubotaLocations && (
             <div className={`flex items-center gap-2 ${showPapeLocations || showNewHollandLocations || showCaseIHLocations ? 'mt-1' : ''}`}>
               <div
-                className="w-3 h-3 rounded-full flex-shrink-0 bg-[#F39200]"
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.KUBOTA.color }}
               />
-              <span className="text-[11px] text-foreground/90">Kubota</span>
+              <span className="text-[11px] text-foreground/90">{DEALERSHIP_BRANDING.KUBOTA.name}</span>
             </div>
           )}
           {showKiotiLocations && (
             <div className={`flex items-center gap-2 ${showPapeLocations || showNewHollandLocations || showCaseIHLocations || showKubotaLocations ? 'mt-1' : ''}`}>
               <div
-                className="w-3 h-3 rounded-full flex-shrink-0 bg-[#E31837]"
+                className="w-3 h-3 rounded-full flex-shrink-0"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.KIOTI.color }}
               />
-              <span className="text-[11px] text-foreground/90">Kioti</span>
+              <span className="text-[11px] text-foreground/90">{DEALERSHIP_BRANDING.KIOTI.name}</span>
             </div>
           )}
         </>
@@ -1322,7 +1328,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
               anchor="center"
             >
               <div
-                className="w-2 h-2 bg-[#FFDE00] rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                className="w-2 h-2 rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.PAPE.color }}
                 onMouseEnter={(e) => {
                   e.stopPropagation();
                   handlePapeHoverEnter(cluster);
@@ -1345,7 +1352,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
               anchor="center"
             >
               <div
-                className="w-2 h-2 bg-[#0057B8] rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                className="w-2 h-2 rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.NEW_HOLLAND.color }}
                 onMouseEnter={(e) => {
                   e.stopPropagation();
                   handlePapeHoverEnter(cluster);
@@ -1368,7 +1376,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
               anchor="center"
             >
               <div
-                className="w-2 h-2 bg-[#D80000] rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                className="w-2 h-2 rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.CASE_IH.color }}
                 onMouseEnter={(e) => {
                   e.stopPropagation();
                   handlePapeHoverEnter(cluster);
@@ -1391,7 +1400,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
               anchor="center"
             >
               <div
-                className="w-2 h-2 bg-[#F39200] rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                className="w-2 h-2 rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.KUBOTA.color }}
                 onMouseEnter={(e) => {
                   e.stopPropagation();
                   handlePapeHoverEnter(cluster);
@@ -1414,7 +1424,8 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
               anchor="center"
             >
               <div
-                className="w-2 h-2 bg-[#E31837] rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                className="w-2 h-2 rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                style={{ backgroundColor: DEALERSHIP_BRANDING.KIOTI.color }}
                 onMouseEnter={(e) => {
                   e.stopPropagation();
                   handlePapeHoverEnter(cluster);
@@ -1464,11 +1475,11 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
                   const isKubota = feature.properties.type === 'Kubota Dealer';
                   const isKioti = feature.properties.type === 'Kioti Dealer';
 
-                  let themeColor = '#FFDE00'; // Default Pape
-                  if (isNewHolland) themeColor = '#0057B8';
-                  if (isCaseIH) themeColor = '#D80000';
-                  if (isKubota) themeColor = '#F39200';
-                  if (isKioti) themeColor = '#E31837';
+                  let themeColor: string = DEALERSHIP_BRANDING.PAPE.color; // Default Pape
+                  if (isNewHolland) themeColor = DEALERSHIP_BRANDING.NEW_HOLLAND.color;
+                  if (isCaseIH) themeColor = DEALERSHIP_BRANDING.CASE_IH.color;
+                  if (isKubota) themeColor = DEALERSHIP_BRANDING.KUBOTA.color;
+                  if (isKioti) themeColor = DEALERSHIP_BRANDING.KIOTI.color;
 
                   let displayName = 'PAPÉ MACHINERY AGRICULTURE & TURF';
                   if (isNewHolland) displayName = feature.properties.name || 'NEW HOLLAND DEALER';
