@@ -3,6 +3,7 @@ import type { EnhancedCountyData } from '../../types/ag';
 import { formatNumber, formatAcres, formatCurrency } from '../../lib/format';
 import { MapPin, Filter, ArrowUp, ArrowDown, RotateCcw } from 'lucide-react';
 import type { SortField } from '../../types/ag';
+import { METRIC_OPTIONS } from './RankingConfigurationModal';
 import { useStore } from '../../store/useStore';
 
 interface CountyListProps {
@@ -12,18 +13,6 @@ interface CountyListProps {
   onConfigure: () => void;
   sortField: SortField;
 }
-
-const METRIC_LABELS: Record<string, string> = {
-  farms: 'Farms',
-  croplandAcres: 'Cropland',
-  irrigatedAcres: 'Irrigated',
-  landInFarmsAcres: 'Land in Farms',
-  harvestedCroplandAcres: 'Harvested',
-  marketValueTotalDollars: 'Total Sales',
-  cropsSalesDollars: 'Crop Sales',
-  livestockSalesDollars: 'Livestock Sales',
-  countyName: 'Name'
-};
 
 export function CountyList({
   counties,
@@ -88,7 +77,7 @@ export function CountyList({
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="text-sm font-semibold text-foreground">
-            {METRIC_LABELS[sortField] || 'County Rankings'}
+            {METRIC_OPTIONS.find(opt => opt.value === sortField)?.label || 'County Rankings'}
           </h3>
           <p className="text-xs text-muted-foreground mt-0.5">
             {getFilterSummary()} • {counties.length} results
@@ -149,11 +138,7 @@ export function CountyList({
               </div>
               <div className="text-right">
                 <div className="text-xs text-muted-foreground">
-                  {sortField === 'farms' ? 'Ranked Value' :
-                    sortField === 'croplandAcres' ? 'Cropland' :
-                      sortField === 'irrigatedAcres' ? 'Irrigated' :
-                        sortField === 'marketValueTotalDollars' ? 'Market Value' :
-                          'Value'}
+                  {METRIC_OPTIONS.find(opt => opt.value === sortField)?.label || 'Value'}
                 </div>
                 <div className="font-bold text-primary">
                   {sortField === 'croplandAcres' || sortField === 'irrigatedAcres' || sortField === 'harvestedCroplandAcres'

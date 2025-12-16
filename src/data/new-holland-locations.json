@@ -1,0 +1,917 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "87000 Christmas Valley Hwy, Christmas Valley, OR 97641",
+                "type": "New Holland Dealer",
+                "phone": "(541) 576-3026"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.6922712,
+                    43.2360834
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "2109 NW 6th St, Redmond, OR 97756",
+                "type": "New Holland Dealer",
+                "phone": "(541) 526-1827"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.1745208,
+                    44.2964688
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "4304 Highway 39, Klamath Falls, OR 97603",
+                "type": "New Holland Dealer",
+                "phone": "(541) 882-2571"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.6989017,
+                    42.187931
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "90330 Highway 99 North, Eugene, OR 97402",
+                "type": "New Holland Dealer",
+                "phone": "(541) 485-0407"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.1825863,
+                    44.1143241
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "S.S. Eq., Inc.",
+                "address": "34033 Excor Rd SW, Albany, OR 97321",
+                "type": "New Holland Dealer",
+                "phone": "(541) 757-8112"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.1737737,
+                    44.5677603
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "4720 Ridge Drive NE, Salem, OR 97301",
+                "type": "New Holland Dealer",
+                "phone": "(503) 364-2241"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.0022255,
+                    44.9922169
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "S.S. Eq., Inc.",
+                "address": "285 East Feedville Rd, Hermiston, OR 97838",
+                "type": "New Holland Dealer",
+                "phone": "(541) 567-3001"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.2866975,
+                    45.80641689999999
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "982 S Front St, Central Point, OR 97502",
+                "type": "New Holland Dealer",
+                "phone": "(541) 664-1270"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.9077036,
+                    42.3632135
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "S.S. Eq., Inc.",
+                "address": "60588 A McAlister, La Grande, OR 97850",
+                "type": "New Holland Dealer",
+                "phone": "(541) 963-8144"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.0462869,
+                    45.3010351
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Burrows Equipment",
+                "address": "55 SW 345th Ave, Hillsboro, OR 97123",
+                "type": "New Holland Dealer",
+                "phone": "(503) 992-6499"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.0331901,
+                    45.5196339
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Burrows Tractor Inc",
+                "address": "526 W Yakima Valley Highway, Sunnyside, WA 98944",
+                "type": "New Holland Dealer",
+                "phone": "(509) 837-2714"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.0270533,
+                    46.3289941
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Mountain View Equip",
+                "address": "3407 US Highway 95, Homedale, ID 83628",
+                "type": "New Holland Dealer",
+                "phone": "(208) 459-4609"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -116.9317167,
+                    43.6097229
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "S.S. Eq., Inc.",
+                "address": "708 N Oregon Ave, Pasco, WA 99301",
+                "type": "New Holland Dealer",
+                "phone": "(509) 547-1795"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.0847388,
+                    46.2394403
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Burrows Tractor Inc",
+                "address": "1308 E Mead Ave, Union Gap, WA 98903",
+                "type": "New Holland Dealer",
+                "phone": "(509) 457-8105"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.4833699,
+                    46.57702
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Mountain View Equip",
+                "address": "700 West Overland Road, Meridian, ID 83642",
+                "type": "New Holland Dealer",
+                "phone": "(208) 888-1593"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -116.4025115,
+                    43.5912581
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "S.S. Eq., Inc.",
+                "address": "2405 S Broadway, Othello, WA 99344",
+                "type": "New Holland Dealer",
+                "phone": "(509) 488-9607"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.1753745,
+                    46.8000996
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "155 Hamilton Road N, Chehalis, WA 98532",
+                "type": "New Holland Dealer",
+                "phone": "(360) 767-0600"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.9221576,
+                    46.61582079999999
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "S.S. Eq., Inc.",
+                "address": "4939 Hwy 281 North, Quincy, WA 98848",
+                "type": "New Holland Dealer",
+                "phone": "(509) 787-3595"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.8518825,
+                    47.15977909999999
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Carter Agri-Systems",
+                "address": "551 Highway 95 North, Winnemucca, NV 89445",
+                "type": "New Holland Dealer",
+                "phone": "(775) 623-5057"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -117.74139,
+                    40.98439
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Burrows Tractor Inc",
+                "address": "927 S Wenatchee Avenue, Wenatchee, WA 98801",
+                "type": "New Holland Dealer",
+                "phone": "(509) 888-0355"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.3009917,
+                    47.4124714
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Intermountain NH LLC",
+                "address": "1935 Kimberly Road, Twin Falls, ID 83301",
+                "type": "New Holland Dealer",
+                "phone": "(208) 733-8687"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -114.446779,
+                    42.549314
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "2500 Cedardale Rd, Mount Vernon, WA 98274",
+                "type": "New Holland Dealer",
+                "phone": "(360) 424-1600"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.3287408,
+                    48.4018532
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "285 Talmage Road, Ukiah, CA 95482",
+                "type": "New Holland Dealer",
+                "phone": "(707) 468-5880"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.2022232,
+                    39.1358261
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Intermountain NH LLC",
+                "address": "330 Commerce St, Heyburn, ID 83336",
+                "type": "New Holland Dealer",
+                "phone": "(208) 678-9044"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -113.7475168,
+                    42.5674747
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "275 Road 98, Woodland, CA 95695",
+                "type": "New Holland Dealer",
+                "phone": "(530) 615-2828"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.8025444,
+                    38.6800314
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Brim Tractor Company",
+                "address": "350 South Duffner Dr, Lynden, WA 98264",
+                "type": "New Holland Dealer",
+                "phone": "(360) 354-4411"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.488821,
+                    48.9366127
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "7580 Hwy 10 West, Missoula, MT 59808",
+                "type": "New Holland Dealer",
+                "phone": "(406) 543-7782"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -114.1250369,
+                    46.9427429
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "211A Cresco Court, Santa Rosa, CA 95407-8146",
+                "type": "New Holland Dealer",
+                "phone": "(707) 586-1790"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.7188918,
+                    38.3815287
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "4088 Russell Road, Fairfield, CA 94534",
+                "type": "New Holland Dealer",
+                "phone": "(707) 425-9545"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.096223,
+                    38.2405445
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Dolk Tractor Company",
+                "address": "242 North Front St, Rio Vista, CA 94571",
+                "type": "New Holland Dealer",
+                "phone": "(707) 374-6438"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.6890827,
+                    38.1587148
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "2924 French Camp Turnpike Rd PO Box 6219, Stockton, CA 95206",
+                "type": "New Holland Dealer",
+                "phone": "(209) 948-5401"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.2895389,
+                    37.9193487
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "5933 McHenry Avenue, Modesto, CA 95356",
+                "type": "New Holland Dealer",
+                "phone": "(209) 538-0911"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.9959498,
+                    37.7249679
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "3245 Highway 93 S, Kalispell, MT 59901",
+                "type": "New Holland Dealer",
+                "phone": "(406) 407-7230"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -114.2865126,
+                    48.1513058
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "2400 N Golden State Blvd, Turlock, CA 95382",
+                "type": "New Holland Dealer",
+                "phone": "(209) 632-3931"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.8683761,
+                    37.5153533
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Carter Agri-Systems",
+                "address": "45 West First N, Lund, NV 89317",
+                "type": "New Holland Dealer",
+                "phone": "(775) 238-5295"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -115.0126087,
+                    38.8605043
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "2101 L Street, Newman, CA 95360",
+                "type": "New Holland Dealer",
+                "phone": "(209) 862-3760"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.0160291,
+                    37.3062645
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "N & S Tractor Co.",
+                "address": "600 S State Highway 59, Merced, CA 95341",
+                "type": "New Holland Dealer",
+                "phone": "(209) 383-5888"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.4997134,
+                    37.294617
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "700 South Highway 59, Merced, CA 95341",
+                "type": "New Holland Dealer",
+                "phone": "(209) 726-4600"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.4994583,
+                    37.29509
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Valley Implement Co.",
+                "address": "213 West 800 North, Preston, ID 83263",
+                "type": "New Holland Dealer",
+                "phone": "(208) 852-0430"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.8829879,
+                    42.1100311
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "15 Hydraulic Lane, East Helena, MT 59635",
+                "type": "New Holland Dealer",
+                "phone": "(406) 393-0007"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.9155461,
+                    46.5896567
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "800 S Madera Ave, Madera, CA 93637",
+                "type": "New Holland Dealer",
+                "phone": "(559) 674-2496"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.0568193,
+                    36.9449507
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "5900 Jackrabbit Lane, Belgrade, MT 59714",
+                "type": "New Holland Dealer",
+                "phone": "(406) 388-8500"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.1833395,
+                    45.75595
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "3040 S Parkway Drive, Fresno, CA 93725",
+                "type": "New Holland Dealer",
+                "phone": "(559) 485-9090"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.7590713,
+                    36.6914127
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Coastal Tractor",
+                "address": "10 Harris Place, Salinas, CA 93901",
+                "type": "New Holland Dealer",
+                "phone": "(831) 757-4101"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.6134851,
+                    36.6414487
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Kings River Tractor",
+                "address": "1230 G Street, Reedley, CA 93654",
+                "type": "New Holland Dealer",
+                "phone": "(559) 638-2205"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.4490372,
+                    36.5951009
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Kings River Tractor",
+                "address": "1347 N Century Street, Visalia, CA 93291",
+                "type": "New Holland Dealer",
+                "phone": "(559) 651-2109"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.3973982,
+                    36.3415518
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Coastal Tractor",
+                "address": "110 E San Antonio Dr, King City, CA 93930",
+                "type": "New Holland Dealer",
+                "phone": "(831) 385-5401"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.1270594,
+                    36.2213483
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Stratford Tractor",
+                "address": "20280 Main Street, Stratford, CA 93266",
+                "type": "New Holland Dealer",
+                "phone": "(559) 947-3301"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.8222876,
+                    36.1899233
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Garton Tractor, Inc.",
+                "address": "4780 South K Street, Tulare, CA 93274",
+                "type": "New Holland Dealer",
+                "phone": "(559) 686-0054"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.3333833,
+                    36.1619205
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Berchtold Equipment",
+                "address": "1407 S Lexington Street, Delano, CA 93215",
+                "type": "New Holland Dealer",
+                "phone": "(661) 725-1500"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.2401821,
+                    35.7429588
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Coastal Tractor",
+                "address": "2348 Golden Hill Road, Paso Robles, CA 93446",
+                "type": "New Holland Dealer",
+                "phone": "(805) 239-5772"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.6571681,
+                    35.6439515
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "90 Cottonwood Creek Road, Lewistown, MT 59457",
+                "type": "New Holland Dealer",
+                "phone": "(406) 538-8795"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.5040802,
+                    47.0543539
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Berchtold Equipment",
+                "address": "3000 Pegasus Dr, Bakersfield, CA 93308",
+                "type": "New Holland Dealer",
+                "phone": "(661) 323-7817"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.0637947,
+                    35.4329546
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "5022 Laurel Road, Billings, MT 59101",
+                "type": "New Holland Dealer",
+                "phone": "(406) 252-8614"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -108.5401527,
+                    45.7625982
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "4180 US Highway 2 W, Havre, MT 59501",
+                "type": "New Holland Dealer",
+                "phone": "(406) 265-5887"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.7455214,
+                    48.5546495
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Berchtold Equipment",
+                "address": "1410 W Betteravia Rd, Santa Maria, CA 93455",
+                "type": "New Holland Dealer",
+                "phone": "(805) 922-7905"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.4616033,
+                    34.9201653
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "4 Old Highway 10, Hysham, MT 59038",
+                "type": "New Holland Dealer",
+                "phone": "(406) 342-5571"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -107.2258423,
+                    46.2941267
+                ]
+            }
+        }
+    ]
+}
