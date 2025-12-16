@@ -92,38 +92,42 @@ export function HeatmapControl({ onOpenRankingModal }: HeatmapControlProps) {
                     </div>
                 </div>
 
-                {heatmapMode && (
-                    <div className="space-y-3 pt-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div
+                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${heatmapMode ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+                >
+                    <div className="overflow-hidden">
+                        <div className="space-y-3 pt-2">
 
-                        {/* Filter Button */}
-                        <button
-                            onClick={onOpenRankingModal}
-                            className="w-full flex items-center justify-center gap-2 p-2.5 text-sm font-medium rounded-md border border-input bg-background hover:bg-secondary transition-all hover:border-primary/50 group"
-                        >
-                            <Filter className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                            <span>Configure Heatmap</span>
-                        </button>
+                            {/* Filter Button */}
+                            <button
+                                onClick={onOpenRankingModal}
+                                className="w-full flex items-center justify-center gap-2 p-2.5 text-sm font-medium rounded-md border border-input bg-background hover:bg-secondary transition-all hover:border-primary/50 group"
+                            >
+                                <Filter className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                <span>Configure Heatmap</span>
+                            </button>
 
-                        {/* Detailed Info Tooltip */}
-                        <div className="flex gap-2 p-3 bg-primary/5 rounded-md text-xs text-muted-foreground border border-primary/10">
-                            <Info className="h-4 w-4 flex-shrink-0 mt-0.5 text-primary/60" />
-                            <div className="space-y-1.5 flex-1">
-                                <p className="leading-relaxed">
-                                    Visualizing <span className="font-semibold text-foreground">{getMetricLabel(sortField)}</span> density across
-                                    <span className="font-semibold text-foreground">
-                                        {selectedStates.length > 0
-                                            ? ` ${selectedStates.length === 1 ? selectedStates[0] : `${selectedStates.length} states`}`
-                                            : selectedLocations.length > 0
-                                                ? ` ${selectedLocations.map(l => regionNames[l as keyof typeof regionNames]).slice(0, 2).join(' & ')}${selectedLocations.length > 2 ? '...' : ''}`
-                                                : " all states"}
-                                    </span>.
-                                    {Object.keys(metricRanges).length > 0 && " Additional value filters are active."}
-                                    {" Darker areas represent higher concentrations."}
-                                </p>
+                            {/* Detailed Info Tooltip */}
+                            <div className="flex gap-2 p-3 bg-primary/5 rounded-md text-xs text-muted-foreground border border-primary/10">
+                                <Info className="h-4 w-4 flex-shrink-0 mt-0.5 text-primary/60" />
+                                <div className="space-y-1.5 flex-1">
+                                    <p className="leading-relaxed">
+                                        Visualizing <span className="font-semibold text-foreground">{getMetricLabel(sortField)}</span> density across
+                                        <span className="font-semibold text-foreground">
+                                            {selectedStates.length > 0
+                                                ? ` ${selectedStates.length === 1 ? selectedStates[0] : `${selectedStates.length} states`}`
+                                                : selectedLocations.length > 0
+                                                    ? ` ${selectedLocations.map(l => regionNames[l as keyof typeof regionNames]).slice(0, 2).join(' & ')}${selectedLocations.length > 2 ? '...' : ''}`
+                                                    : " all states"}
+                                        </span>.
+                                        {Object.keys(metricRanges).length > 0 && " Additional value filters are active."}
+                                        {" Darker areas represent higher concentrations."}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
             </div>
         </Card>
     );
