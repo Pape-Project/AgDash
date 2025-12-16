@@ -547,24 +547,24 @@ function MapLegend() {
         <div className="my-2 border-t border-border/50" />
       )}
 
-      {showPapeLocations && (
+      {(showPapeLocations || showNewHollandLocations) && (
         <>
-          {(showPapeLocations || showNewHollandLocations) && (
-            <>
-              <h3 className="text-xs font-semibold mb-2 text-foreground">Dealerships</h3>
-              <div className="flex items-center gap-2">
-                <div
-                  className="w-3 h-3 rounded-full flex-shrink-0 bg-[#FFDE00]"
-                />
-                <span className="text-[11px] text-foreground/90">Papé</span>
-              </div>
-              <div className="flex items-center gap-2 mt-1">
-                <div
-                  className="w-3 h-3 rounded-full flex-shrink-0 bg-[#0057B8]"
-                />
-                <span className="text-[11px] text-foreground/90">New Holland</span>
-              </div>
-            </>
+          <h3 className="text-xs font-semibold mb-2 text-foreground">Dealerships</h3>
+          {showPapeLocations && (
+            <div className="flex items-center gap-2">
+              <div
+                className="w-3 h-3 rounded-full flex-shrink-0 bg-[#FFDE00]"
+              />
+              <span className="text-[11px] text-foreground/90">Papé</span>
+            </div>
+          )}
+          {showNewHollandLocations && (
+            <div className={`flex items-center gap-2 ${showPapeLocations ? 'mt-1' : ''}`}>
+              <div
+                className="w-3 h-3 rounded-full flex-shrink-0 bg-[#0057B8]"
+              />
+              <span className="text-[11px] text-foreground/90">New Holland</span>
+            </div>
           )}
         </>
       )}
@@ -1368,7 +1368,7 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       </div>
 
       {/* Map Legend */}
-      {(regionMode || showPapeLocations) && <MapLegend />}
+      {(regionMode || showPapeLocations || showNewHollandLocations) && <MapLegend />}
 
       {/* Hover tooltip - ONLY for counties now, hidden when Pape popup is open */}
       {hoverInfo && !popupInfo && (

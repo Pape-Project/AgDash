@@ -101,10 +101,8 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
       if (showNewHollandLocations) toggleNewHollandLocations();
       setDealershipsExpanded(false);
     } else {
-      // Turn on all if none are on, otherwise just expand?
-      // User likely wants to "Turn On Dealerships".
+      // Turn on only Papé by default when expanding
       if (!showPapeLocations) togglePapeLocations();
-      if (!showNewHollandLocations) toggleNewHollandLocations();
       setDealershipsExpanded(true);
     }
   };
