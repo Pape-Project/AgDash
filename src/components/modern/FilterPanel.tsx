@@ -1,4 +1,4 @@
-import { X, Plus, BarChart3, Clock, MapPin } from 'lucide-react';
+import { X, Plus, BarChart3, Clock, Building2 } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -26,6 +26,8 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
     clearComparison,
     showPapeLocations,
     togglePapeLocations,
+    showNewHollandLocations,
+    toggleNewHollandLocations,
   } = useStore();
 
   const availableStates = useMemo(() => getUniqueStates(allCounties), [allCounties]);
@@ -87,6 +89,24 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
     addToComparison(county);
     setCountySearchQuery('');
     setShowCountyDropdown(false);
+  };
+
+  // Dealerships state
+  const [dealershipsExpanded, setDealershipsExpanded] = useState(() => showPapeLocations || showNewHollandLocations);
+
+  const handleDealershipsToggle = () => {
+    if (dealershipsExpanded) {
+      // Turn off all
+      if (showPapeLocations) togglePapeLocations();
+      if (showNewHollandLocations) toggleNewHollandLocations();
+      setDealershipsExpanded(false);
+    } else {
+      // Turn on all if none are on, otherwise just expand?
+      // User likely wants to "Turn On Dealerships".
+      if (!showPapeLocations) togglePapeLocations();
+      if (!showNewHollandLocations) toggleNewHollandLocations();
+      setDealershipsExpanded(true);
+    }
   };
 
 
@@ -217,22 +237,66 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
       <RegionControl />
 
       {/* Dealership Locations Control */}
-      <Card className={`p-4 relative overflow-hidden transition-all duration-300 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-yellow-500 before:transition-all before:duration-300 ${showPapeLocations ? 'before:opacity-100' : 'before:opacity-0'}`}>
-        <div className="flex items-center justify-between">
+      {/* Dealerships Group */}
+      <Card className={`p-4 transition-all duration-300 ${dealershipsExpanded ? 'ring-2 ring-primary/20' : ''}`}>
+        <div className="flex items-center justify-between mb-0">
           <div className="flex items-center gap-2">
-            <MapPin className={`h-5 w-5 ${showPapeLocations ? 'text-yellow-500' : 'text-muted-foreground'}`} />
+            <Building2 className={`h-5 w-5 ${dealershipsExpanded ? 'text-primary' : 'text-muted-foreground'}`} />
             <span className="font-semibold">Dealerships</span>
           </div>
           <button
-            onClick={togglePapeLocations}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
+            onClick={handleDealershipsToggle}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${dealershipsExpanded ? 'bg-primary' : 'bg-input'
               }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showPapeLocations ? 'translate-x-6' : 'translate-x-1'
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${dealershipsExpanded ? 'translate-x-6' : 'translate-x-1'
                 }`}
             />
           </button>
+        </div>
+
+        {/* Expandable Section */}
+        <div className={`grid transition-all duration-300 ease-in-out ${dealershipsExpanded ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+          <div className="overflow-hidden">
+            <div className="space-y-3 pl-2 border-l-2 border-muted ml-1">
+              {/* Pape Dealerships */}
+              <div className="flex items-center justify-between group">
+                <div className="flex items-center gap-2">
+                  <div className={`h-2 w-2 rounded-full ${showPapeLocations ? 'bg-yellow-500' : 'bg-muted'}`} />
+                  <span className="text-sm font-medium">Papé Dealerships</span>
+                </div>
+                <button
+                  onClick={togglePapeLocations}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-1 ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
+                    }`}
+                >
+                  <span
+                    className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showPapeLocations ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+              </div>
+
+              {/* New Holland Dealers */}
+              <div className="flex items-center justify-between group">
+                <div className="flex items-center gap-2">
+                  <div className={`h-2 w-2 rounded-full ${showNewHollandLocations ? 'bg-blue-600' : 'bg-muted'}`} />
+                  <span className="text-sm font-medium">New Holland Dealers</span>
+                </div>
+                <button
+                  onClick={toggleNewHollandLocations}
+                  className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-1 ${showNewHollandLocations ? 'bg-blue-600' : 'bg-input'
+                    }`}
+                >
+                  <span
+                    className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showNewHollandLocations ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </Card>
     </div>

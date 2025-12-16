@@ -5,6 +5,7 @@ import type { MapRef, MapLayerMouseEvent } from 'react-map-gl/maplibre';
 import Supercluster from 'supercluster';
 import type { EnhancedCountyData } from '../../types/ag';
 import papeLocationsData from '../../data/pape-locations.json';
+import newHollandLocationsData from '../../data/new-holland-locations.json';
 import { useStore } from '../../store/useStore';
 import 'maplibre-gl/dist/maplibre-gl.css';
 
@@ -504,7 +505,7 @@ function buildHeatmapColorExpression(metric: string, counties: EnhancedCountyDat
 
 // Map Legend Component
 function MapLegend() {
-  const { regionMode, showPapeLocations } = useStore();
+  const { regionMode, showPapeLocations, showNewHollandLocations } = useStore();
 
   const regionOrder: (keyof typeof REGIONS)[] = [
     'PUGET_SOUND',
@@ -515,7 +516,7 @@ function MapLegend() {
     'SACRAMENTO',
   ];
 
-  if (!regionMode && !showPapeLocations) return null;
+  if (!regionMode && !showPapeLocations && !showNewHollandLocations) return null;
 
   return (
     <div className="absolute bottom-12 right-6 bg-card/95 backdrop-blur-sm border border-border rounded-md p-3 shadow-lg z-10 min-w-[140px]">
@@ -542,19 +543,29 @@ function MapLegend() {
         </>
       )}
 
-      {regionMode && showPapeLocations && (
+      {regionMode && (showPapeLocations || showNewHollandLocations) && (
         <div className="my-2 border-t border-border/50" />
       )}
 
       {showPapeLocations && (
         <>
-          <h3 className="text-xs font-semibold mb-2 text-foreground">Dealerships</h3>
-          <div className="flex items-center gap-2">
-            <div
-              className="w-3 h-3 rounded-full flex-shrink-0 bg-[#FFDE00]"
-            />
-            <span className="text-[11px] text-foreground/90">Papé</span>
-          </div>
+          {(showPapeLocations || showNewHollandLocations) && (
+            <>
+              <h3 className="text-xs font-semibold mb-2 text-foreground">Dealerships</h3>
+              <div className="flex items-center gap-2">
+                <div
+                  className="w-3 h-3 rounded-full flex-shrink-0 bg-[#FFDE00]"
+                />
+                <span className="text-[11px] text-foreground/90">Papé</span>
+              </div>
+              <div className="flex items-center gap-2 mt-1">
+                <div
+                  className="w-3 h-3 rounded-full flex-shrink-0 bg-[#0057B8]"
+                />
+                <span className="text-[11px] text-foreground/90">New Holland</span>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>
@@ -583,10 +594,12 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
   // Get comparison counties from store
   // Get comparison counties from store
-  const { comparisonCounties, heatmapMode, showPapeLocations, sortField, regionMode } = useStore();
+  // Get comparison counties from store
+  const { comparisonCounties, heatmapMode, showPapeLocations, showNewHollandLocations, sortField, regionMode } = useStore();
 
   // Clustering state
   const [clusters, setClusters] = useState<any[]>([]);
+  const [newHollandClusters, setNewHollandClusters] = useState<any[]>([]);
 
   // Initialize Supercluster
   const supercluster = useMemo(() => {
@@ -595,6 +608,15 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
       maxZoom: 14,
     });
     index.load(papeLocationsData.features as any);
+    return index;
+  }, []);
+
+  const superclusterNewHolland = useMemo(() => {
+    const index = new Supercluster({
+      radius: 5,
+      maxZoom: 14,
+    });
+    index.load(newHollandLocationsData.features as any);
     return index;
   }, []);
 
@@ -611,10 +633,11 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
 
     try {
       setClusters(supercluster.getClusters(newBounds, Math.floor(newZoom)));
+      setNewHollandClusters(superclusterNewHolland.getClusters(newBounds, Math.floor(newZoom)));
     } catch (e) {
       console.error("Error updating clusters", e);
     }
-  }, [supercluster]);
+  }, [supercluster, superclusterNewHolland]);
 
   // Initial cluster load 
   useEffect(() => {
@@ -1208,7 +1231,6 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
         {showPapeLocations && clusters.map((cluster) => {
           const [longitude, latitude] = cluster.geometry.coordinates;
 
-
           return (
             <Marker
               key={`location-${cluster.id || cluster.properties.name}-${longitude}-${latitude}`}
@@ -1218,6 +1240,29 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
             >
               <div
                 className="w-2 h-2 bg-[#FFDE00] rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
+                onMouseEnter={(e) => {
+                  e.stopPropagation();
+                  handlePapeHoverEnter(cluster);
+                }}
+                onMouseLeave={handlePapeHoverLeave}
+              />
+            </Marker>
+          );
+        })}
+
+        {/* New Holland MARKERS */}
+        {showNewHollandLocations && newHollandClusters.map((cluster) => {
+          const [longitude, latitude] = cluster.geometry.coordinates;
+
+          return (
+            <Marker
+              key={`nh-location-${cluster.id || cluster.properties.name}-${longitude}-${latitude}`}
+              longitude={longitude}
+              latitude={latitude}
+              anchor="center"
+            >
+              <div
+                className="w-2 h-2 bg-[#0057B8] rounded-full shadow-sm cursor-pointer hover:scale-150 transition-transform hover:z-50"
                 onMouseEnter={(e) => {
                   e.stopPropagation();
                   handlePapeHoverEnter(cluster);
@@ -1262,16 +1307,20 @@ export function MapView({ counties = [], filteredCounties, onCountyClick }: MapV
                   const address = feature.properties.address || '';
                   const { city, state } = getCityStateFromAddress(address);
                   const phone = feature.properties.phone || '541-555-0100'; // Fallback if missing
+                  const isNewHolland = feature.properties.type === 'New Holland Dealer';
+                  const themeColor = isNewHolland ? '#0057B8' : '#FFDE00';
+                  // Show name if New Holland, otherwise title
+                  const displayName = isNewHolland ? (feature.properties.name || 'NEW HOLLAND DEALER') : 'PAPÉ MACHINERY AGRICULTURE & TURF';
 
                   return (
-                    <div key={index} className={`flex flex-col gap-1 ${index > 0 ? 'mt-4 border-t border-yellow-500/30 pt-3' : ''}`}>
+                    <div key={index} className={`flex flex-col gap-1 ${index > 0 ? `mt-4 border-t pt-3` : ''}`} style={{ borderColor: index > 0 ? `${themeColor}4D` : 'transparent' }}>
                       <div className="font-bold text-base leading-tight text-white">
                         {city}, {state}
                       </div>
-                      <div className="text-[10px] font-bold text-[#FFDE00] uppercase tracking-wide leading-tight">
-                        PAPÉ MACHINERY AGRICULTURE & TURF
+                      <div className="text-[10px] font-bold uppercase tracking-wide leading-tight" style={{ color: themeColor }}>
+                        {displayName}
                       </div>
-                      <a href={`tel:${phone}`} className="font-bold text-sm text-white hover:text-[#FFDE00] transition-colors outline-none focus:outline-none">
+                      <a href={`tel:${phone}`} className="font-bold text-sm text-white hover:opacity-80 transition-opacity outline-none focus:outline-none">
                         {phone}
                       </a>
                       <div className="text-sm text-gray-300 leading-tight">
