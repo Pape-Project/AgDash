@@ -18,7 +18,7 @@ interface RankingConfigurationModalProps {
 type MetricCategory = 'Generals' | 'Financials' | 'Crops' | 'Livestock';
 
 const METRIC_CATEGORIES: Record<MetricCategory, SortField[]> = {
-    'Generals': ['farms', 'croplandAcres', 'irrigatedAcres', 'harvestedCroplandAcres', 'applesAcres', 'wheatAcres', 'riceAcres', 'hazelnutsAcres', 'grassSeedAcres', 'cornAcres', 'cornSilageAcres', 'hayAcres', 'haylageAcres', 'beefCattleHead', 'dairyCattleHead'],
+    'Generals': ['farms', 'croplandAcres', 'irrigatedAcres', 'harvestedCroplandAcres', 'applesAcres', 'wheatAcres', 'riceAcres', 'hazelnutsAcres', 'grassSeedAcres', 'cornAcres', 'cornSilageAcres', 'hayAcres', 'haylageAcres', 'beefCattleHead', 'dairyCattleHead', 'farms1to9Acres', 'farms10to49Acres', 'farms50to69Acres', 'farms70to99Acres', 'farms100to139Acres', 'farms140to179Acres', 'farms180to499Acres', 'farms500to999Acres', 'farms1000to1999Acres', 'farms2000PlusAcres'],
     'Financials': ['marketValueTotalDollars', 'cropsSalesDollars', 'livestockSalesDollars'],
     'Crops': ['applesAcres', 'wheatAcres', 'riceAcres', 'hazelnutsAcres', 'grassSeedAcres', 'cornAcres', 'cornSilageAcres', 'hayAcres', 'haylageAcres'],
     'Livestock': ['beefCattleHead', 'dairyCattleHead']
@@ -31,7 +31,17 @@ interface MetricOption {
 }
 
 const METRIC_OPTIONS: MetricOption[] = [
-    { value: 'farms', label: 'Number of Farms', category: 'Generals' },
+    { value: 'farms1to9Acres', label: 'Farms 1-9 Acres', category: 'Generals' },
+    { value: 'farms10to49Acres', label: 'Farms 10-49 Acres', category: 'Generals' },
+    { value: 'farms50to69Acres', label: 'Farms 50-69 Acres', category: 'Generals' },
+    { value: 'farms70to99Acres', label: 'Farms 70-99 Acres', category: 'Generals' },
+    { value: 'farms100to139Acres', label: 'Farms 100-139 Acres', category: 'Generals' },
+    { value: 'farms140to179Acres', label: 'Farms 140-179 Acres', category: 'Generals' },
+    { value: 'farms180to499Acres', label: 'Farms 180-499 Acres', category: 'Generals' },
+    { value: 'farms500to999Acres', label: 'Farms 500-999 Acres', category: 'Generals' },
+    { value: 'farms1000to1999Acres', label: 'Farms 1,000-1,999 Acres', category: 'Generals' },
+    { value: 'farms2000PlusAcres', label: 'Farms 2,000+ Acres', category: 'Generals' },
+    { value: 'farms', label: 'Total Number of Farms', category: 'Generals' },
     { value: 'croplandAcres', label: 'Cropland Acres', category: 'Generals' },
     { value: 'irrigatedAcres', label: 'Irrigated Acres', category: 'Generals' },
     { value: 'harvestedCroplandAcres', label: 'Harvested Cropland', category: 'Generals' },
@@ -53,7 +63,6 @@ const METRIC_OPTIONS: MetricOption[] = [
     { value: 'beefCattleHead', label: 'Beef Cattle', category: 'Livestock' },
     { value: 'dairyCattleHead', label: 'Dairy Cattle', category: 'Livestock' },
 ];
-
 
 export function RankingConfigurationModal({
     isOpen,
@@ -142,6 +151,12 @@ export function RankingConfigurationModal({
         // 2. Check which metrics have data (value > 0) in the filtered set
         const metrics = new Set<string>();
         METRIC_OPTIONS.forEach(metric => {
+            // Always include Generals category metrics
+            if (metric.category === 'Generals') {
+                metrics.add(metric.value);
+                return;
+            }
+
             const hasData = geofilteredCounties.some(c => {
                 const val = c[metric.value];
                 return typeof val === 'number' && val > 0;

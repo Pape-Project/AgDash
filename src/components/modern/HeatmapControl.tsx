@@ -26,7 +26,7 @@ export function HeatmapControl({ onOpenRankingModal }: HeatmapControlProps) {
     // Metric Label Lookup
     const getMetricLabel = (field: SortField) => {
         const labels: Record<string, string> = {
-            farms: 'Number of Farms',
+            farms: 'Total Number of Farms',
             croplandAcres: 'Cropland Acres',
             irrigatedAcres: 'Irrigated Acres',
             harvestedCroplandAcres: 'Harvested Cropland',
@@ -44,6 +44,16 @@ export function HeatmapControl({ onOpenRankingModal }: HeatmapControlProps) {
             haylageAcres: 'Haylage',
             beefCattleHead: 'Beef Cattle',
             dairyCattleHead: 'Dairy Cattle',
+            farms1to9Acres: 'Farms 1-9 Acres',
+            farms10to49Acres: 'Farms 10-49 Acres',
+            farms50to69Acres: 'Farms 50-69 Acres',
+            farms70to99Acres: 'Farms 70-99 Acres',
+            farms100to139Acres: 'Farms 100-139 Acres',
+            farms140to179Acres: 'Farms 140-179 Acres',
+            farms180to499Acres: 'Farms 180-499 Acres',
+            farms500to999Acres: 'Farms 500-999 Acres',
+            farms1000to1999Acres: 'Farms 1,000-1,999 Acres',
+            farms2000PlusAcres: 'Farms 2,000+ Acres',
             countyName: 'County Name'
         };
         return labels[field] || field;

@@ -109,6 +109,15 @@ METRICS = {
 
     # Grass seed total
     "grass_seed_acres": ("GRASSES, SEED - ACRES HARVESTED", None),
+
+    # --- FARM SIZE (For Small Tractor Potential) ---
+    # Domain: AREA OPERATED
+    "farms_1_9_acres": ("FARM OPERATIONS - NUMBER OF OPERATIONS", {"domain_desc": "AREA OPERATED", "domaincat_desc": "AREA OPERATED: (1.0 TO 9.9 ACRES)"}),
+    "farms_10_49_acres": ("FARM OPERATIONS - NUMBER OF OPERATIONS", {"domain_desc": "AREA OPERATED", "domaincat_desc": "AREA OPERATED: (10.0 TO 49.9 ACRES)"}),
+    "farms_50_69_acres": ("FARM OPERATIONS - NUMBER OF OPERATIONS", {"domain_desc": "AREA OPERATED", "domaincat_desc": "AREA OPERATED: (50.0 TO 69.9 ACRES)"}),
+    "farms_70_99_acres": ("FARM OPERATIONS - NUMBER OF OPERATIONS", {"domain_desc": "AREA OPERATED", "domaincat_desc": "AREA OPERATED: (70.0 TO 99.9 ACRES)"}),
+    "farms_100_139_acres": ("FARM OPERATIONS - NUMBER OF OPERATIONS", {"domain_desc": "AREA OPERATED", "domaincat_desc": "AREA OPERATED: (100 TO 139 ACRES)"}),
+    "farms_140_179_acres": ("FARM OPERATIONS - NUMBER OF OPERATIONS", {"domain_desc": "AREA OPERATED", "domaincat_desc": "AREA OPERATED: (140 TO 179 ACRES)"}),
 }
 
 # --- Cache Directory ---------------------------------------------------------

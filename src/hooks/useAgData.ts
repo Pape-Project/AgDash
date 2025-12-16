@@ -53,8 +53,8 @@ function parseCSV(csvText: string): CountyData[] {
   const lines = csvText.trim().split('\n');
   if (lines.length < 2) return [];
 
-  // Parse headers (handle BOM if present)
-  const headers = lines[0].split(',').map(h => h.trim().replace(/^\ufeff/, ''));
+  // Parse headers: trim and lowercase for robust matching
+  const headers = lines[0].split(',').map(h => h.trim().replace(/^\ufeff/, '').toLowerCase());
   const headerMap = new Map<string, number>();
   headers.forEach((h, i) => headerMap.set(h, i));
 
@@ -91,6 +91,16 @@ function parseCSV(csvText: string): CountyData[] {
     haylageAcres: 'haylage_acres',
     beefCattleHead: 'beef_cattle_head',
     dairyCattleHead: 'dairy_cattle_head',
+    farms1to9Acres: 'farms_1_9_acres',
+    farms10to49Acres: 'farms_10_49_acres',
+    farms50to69Acres: 'farms_50_69_acres',
+    farms70to99Acres: 'farms_70_99_acres',
+    farms100to139Acres: 'farms_100_139_acres',
+    farms140to179Acres: 'farms_140_179_acres',
+    farms180to499Acres: 'farms_180_499_acres',
+    farms500to999Acres: 'farms_500_999_acres',
+    farms1000to1999Acres: 'farms_1000_1999_acres',
+    farms2000PlusAcres: 'farms_2000_plus_acres',
   };
 
   return lines.slice(1).map((line) => {
@@ -99,7 +109,7 @@ function parseCSV(csvText: string): CountyData[] {
 
     // Helper to safely parse numbers, returning null for empty/invalid values
     const parseNumber = (columnKey: keyof CountyData): number | null => {
-      const csvHeader = columnMapping[columnKey];
+      const csvHeader = columnMapping[columnKey].toLowerCase();
       const index = headerMap.get(csvHeader);
 
       if (index === undefined) return null; // Column not in CSV
@@ -116,7 +126,7 @@ function parseCSV(csvText: string): CountyData[] {
 
     // Helper for string values
     const parseString = (columnKey: keyof CountyData): string => {
-      const csvHeader = columnMapping[columnKey];
+      const csvHeader = columnMapping[columnKey].toLowerCase();
       const index = headerMap.get(csvHeader);
 
       if (index === undefined) return '';
@@ -156,6 +166,16 @@ function parseCSV(csvText: string): CountyData[] {
       haylageAcres: parseNumber('haylageAcres'),
       beefCattleHead: parseNumber('beefCattleHead'),
       dairyCattleHead: parseNumber('dairyCattleHead'),
+      farms1to9Acres: parseNumber('farms1to9Acres'),
+      farms10to49Acres: parseNumber('farms10to49Acres'),
+      farms50to69Acres: parseNumber('farms50to69Acres'),
+      farms70to99Acres: parseNumber('farms70to99Acres'),
+      farms100to139Acres: parseNumber('farms100to139Acres'),
+      farms140to179Acres: parseNumber('farms140to179Acres'),
+      farms180to499Acres: parseNumber('farms180to499Acres'),
+      farms500to999Acres: parseNumber('farms500to999Acres'),
+      farms1000to1999Acres: parseNumber('farms1000to1999Acres'),
+      farms2000PlusAcres: parseNumber('farms2000PlusAcres'),
     };
   });
 }
