@@ -35,6 +35,17 @@ export interface CountyData {
   haylageAcres: number | null;
   beefCattleHead: number | null;
   dairyCattleHead: number | null;
+  // Farm Size (for Small Tractor Potential)
+  farms1to9Acres: number | null;
+  farms10to49Acres: number | null;
+  farms50to69Acres: number | null;
+  farms70to99Acres: number | null;
+  farms100to139Acres: number | null;
+  farms140to179Acres: number | null;
+  farms180to499Acres: number | null;
+  farms500to999Acres: number | null;
+  farms1000to1999Acres: number | null;
+  farms2000PlusAcres: number | null;
 }
 
 /**
@@ -69,6 +80,7 @@ export type SortField =
   | 'marketValueTotalDollars'
   | 'cropsSalesDollars'
   | 'livestockSalesDollars'
+  | 'govPaymentsDollars'
   | 'applesAcres'
   | 'wheatAcres'
   | 'riceAcres'
@@ -79,7 +91,17 @@ export type SortField =
   | 'hayAcres'
   | 'haylageAcres'
   | 'beefCattleHead'
-  | 'dairyCattleHead';
+  | 'dairyCattleHead'
+  | 'farms1to9Acres'
+  | 'farms10to49Acres'
+  | 'farms50to69Acres'
+  | 'farms70to99Acres'
+  | 'farms100to139Acres'
+  | 'farms140to179Acres'
+  | 'farms180to499Acres'
+  | 'farms500to999Acres'
+  | 'farms1000to1999Acres'
+  | 'farms2000PlusAcres';
 
 export type SortDirection = 'asc' | 'desc';
 
