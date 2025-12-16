@@ -1,0 +1,517 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Central Oregon Forklift & Equipment",
+                "address": "65301 North Highway 97, Bend, OR 97701",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.2529969,
+                    44.1713478
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Fischer Mill Supply, Inc",
+                "address": "20990 S. Fischer Mill Rd, Oregon City, OR 97045",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.4371242,
+                    45.3384384
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Haley Tractor & Equipment",
+                "address": "417 Myrtle Street, Sutherlin, OR 97479",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.3362186,
+                    43.39030289999999
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Runaway Tractor Farm, Inc.",
+                "address": "3480 Lower River Rd., Grants Pass, OR 97526",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -123.3799989,
+                    42.4386758
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Rowe's Tractor",
+                "address": "300 Rock Island Rd, East Wenatchee, WA 98802",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.2868097,
+                    47.4000978
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Town & Country Tractor, Inc.",
+                "address": "449 Railroad Ave, Monroe, WA 98272",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.96601,
+                    47.8567711
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Schoenfeld Farm Tractor & Equipment, LLC",
+                "address": "1340 Railroad Street, Enumclaw, WA 98022",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.991183,
+                    47.2016697
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Hartill's Mountain Saw & Tract",
+                "address": "101 W Robert Ave, Chewelah, WA 99109",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -117.7160641,
+                    48.2733307
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Mountain View Equipment Company",
+                "address": "521 Midvale Rd, Sunnyside, WA 98944",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.0187709,
+                    46.2978703
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Don Johnson Sales, Inc.",
+                "address": "8174 Old Hwy 12, Walla Walla, WA 99362",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -118.5075255,
+                    46.0494035
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "RMT Equipment",
+                "address": "3450 Black Butte Ct, Nampa, ID 83687",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -116.6055279,
+                    43.615564
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Mountain View Equipment Company",
+                "address": "4 N 150 W, Jerome, ID 83338",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -114.5496824,
+                    42.7247504
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Larry's Tractor, Trailers & More",
+                "address": "1094 First Street, Hamilton, MT 59840",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -114.1547106,
+                    46.2336865
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Larry's Tractor, Trailers & More",
+                "address": "6390 Highway 10 West, Missoula, MT 59808",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -114.1023867,
+                    46.9323809
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Double Edge Equipment",
+                "address": "10270 N Dozer Drive, Idaho Falls, ID 83401",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.9724336,
+                    43.5888654
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "90 Cottonwood Creek Rd, Lewistown, MT 59457",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -109.5040802,
+                    47.0543539
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "1728 Old Hardin Rd, Billings, MT 59101",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -108.4405822,
+                    45.80086420000001
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Torgerson's, LLC",
+                "address": "5900 Jackrabbit Lane, Belgrade, MT 59714",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.1833395,
+                    45.75595
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Helena Farm Supply, LLC",
+                "address": "313 E. Main St, East Helena, MT 59635",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -111.91503,
+                    46.58929
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "S and W Feed & Supply",
+                "address": "4880 E. Nye Lane, Carson City, NV 89706",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.7129001,
+                    39.1857823
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Divide Supply Ace Hardware",
+                "address": "3923 Courageous Road, Greenwood, CA 95635",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.9182446,
+                    38.9075206
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Exeter Mercantile Co.",
+                "address": "258 Pine St., Exeter, CA 93221",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.1397995,
+                    36.2964669
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "A1 Sharpening Tractor and Small Engine",
+                "address": "660 E. St. Charles Street, San Andreas, CA 95249",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -120.6744342,
+                    38.1874886
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "San Joaquin Tractor",
+                "address": "710 South High St., Delano, CA 93215",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.2442276,
+                    35.7509447
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "San Joaquin Tractor",
+                "address": "820 Highway 46, Wasco, CA 93280",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.3341727,
+                    35.6018971
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "San Joaquin Tractor",
+                "address": "1201 Union Ave., Bakersfield, CA 93305",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -119.0035736,
+                    35.3689006
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Bailey's, Inc.",
+                "address": "1222 Commercial Ave, Suite D, Woodland, CA 95776",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.7633666,
+                    38.6862242
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Beeler Tractor Co.",
+                "address": "887 East Onstott, Yuba City, CA 95991",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -121.633337,
+                    39.1379147
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Beeler Tractor Co.",
+                "address": "1954 Highway 20, Colusa, CA 95932",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.0327649,
+                    39.1987015
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Jordan Sales and Service, Inc.",
+                "address": "715 N Pleasant View Rd, Post Falls, ID 83854",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -117.0025002,
+                    47.7150184
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Farm & Home Supply",
+                "address": "643 Main St, Pomeroy, WA 99347",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -117.6024863,
+                    46.475018
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "Beeler Tractor Co.",
+                "address": "2025 Barney Rd, Anderson, CA 96007",
+                "type": "Kioti Dealer",
+                "phone": ""
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -122.2893211,
+                    40.4397575
+                ]
+            }
+        }
+    ]
+}

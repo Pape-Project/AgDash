@@ -1,4 +1,4 @@
-import { X, Plus, BarChart3, Clock, MapPin } from 'lucide-react';
+import { X, Plus, BarChart3, Clock, Building2 } from 'lucide-react';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -12,6 +12,7 @@ import { HeatmapControl } from './HeatmapControl';
 import { RegionControl } from './RegionControl';
 
 import { getUniqueStates } from '../../utils/dataUtils';
+import { DEALERSHIP_BRANDING } from '../../constants/branding';
 
 interface FilterPanelProps {
   allCounties: EnhancedCountyData[];
@@ -26,6 +27,14 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
     clearComparison,
     showPapeLocations,
     togglePapeLocations,
+    showNewHollandLocations,
+    toggleNewHollandLocations,
+    showCaseIHLocations,
+    toggleCaseIHLocations,
+    showKubotaLocations,
+    toggleKubotaLocations,
+    showKiotiLocations,
+    toggleKiotiLocations,
   } = useStore();
 
   const availableStates = useMemo(() => getUniqueStates(allCounties), [allCounties]);
@@ -87,6 +96,25 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
     addToComparison(county);
     setCountySearchQuery('');
     setShowCountyDropdown(false);
+  };
+
+  // Dealerships state
+  const [dealershipsExpanded, setDealershipsExpanded] = useState(() => showPapeLocations || showNewHollandLocations || showCaseIHLocations || showKubotaLocations || showKiotiLocations);
+
+  const handleDealershipsToggle = () => {
+    if (dealershipsExpanded) {
+      // Turn off all
+      if (showPapeLocations) togglePapeLocations();
+      if (showNewHollandLocations) toggleNewHollandLocations();
+      if (showCaseIHLocations) toggleCaseIHLocations();
+      if (showKubotaLocations) toggleKubotaLocations();
+      if (showKiotiLocations) toggleKiotiLocations();
+      setDealershipsExpanded(false);
+    } else {
+      // Turn on only Papé by default when expanding
+      if (!showPapeLocations) togglePapeLocations();
+      setDealershipsExpanded(true);
+    }
   };
 
 
@@ -166,27 +194,29 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
           )}
 
           {/* Selected Counties Tags */}
-          {comparisonCounties.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {comparisonCounties.map((county, index) => {
-                const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500'];
-                return (
-                  <div
-                    key={county.id}
-                    className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs ${colors[index]} text-white`}
-                  >
-                    <span className="max-w-[100px] truncate">{county.countyName}</span>
-                    <button
-                      onClick={() => removeFromComparison(county.id)}
-                      className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
+          <div className={`grid transition-all duration-300 ease-in-out ${comparisonCounties.length > 0 ? 'grid-rows-[1fr] opacity-100 mt-0' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+            <div className="overflow-hidden">
+              <div className="flex flex-wrap gap-2 pt-2">
+                {comparisonCounties.map((county, index) => {
+                  const colors = ['bg-blue-500', 'bg-emerald-500', 'bg-amber-500', 'bg-purple-500', 'bg-rose-500'];
+                  return (
+                    <div
+                      key={county.id}
+                      className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs ${colors[index]} text-white`}
                     >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </div>
-                );
-              })}
+                      <span className="max-w-[100px] truncate">{county.countyName}</span>
+                      <button
+                        onClick={() => removeFromComparison(county.id)}
+                        className="hover:bg-white/20 rounded-full p-0.5 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          )}
+          </div>
 
 
 
@@ -202,7 +232,11 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
             </p>
           )}
 
-          {comparisonCounties.length >= 2 && <ComparisonInsights counties={comparisonCounties} />}
+          <div className={`grid transition-all duration-300 ease-in-out ${comparisonCounties.length >= 2 ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+            <div className="overflow-hidden">
+              <ComparisonInsights counties={comparisonCounties} />
+            </div>
+          </div>
         </div>
       </Card>
 
@@ -217,22 +251,134 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
       <RegionControl />
 
       {/* Dealership Locations Control */}
-      <Card className={`p-4 relative overflow-hidden transition-all duration-300 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-yellow-500 before:transition-all before:duration-300 ${showPapeLocations ? 'before:opacity-100' : 'before:opacity-0'}`}>
-        <div className="flex items-center justify-between">
+      {/* Dealerships Group */}
+      <Card className={`p-4 relative overflow-visible transition-all duration-300 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-primary before:transition-all before:duration-300 before:rounded-l-lg ${dealershipsExpanded ? 'before:opacity-100' : 'before:opacity-0'}`}>
+        <div className="flex items-center justify-between mb-0">
           <div className="flex items-center gap-2">
-            <MapPin className={`h-5 w-5 ${showPapeLocations ? 'text-yellow-500' : 'text-muted-foreground'}`} />
+            <Building2 className={`h-5 w-5 ${dealershipsExpanded ? 'text-primary' : 'text-muted-foreground'}`} />
             <span className="font-semibold">Dealerships</span>
           </div>
           <button
-            onClick={togglePapeLocations}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 ${showPapeLocations ? 'bg-yellow-500' : 'bg-input'
+            onClick={handleDealershipsToggle}
+            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${dealershipsExpanded ? 'bg-primary' : 'bg-input'
               }`}
           >
             <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${showPapeLocations ? 'translate-x-6' : 'translate-x-1'
+              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${dealershipsExpanded ? 'translate-x-6' : 'translate-x-1'
                 }`}
             />
           </button>
+        </div>
+
+        {/* Expandable Section */}
+        <div className={`grid transition-all duration-300 ease-in-out ${dealershipsExpanded ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+          <div className="overflow-hidden">
+            <div className="space-y-3 pl-2 ">
+              {/* Pape Dealerships */}
+              <div className="flex items-center justify-between group">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.PAPE.color, opacity: showPapeLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.PAPE.name}</span>
+                </div>
+                <button
+                  onClick={togglePapeLocations}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showPapeLocations ? DEALERSHIP_BRANDING.PAPE.color : undefined }}
+                >
+                  <span
+                    className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showPapeLocations ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+              </div>
+
+              {/* New Holland Dealers */}
+              <div className="flex items-center justify-between group">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.NEW_HOLLAND.color, opacity: showNewHollandLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.NEW_HOLLAND.name}</span>
+                </div>
+                <button
+                  onClick={toggleNewHollandLocations}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showNewHollandLocations ? DEALERSHIP_BRANDING.NEW_HOLLAND.color : undefined }}
+                >
+                  <span
+                    className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showNewHollandLocations ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+              </div>
+
+              {/* Case IH Dealers */}
+              <div className="flex items-center justify-between group">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.CASE_IH.color, opacity: showCaseIHLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.CASE_IH.name}</span>
+                </div>
+                <button
+                  onClick={toggleCaseIHLocations}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showCaseIHLocations ? DEALERSHIP_BRANDING.CASE_IH.color : undefined }}
+                >
+                  <span
+                    className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showCaseIHLocations ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+              </div>
+
+              {/* Kubota Dealers */}
+              <div className="flex items-center justify-between group">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.KUBOTA.color, opacity: showKubotaLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.KUBOTA.name}</span>
+                </div>
+                <button
+                  onClick={toggleKubotaLocations}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showKubotaLocations ? DEALERSHIP_BRANDING.KUBOTA.color : undefined }}
+                >
+                  <span
+                    className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showKubotaLocations ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+              </div>
+              {/* Kioti Dealers */}
+              <div className="flex items-center justify-between group">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: DEALERSHIP_BRANDING.KIOTI.color, opacity: showKiotiLocations ? 1 : 0.3 }}
+                  />
+                  <span className="text-sm font-medium">{DEALERSHIP_BRANDING.KIOTI.name}</span>
+                </div>
+                <button
+                  onClick={toggleKiotiLocations}
+                  className="relative inline-flex h-5 w-9 items-center rounded-full transition-colors bg-input"
+                  style={{ backgroundColor: showKiotiLocations ? DEALERSHIP_BRANDING.KIOTI.color : undefined }}
+                >
+                  <span
+                    className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${showKiotiLocations ? 'translate-x-5' : 'translate-x-1'
+                      }`}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </Card>
     </div>
@@ -241,10 +387,14 @@ export function FilterPanel({ allCounties, onOpenRankingModal }: FilterPanelProp
 
 // Quick insights
 function ComparisonInsights({ counties }: { counties: EnhancedCountyData[] }) {
+  if (counties.length === 0) return null;
+
   const topByFarms = [...counties].sort((a, b) => (b.farms || 0) - (a.farms || 0))[0];
   const topByCropland = [...counties].sort(
     (a, b) => (b.croplandAcres || 0) - (a.croplandAcres || 0)
   )[0];
+
+  if (!topByFarms || !topByCropland) return null;
 
   return (
     <Card className="p-2 bg-primary/10 border-primary/20">

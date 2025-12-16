@@ -70,7 +70,7 @@ export function HeatmapControl({ onOpenRankingModal }: HeatmapControlProps) {
 
     return (
         <Card className={`p-4 relative overflow-visible z-10 transition-all duration-300 before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:bg-yellow-500 before:transition-all before:duration-300 before:rounded-l-lg ${heatmapMode ? 'before:opacity-100' : 'before:opacity-0'}`}>
-            <div className="space-y-4 relative">
+            <div className="relative">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <Flame className={`h-5 w-5 ${heatmapMode ? 'text-yellow-500' : 'text-muted-foreground'}`} />
@@ -92,12 +92,11 @@ export function HeatmapControl({ onOpenRankingModal }: HeatmapControlProps) {
                     </div>
                 </div>
 
-                <div
-                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${heatmapMode ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
-                >
-                    <div className="overflow-hidden">
-                        <div className="space-y-3 pt-2">
 
+                {/* Expandable Section */}
+                <div className={`grid transition-all duration-300 ease-in-out ${heatmapMode ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 mt-0'}`}>
+                    <div className="overflow-hidden">
+                        <div className="space-y-3">
                             {/* Filter Button */}
                             <button
                                 onClick={onOpenRankingModal}
