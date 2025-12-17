@@ -15,6 +15,8 @@ export const STATE_TO_FIPS: Record<string, string> = {
   'NEVADA': '32',
   'OREGON': '41',
   'WASHINGTON': '53',
+  'IDAHO': '16',
+  'MONTANA': '30',
 };
 
 /**
