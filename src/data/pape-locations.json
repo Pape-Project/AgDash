@@ -624,22 +624,6 @@
                     47.23489
                 ]
             }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "name": "Pap\u00e8 Machinery Ag & Turf - Poulsbo",
-                "address": "20081 Viking Ave. NW, Poulsbo, WA 98370",
-                "type": "Ag & Turf",
-                "phone": "360-930-0095"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    -122.65709,
-                    47.74537
-                ]
-            }
         }
     ]
 }
