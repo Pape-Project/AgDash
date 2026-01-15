@@ -37,7 +37,7 @@ function AdminPanelContent({ onClose }: AdminPanelContentProps) {
                 <div className="p-6">
                     {!isAuthenticated ? (
                         <LoginForm
-                            title="Authentication Required"
+                            title="Authentication Required."
                             description="Please enter the administrator password to continue."
                         />
                     ) : (
