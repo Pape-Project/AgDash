@@ -197,4 +197,4 @@ For questions or issues, please open a GitHub issue or contact the development t
 
 ---
 
-**Built with ❤️ by the UO A I Student Association :)**
+**Built with ❤️ by the UO AI Student Association :)**
